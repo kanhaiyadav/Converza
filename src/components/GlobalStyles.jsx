@@ -28,11 +28,11 @@ export const GlobalStyle = createGlobalStyle`
     }
     
     ::-webkit-scrollbar-thumb {
-        background-color: #399918;
+        background-color: #9c9c9c;
         border-radius: 10px;
     }
     ::-webkit-scrollbar-thumb:hover {
-            background-color: darken(#399918, 5%); /* Optional: Darken color on hover */
+            background-color: darken(#9c9c9c, 5%);
             border-radius: 10px;
         }
 `;

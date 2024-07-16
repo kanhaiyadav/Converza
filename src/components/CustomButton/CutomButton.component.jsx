@@ -1,9 +1,11 @@
 import React from 'react'
 import { CustomStyledButton } from './CustomButton.styles'
 
-const CustomButton = ({children}) => {
+const CustomButton = ({children, style}) => {
   return (
-      <CustomStyledButton>
+      <CustomStyledButton
+          style={style}
+      >
           {
               children
           }

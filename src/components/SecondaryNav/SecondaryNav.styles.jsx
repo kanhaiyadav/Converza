@@ -49,7 +49,7 @@ export const SecondaryNavContainer = styled.div`
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    box-shadow: 3px 3px 10px 3px #e2e2e2;
+    box-shadow: 3px 3px 10px #e2e2e2;
     z-index: 1;
 `;
 

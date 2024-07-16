@@ -5,6 +5,6 @@ export const ListDirectory = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 5px;
+    gap: 10px;
     overflow-y: auto;
 `;

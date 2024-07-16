@@ -5,7 +5,7 @@ export const ChatBody = styled.div`
     width: 250px;
     p{
         margin: 0px;
-        font-size: 1.1rem;
+        font-size: 1rem;
         font-weight: 500;
     }
     span{
@@ -13,7 +13,7 @@ export const ChatBody = styled.div`
         width: 100%;
         font-size: 0.9rem;
         color: grey;
-        font-weight: 400;
+        font-weight: 300;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
@@ -29,7 +29,7 @@ export const ChatContainer = styled(NavLink)`
     align-items: center;
     width: 100%;
     border-radius: 5px;
-    box-shadow: 2px 2px 6px #ccc;
+    /* box-shadow: 1px 1px 3px #ccc; */
     width: 96%;
     padding: 8px 10px;
     border: 1px solid transparent;
