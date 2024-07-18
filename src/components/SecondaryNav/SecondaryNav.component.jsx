@@ -13,19 +13,19 @@ const SecondaryNav = ({ type, NewChat, filter, searchbox }) => {
                     <Title>{type}</Title>
                     <HeaderButtons>
                         {
-                            NewChat ? <CustomButton><i class="fa-solid fa-pen-to-square"></i></CustomButton> : null
+                            NewChat ? <CustomButton><i className="fa-solid fa-pen-to-square"></i></CustomButton> : null
                         }
                         {
-                            filter ? <CustomButton><i class="fa-solid fa-filter"></i></CustomButton> : null
+                            filter ? <CustomButton><i className="fa-solid fa-filter"></i></CustomButton> : null
                         }
                     </HeaderButtons>
                 </NavHeader>
                 {
                     searchbox ?
                         <Searchbox>
-                            <i class="fa-solid fa-magnifying-glass fa-bounce"></i>
+                            <i className="fa-solid fa-magnifying-glass fa-bounce"></i>
                             <input type="text" placeholder='Search a chat...' />
-                            <CustomButton><i class="fa-solid fa-x"></i></CustomButton>
+                            <CustomButton><i className="fa-solid fa-x"></i></CustomButton>
                         </Searchbox>
                         : null
                 }

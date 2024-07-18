@@ -1,18 +1,32 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Container, Header, HeaderBody, Buttons, Body, Footer, Form} from './ChatPage.styles';
 import CustomButton from '../../components/CustomButton/CutomButton.component';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectContact } from '../../redux/contacts/contact.selector';
+import { io } from 'socket.io-client';
 
-
+const socket = io("http://localhost:5000");
 const ChatPage = () => {
     const id = useParams().id;
     const contact = useSelector(selectContact(id));
+    const [message, setMessage] = useState("");
+    const handleMessageChange = (e) => {
+        setMessage(e.target.value);
+    }
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setMessage("");
+        socket.emit("message", {
+            message: message,
+            id: contact.chatId,
+        });
+        
+    }
     return (
         <Container>
             <Header>
-                <img src={contact.img} alt="" />
+                <img src='https://cdn-icons-png.flaticon.com/512/149/149071.png' alt="" />
                 <HeaderBody>
                     <p>{contact.name}</p>
                     <span>Active now</span>
@@ -42,11 +56,13 @@ const ChatPage = () => {
 
             </Body>
             <Footer>
-                <CustomButton><i class="fa-regular fa-face-smile"></i></CustomButton>
-                <CustomButton><i class="fa-solid fa-paperclip"></i></CustomButton>
-                <Form>
-                    <input type="text" placeholder='Type a message...' name="message" autoFocus required/>
-                    <CustomButton><i class="fa-solid fa-paper-plane"></i></CustomButton>
+                <CustomButton><i className="fa-regular fa-face-smile"></i></CustomButton>
+                <CustomButton><i className="fa-solid fa-paperclip"></i></CustomButton>
+                <Form
+                    onSubmit={handleSubmit}
+                >
+                    <input onChange={handleMessageChange} type="text" placeholder='Type a message...' name="message" value={message} autoFocus required/>
+                    <CustomButton><i className="fa-solid fa-paper-plane"></i></CustomButton>
                 </Form>
             </Footer>
         </Container>

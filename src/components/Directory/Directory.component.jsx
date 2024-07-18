@@ -11,7 +11,7 @@ const Directory = ({ type }) => {
         <ListDirectory>
             {
                 chats.map((chat) => (
-                    <Chat key={chat.to} to={chat.to} img={chat.img} name={chat.name} subtext={chat.subtext} />
+                    <Chat key={chat._id} to={chat._id} img={chat.img || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'} name={chat.name || chat.phoneNo} subtext={chat.subtext} />
                 ))
             }
         </ListDirectory>

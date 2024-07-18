@@ -11,6 +11,16 @@ export const selectContact = (contactId) => {
 
     return createSelector(
         [selectAllContacts],
-        (contacts) => contacts.find((contact) => contact.to === contactId)
+        (contacts) => contacts.find((contact) => contact._id === contactId)
     )
 }
+
+export const selectJwt = createSelector(
+    [selectContacts],
+    (contacts) => contacts.jwt
+);
+
+export const selectUser = createSelector(
+    [selectContacts],
+    (contacts) => contacts.user
+);
