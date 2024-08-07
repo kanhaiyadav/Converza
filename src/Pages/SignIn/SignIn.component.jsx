@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { login } from '../../redux/user/user.slice';
 
 const SignIn = () => {
@@ -21,18 +21,21 @@ const SignIn = () => {
             navigate('/signup');
         })
     }
-  return (
-      <form
-          onSubmit={handleSubmit}
-          style={{
-              margin: 'auto'
-        }}
-      >
-          <h1>Sign In</h1>
-          <input type="text" placeholder='Mobile no...' onChange={handleMobileChange} value={Mobile}/>
-          <button type="submit">Sign In</button>
-    </form>
-  )
+    return (
+        <>
+            <form
+                onSubmit={handleSubmit}
+                style={{
+                    margin: 'auto'
+                }}
+            >
+                <h1>Sign In</h1>
+                <input type="text" placeholder='Mobile no...' onChange={handleMobileChange} value={Mobile} />
+                <button type="submit">Sign In</button>
+            </form>
+            <Link to='/signup'>Don't have an account? Sign Up</Link>
+        </>
+    )
 }
 
 export default SignIn;
