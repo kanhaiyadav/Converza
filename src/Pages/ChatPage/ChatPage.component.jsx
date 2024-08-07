@@ -1,16 +1,29 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Container, Header, HeaderBody, Buttons, Body, Footer, Form} from './ChatPage.styles';
 import CustomButton from '../../components/CustomButton/CutomButton.component';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { selectContact } from '../../redux/contacts/contact.selector';
-import { io } from 'socket.io-client';
+import { selectContact} from '../../redux/user/user.selector';
 
-const socket = io("http://localhost:5000");
-const ChatPage = () => {
+
+const ChatPage = ({ socket }) => {
     const id = useParams().id;
     const contact = useSelector(selectContact(id));
     const [message, setMessage] = useState("");
+    
+    useEffect(() => {
+        socket.emit("join", {
+            source_id: socket.id,
+            partner_id: contact.id,
+        });
+        socket.on("join_requested", (id) => {
+            socket.join(id);
+        });
+        socket.on('messageRecieved', (data) => {
+            console.log(data)
+        });
+    }, [contact, socket]);
+    
     const handleMessageChange = (e) => {
         setMessage(e.target.value);
     }
@@ -19,10 +32,10 @@ const ChatPage = () => {
         setMessage("");
         socket.emit("message", {
             message: message,
-            id: contact.chatId,
-        });
-        
+            id: contact.id,
+        });    
     }
+
     return (
         <Container>
             <Header>

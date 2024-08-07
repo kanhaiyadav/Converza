@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { login } from '../../redux/contacts/contacts.slice';
+import { login } from '../../redux/user/user.slice';
 
 const SignIn = () => {
     const [Mobile, setMobile] = React.useState('');

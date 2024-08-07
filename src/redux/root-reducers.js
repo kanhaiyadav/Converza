@@ -1,9 +1,8 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import contactsSlice from "./contacts/contacts.slice";
-
+import userSlice from "./user/user.slice";
 
 const rootReducer = combineReducers({
-    contacts: contactsSlice
+    user: userSlice
 });
 
 

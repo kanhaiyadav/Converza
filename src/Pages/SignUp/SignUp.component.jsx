@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch } from 'react-redux';
-import { create } from '../../redux/contacts/contacts.slice';
+import { create } from '../../redux/user/user.slice';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 

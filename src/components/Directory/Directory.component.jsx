@@ -2,11 +2,10 @@ import React from 'react'
 import { ListDirectory } from './Directory.styles'
 import Chat from '../chat/Chat.Component';
 import { useSelector } from 'react-redux';
-import { selectAllContacts } from '../../redux/contacts/contact.selector';
-
+import { selectContacts } from '../../redux/user/user.selector';
 
 const Directory = ({ type }) => {
-    const chats = useSelector(selectAllContacts);
+    const chats = useSelector(selectContacts);
     return (
         <ListDirectory>
             {

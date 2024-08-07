@@ -2,10 +2,11 @@ import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 const initialState = {
-    user: {},
-    jwt: "",
+    userInfo: {},
     contacts: [],
-};
+    chat_id: "",
+    jwt: "",
+}
 
 export const create = createAsyncThunk('contacts/createOrUpdate', async (data) => {
     try {
@@ -16,9 +17,9 @@ export const create = createAsyncThunk('contacts/createOrUpdate', async (data) =
             },
             body: JSON.stringify(data)
         });
-        if(response.ok) {
+        if (response.ok) {
             const data = await response.json();
-            return data;    
+            return data;
         } else {
             const data = await response.json();
             throw new Error(data.message);
@@ -37,9 +38,9 @@ export const login = createAsyncThunk('contacts/login', async (data) => {
             },
             body: JSON.stringify(data)
         });
-        if(response.ok) {
+        if (response.ok) {
             const data = await response.json();
-            return data;    
+            return data;
         } else {
             const data = await response.json();
             throw new Error(data.message);
@@ -52,9 +53,9 @@ export const login = createAsyncThunk('contacts/login', async (data) => {
 export const update = createAsyncThunk('contacts/update', async ({ chatid, id }) => {
     try {
         const response = await fetch(`http://localhost:3000/api/v1/user/update/${chatid}/${id}`);
-        if(response.ok) {
+        if (response.ok) {
             const data = await response.json();
-            return data;    
+            return data;
         } else {
             const data = await response.json();
             throw new Error(data.message);
@@ -64,21 +65,24 @@ export const update = createAsyncThunk('contacts/update', async ({ chatid, id })
     }
 });
 
-const contactsSlice = createSlice({
-    name: 'contacts',   
+const userSlice = createSlice({
+    name: 'user',
     initialState,
-    reducers: {},
+    reducers: {    },
     extraReducers: (builder) => {
         builder.addCase(create.fulfilled, (state, action) => {
-            state.user = action.payload.data.user;
+            state.userInfo = action.payload.data.user;
         });
         builder.addCase(login.fulfilled, (state, action) => {
-            state.user = action.payload.data.user;
+            state.userInfo = action.payload.data.user;
+            console.log(state.user)
             state.jwt = action.payload.data.jwt;
             state.contacts = action.payload.data.contacts;
+        });
+        builder.addCase(update.fulfilled, (state, action) => {
+            state.userInfo = action.payload.data.userInfo;
         });
     }
 });
 
-
-export default contactsSlice.reducer;
+export default userSlice.reducer;
