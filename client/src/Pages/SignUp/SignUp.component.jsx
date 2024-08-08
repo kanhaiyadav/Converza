@@ -18,10 +18,10 @@ const SignUpPage = () => {
         })).unwrap();
         createPromise.then(() => {
             console.log("***Created***");
-            navigate('signin');
+            navigate('/signin');
         }).catch(() => {
             console.log("***Failed***");
-            navigate('signup');
+            navigate('/signup');
         })
         setName('');
         setMobile('');
