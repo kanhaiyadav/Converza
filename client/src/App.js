@@ -1,24 +1,18 @@
 import './App.css';
-import React, { useEffect } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom'
+import React from 'react';
+import { Routes, Route } from 'react-router-dom'
 import HomeLayout from './Pages/Home/Home.Layout';
 import Calls from './components/calls/calls.component';
 import Status from './components/status/status.component';
 import SecondaryNav from './components/SecondaryNav/SecondaryNav.component';
 import Welcome from './Pages/ChatPage/Welcome';
 import ChatPage from './Pages/ChatPage/ChatPage.component';
-import { useDispatch, useSelector } from 'react-redux';
 import SignUpPage from './Pages/SignUp/SignUp.component';
 import SignIn from './Pages/SignIn/SignIn.component';
-import { selectJwt, selectUserInfo } from './redux/user/user.selector';
 import { io } from 'socket.io-client';
 
 const socket = io("http://localhost:5000");
 function App() {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const user = useSelector(selectUserInfo);
-    const jwt = useSelector(selectJwt);
     // useEffect(() => {
         // if (!jwt) {
         //     navigate('/signin');
