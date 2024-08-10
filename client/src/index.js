@@ -7,16 +7,38 @@ import { BrowserRouter } from 'react-router-dom';
 import GlobalStyle from './components/GlobalStyles';
 import { Provider } from "react-redux";
 import store from "./redux/store";
+import { ApolloClient, InMemoryCache, ApolloProvider, gql } from '@apollo/client';
+
+const client = new ApolloClient({
+    uri: 'http://localhost:3000/graphql',
+    cache: new InMemoryCache(),
+});
+
+// client
+//     .query({
+//         query: gql`
+//       query getUsers {
+//         getUsers{
+//             id
+//             name
+//         }
+//       }
+//     `,
+//     })
+//     .then((result) => console.log(result))
+//     .catch((error) => console.log(error));
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <>
-        <BrowserRouter>
-            <Provider store={store}>
-                <GlobalStyle />
-                <App />
-            </Provider>
-        </BrowserRouter>
+        <ApolloProvider client={client}>
+            <BrowserRouter>
+                <Provider store={store}>
+                    <GlobalStyle />
+                    <App />
+                </Provider>
+            </BrowserRouter>
+        </ApolloProvider>
     </>
 );
 
