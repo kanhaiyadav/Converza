@@ -9,9 +9,9 @@ const messageSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    receiver: {
-        type: String,
-        required: true
+    room: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Room'
     },
     timestamp: {
         type: Date,

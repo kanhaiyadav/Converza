@@ -3,7 +3,7 @@ import cors from 'cors';
 import { Server } from "socket.io";
 import http from "http";
 import './config/mongoose.js';
-import router from './router/index.js';
+// import router from './router/index.js';
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
 import { fileURLToPath } from 'url';

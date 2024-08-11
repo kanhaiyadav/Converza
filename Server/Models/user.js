@@ -13,13 +13,9 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: 'https://cdn-icons-png.flaticon.com/128/9131/9131529.png'
     },
-    personalChats: [{
+    rooms: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'PersonalChat'
-    }],
-    groupChats: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'GroupChat'
+        ref: 'Room'
     }],
 });
 

@@ -17,9 +17,12 @@ const roomSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    isGroupChat: {
+        type: Boolean,
+        default: false
+    },
     groupName: {
         type: String,
-        required: true
     }
 });
 
