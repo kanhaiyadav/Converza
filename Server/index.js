@@ -29,6 +29,7 @@ const createServer = async () => {
     const apolloServer = new ApolloServer({
         typeDefs: mergeTypeDefs(typesArray),
         resolvers: resolvers,
+        introspection: true,
     });
     const { url } = await startStandaloneServer(apolloServer, {
         listen: { port: port }

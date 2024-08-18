@@ -18,6 +18,11 @@ type LoginPayload {
   token: String!
 }
 
+type SignUpPayload {
+  success: Boolean!
+  message: String!
+}
+
 type Room {
   id: ID!
   name: String!
@@ -27,6 +32,10 @@ type Room {
 }
 
 type Query {
-  getUsers: [User],
-  login(phoneNo: String!): LoginPayload,
+  getUsers: [User]
+  login(phoneNo: String!): LoginPayload
+}
+
+type Mutation {
+  SignUp(name: String!, phoneNo: String!): SignUpPayload
 }

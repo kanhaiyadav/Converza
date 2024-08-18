@@ -1,4 +1,4 @@
-import User from '../../../Models/user.js';
+import User from '../../../models/user.js';
 import jwt from 'jsonwebtoken';
 
 export const create = async (req, res) => {

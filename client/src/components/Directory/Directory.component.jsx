@@ -1,17 +1,22 @@
 import React from 'react'
 import { ListDirectory } from './Directory.styles'
 import Chat from '../chat/Chat.Component';
-import { useSelector } from 'react-redux';
-import { selectContacts } from '../../redux/user/user.selector';
+// import { useContext } from 'react';
+// import { userContext } from '../../Context';
 
 const Directory = ({ type }) => {
-    const chats = useSelector(selectContacts);
+    // const { userData } = useContext(userContext);
+    // console.log(userData);
+    // const user = userData.user;
     return (
         <ListDirectory>
             {
-                chats.map((chat) => (
-                    <Chat key={chat._id} to={chat._id} img={chat.img || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'} name={chat.name || chat.phoneNo} subtext={chat.subtext} />
-                ))
+                <Chat room={{
+                    img: 'https://cdn-icons-png.flaticon.com/512/149/149071.png',
+                    name: 'John Doe',
+                    subtext: 'Hey there',
+                    to: '1'
+                }} />
             }
         </ListDirectory>
     )

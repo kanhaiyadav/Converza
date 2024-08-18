@@ -1,28 +1,34 @@
+import { gql } from '@apollo/client';
 import React from 'react'
-import { useDispatch } from 'react-redux';
-import { create } from '../../redux/user/user.slice';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useMutation } from '@apollo/client';
 
 const SignUpPage = () => {
     const [name, setName] = useState('');
     const [mobile, setMobile] = useState('');
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const handleSubmit = (e) => {
-        console.log("***Submitted***");
-        e.preventDefault();
-        const createPromise = dispatch(create({
+    const SIGN_UP = gql`
+        mutation SignUp($name: String!, $phoneNo: String!) {
+            SignUp(name: $name, phoneNo: $phoneNo) {
+                    success
+                    message
+                }
+        }`;
+    const [signUp, { data, loading, error }] = useMutation(SIGN_UP, {
+        variables: {
             name: name,
-            phoneNo: mobile
-        })).unwrap();
-        createPromise.then(() => {
-            console.log("***Created***");
-            navigate('/signin');
-        }).catch(() => {
-            console.log("***Failed***");
-            navigate('/signup');
-        })
+            phoneNo: mobile,
+        },
+        onCompleted: (data) => {
+            navigate('/');
+        }
+    });
+
+    const navigate = useNavigate();
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        signUp();
         setName('');
         setMobile('');
     }
@@ -33,18 +39,18 @@ const SignUpPage = () => {
         setMobile(e.target.value);
     }
 
-  return (
-      <form onSubmit={handleSubmit}
-       style={{
-           margin: 'auto',
-       }}
-      >
-          <h1>Sign Up</h1>
-          <input  type="text" placeholder="Name" onChange={handleNameChange}/>
-          <input  type="text" placeholder='Mobile no...' onChange={handleMobileChange}/>
-          <button type="submit">Sign Up</button>
-      </form>
-  )
+    return (
+        <form onSubmit={handleSubmit}
+            style={{
+                margin: 'auto',
+            }}
+        >
+            <h1>Sign Up</h1>
+            <input type="text" placeholder="Name" onChange={handleNameChange} />
+            <input type="text" placeholder='Mobile no...' onChange={handleMobileChange} />
+            <button type="submit">Sign Up</button>
+        </form>
+    )
 }
 
 export default SignUpPage;

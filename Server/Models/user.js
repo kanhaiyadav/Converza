@@ -13,9 +13,9 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: 'https://cdn-icons-png.flaticon.com/128/9131/9131529.png'
     },
-    rooms: [{
+    contacts: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Room'
+        ref: 'Contact'
     }],
 });
 

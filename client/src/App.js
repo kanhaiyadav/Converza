@@ -14,36 +14,36 @@ import { io } from 'socket.io-client';
 const socket = io("http://localhost:5000");
 function App() {
     // useEffect(() => {
-        // if (!jwt) {
-        //     navigate('/signin');
-        // }
-        // else {
-        //     if (!socket.connected) {
-        //         socket.connect();
-        //     }
-        //     socket.on('userJoined', (message) => {
-        //         console.log(message)
-        //     });
-        //     socket.on('disconnect', (reason) => {
-        //         console.log('Socket disconnected:', reason);
-        //     });
+    // if (!jwt) {
+    //     navigate('/signin');
+    // }
+    // else {
+    //     if (!socket.connected) {
+    //         socket.connect();
+    //     }
+    //     socket.on('userJoined', (message) => {
+    //         console.log(message)
+    //     });
+    //     socket.on('disconnect', (reason) => {
+    //         console.log('Socket disconnected:', reason);
+    //     });
 
-        //     // Cleanup on unmount
-        //     return () => {
-        //         socket.off('connect');
-        //         socket.off('userJoined');
-        //         socket.off('messageRecieved');
-        //         socket.off('disconnect');
-        //     };
-        // }
+    //     // Cleanup on unmount
+    //     return () => {
+    //         socket.off('connect');
+    //         socket.off('userJoined');
+    //         socket.off('messageRecieved');
+    //         socket.off('disconnect');
+    //     };
+    // }
     // },[navigate, jwt, dispatch, user._id]);
     return (
         <div className="App">
             <Routes>
+                <Route path='/Signin' element={<SignIn />} />
+                <Route path="signup" element={<SignUpPage />} />
                 <Route path='/' element={<HomeLayout />}>
-                    <Route index element={<Welcome />} />
-                    <Route path="signup" element={<SignUpPage />} />
-                    <Route path='signin' element={<SignIn />} />
+                    <Route index element={<Welcome y />} />
                     <Route path='chats' element={<SecondaryNav socket={socket} searchbox={true} type="Chats" NewChat={true} filter={true} />}>
                         <Route index element={<Welcome />} />
                         <Route path=':id' element={<ChatPage socket={socket} />} />

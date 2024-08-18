@@ -1,10 +1,18 @@
-import styled from "styled-components";
+import styled, {keyframes} from "styled-components";
 
+const slideIn = keyframes`
+    from{
+        transform: translateX(-100%);
+    }
+    to{
+        transform: translateX(0%);
+    }
+`
 
 export const Title = styled.h1`
     font-size: 24px;
     font-weight: 600;
-    color: #399918;
+    color: ${({ theme }) => theme.colors.primary};
 `
 
 export const HeaderButtons = styled.div`
@@ -30,7 +38,7 @@ export const NavHeader = styled.div`
     box-sizing: border-box;
     width: 100%;
     height: 50px;
-    background-color: white;
+    background-color: ${({ theme }) => theme.colors.secondary};
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -41,15 +49,19 @@ export const NavHeader = styled.div`
 
 
 export const SecondaryNavContainer = styled.div`
-    margin-left:50px;
+    padding-left:50px;
     box-sizing: border-box;
     height: 100vh;
-    width: 350px;
+    width: 400px;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
     box-shadow: 3px 3px 10px #e2e2e2;
+    background-color: ${({ theme }) => theme.colors.secondary};
     z-index: 1;
+    border-radius: 0px 30px 30px 0px;
+    overflow: hidden;
+    animation: ${slideIn} 0.5s ease;
 `;
 

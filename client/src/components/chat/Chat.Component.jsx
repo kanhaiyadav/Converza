@@ -1,7 +1,8 @@
 import React from 'react'
 import { ChatBody, ChatContainer } from './chat.styles';
 
-const Chat = ({img, name, subtext, to}) => {
+const Chat = ({room}) => {
+    const { img, to, name, subtext } = room;
   return (
       <ChatContainer to={to}>
           <img src={img} alt="" />

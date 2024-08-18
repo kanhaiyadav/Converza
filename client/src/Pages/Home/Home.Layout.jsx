@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { HomeNav, NavItem, MenuButton } from './Home.styles';
-
 import { Outlet } from 'react-router-dom';
+
 const HomeLayout = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     return (

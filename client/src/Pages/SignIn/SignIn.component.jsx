@@ -1,6 +1,8 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { useLazyQuery, gql } from '@apollo/client';
+import { userContext } from '../../Context';
+import { useMutation } from '@apollo/client';
 
 const SignIn = () => {
     const [Mobile, setMobile] = React.useState('');
@@ -8,33 +10,18 @@ const SignIn = () => {
     const handleMobileChange = (e) => {
         setMobile(e.target.value);
     }
-
+    const { setUserData } = React.useContext(userContext);
+    
+    
+    const TOGGLE_LOGIN = gql`
+        mutation {
+            toggleLogin @client
+        }`;
+    const [toggleLogin, {loading1, error1, data1}] = useMutation(TOGGLE_LOGIN);
+    
     const LOGIN = gql`
         query login($phoneNo: String!) {
             login(phoneNo: $phoneNo) {
-                 user{
-                  id
-                name
-                avatar
-                rooms {
-                    id
-                    name
-                    members {
-                        id
-                        name
-                        avatar
-                    }
-                    lastMessage {
-                        id
-                        content
-                        sender {
-                            id
-                            name
-                            avatar
-                        }
-                    }
-                }
-            }
                 token
             }
         }
@@ -51,13 +38,15 @@ const SignIn = () => {
     }
     React.useEffect(() => {
         if (data) {
-            navigate('/chats');
+            setUserData(data.login);
+            toggleLogin();
+            navigate('/home/chats');
         }
         else if (error) {
             navigate('/signup');
             // throw new Error(error.message);
         }
-    }, [data, error, navigate]);
+    }, [data, error, navigate, setUserData, toggleLogin]);
     if (loading) {
         return <h1>Loading...</h1>
     }

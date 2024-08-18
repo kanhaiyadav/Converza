@@ -13,7 +13,7 @@ export const SearchboxContainer = styled.div`
     border-radius: 5px;
     padding: 0px 10px;
     gap:10px;
-    border-bottom: 3px solid #399918;
+    border-bottom: 3px solid ${({ theme }) => theme.colors.primary};
     input{
         font-size: 1.1rem;
         flex: 1 1;

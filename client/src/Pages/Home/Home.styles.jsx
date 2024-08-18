@@ -22,10 +22,12 @@ export const NavItem = styled(NavLink)`
     flex-direction: row;
     align-items: center;
     &:hover{
-        background-color: #50af30;
+        background-color: #7823ce   
+;
     }
     &.active{
-        background-color: #50af30;
+        background-color: #7823ce   
+;
         span{
             position: absolute;
             left: 0px;
@@ -49,12 +51,13 @@ export const HomeNav = styled.div`
     flex-direction: column;
     align-items: baseline;
     height: 100vh;
-    background-color: #399918;
-    color: white;
+    background-color: ${({ theme })=> theme.colors.primary};
+    color: ${({ theme })=> theme.textColors.secondary};
     position: fixed;
     left: 0px;
     width: ${({ $menuOpen }) => ($menuOpen ? '170px' : '50px')};
     z-index: 2;
+    border-radius: 0px 30px 30px 0px;
     p{
         margin-left: 10px;
         display: ${({ $menuOpen }) => ($menuOpen ? 'inline-block' : 'none')};
