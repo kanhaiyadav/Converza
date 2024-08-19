@@ -1,16 +1,17 @@
-import { Container, Header, HeaderBody, Buttons, Body, Footer, Form} from './ChatPage.styles';
+import { Container, Header, HeaderBody, Buttons, Body, Footer, Form } from './ChatPage.styles';
 import CustomButton from '../../components/CustomButton/CutomButton.component';
+import RoundedButton from '../../components/RoundedButton/RoundedButton';
 // import React, { useEffect, useState } from 'react'
-// import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 // import { useSelector } from 'react-redux';
 // import { selectContact} from '../../redux/user/user.selector';
 
 
 const ChatPage = ({ socket }) => {
-    // const id = useParams().id;
+    const id = useParams().id;
     // const contact = useSelector(selectContact(id));
     // const [message, setMessage] = useState("");
-    
+
     // useEffect(() => {
     //     socket.emit("join", {
     //         source_id: socket.id,
@@ -23,7 +24,7 @@ const ChatPage = ({ socket }) => {
     //         console.log(data)
     //     });
     // }, [contact, socket]);
-    
+
     // const handleMessageChange = (e) => {
     //     setMessage(e.target.value);
     // }
@@ -36,31 +37,48 @@ const ChatPage = ({ socket }) => {
     //     });    
     // }
 
+    const data = {
+        1: {
+            img: 'https://cdn-icons-png.flaticon.com/512/149/149071.png',
+            name: 'John Doe',
+            subtext: 'Hey there',
+            to: '1'
+        },
+        2: {
+            img: 'https://cdn-icons-png.flaticon.com/128/4140/4140048.png',
+            name: 'Dhruv Jain',
+            subtext: 'is there any chance of rain today?',
+            to: '2'
+        },
+        3: {
+            img: 'https://cdn-icons-png.flaticon.com/128/16683/16683419.png',
+            name: 'Sabyasachi Sinha',
+            subtext: 'see you tommorrow',
+            to: '3'
+        },
+        4: {
+            img: 'https://cdn-icons-png.flaticon.com/128/6997/6997662.png',
+            name: 'Ananya Arya',
+            subtext: 'what are you doing?',
+            to: '4'
+        },
+    }
     return (
         <Container>
             <Header>
-                <img src='https://cdn-icons-png.flaticon.com/512/149/149071.png' alt="" />
+                <img src={data[id].img} alt="" />
                 <HeaderBody>
-                    <p>John Doe</p>
+                    <p>{data[id].name}</p>
                     <span>Active now</span>
                 </HeaderBody>
                 <Buttons>
-                    <div 
+                    <div
                         style={{
-                            display:'flex',
+                            display: 'flex',
                             border: "1px solid #ccc",
                             borderRadius: '5px',
                         }}
                     >
-                        <CustomButton style={{borderRadius: '0px'}}><i className="fa-solid fa-video"></i></CustomButton>
-                        <span
-                            style={{
-                                display: 'inline-block',
-                                width: '1px',
-                                backgroundColor: '#ccc',
-                            }}
-                        ></span>
-                        <CustomButton style={{ borderRadius: '0px' }}><i className="fa-solid fa-phone"></i></CustomButton>
                     </div>
                     <CustomButton><i className="fa-solid fa-search"></i></CustomButton>
                 </Buttons>
@@ -69,16 +87,29 @@ const ChatPage = ({ socket }) => {
 
             </Body>
             <Footer>
-                <CustomButton><i className="fa-regular fa-face-smile"></i></CustomButton>
-                <CustomButton><i className="fa-solid fa-paperclip"></i></CustomButton>
-                <Form
-                    // onSubmit={handleSubmit}
+                <Form id='message-form'
+                // onSubmit={handleSubmit}
                 >
+                    <span style={{
+                        borderRadius: '50%',
+                        padding: '8px',
+                        color: 'grey',
+
+                    }}><i className="fa-regular fa-face-smile"></i></span>
+                    <span
+                        style={{
+                            borderRadius: '50%',
+                            padding: '8px',
+                            color: 'grey',
+                            marginLeft: '-10px',
+    
+                        }}
+                    ><i className="fa-solid fa-paperclip"></i></span>
                     {/* <input onChange={handleMessageChange} type="text" placeholder='Type a message...' name="message" value={message} autoFocus required/> */}
-                    <input type="text" placeholder='Type a message...' name="message" autoFocus required/>
-                    <CustomButton><i className="fa-solid fa-paper-plane"></i></CustomButton>
+                    <input type="text" placeholder='Type a message...' name="message" autoFocus required />
                 </Form>
-                </Footer>
+                <RoundedButton type='submit' form='message-form'><i className="fa-solid fa-paper-plane"></i></RoundedButton>
+            </Footer>
         </Container>
     )
 }

@@ -10,6 +10,7 @@ export const CustomStyledButton = styled.button`
     outline: none;
     padding: 8px 12px;
     border-radius: 5px;
+    color: ${({ theme }) => theme.textColors.primary};
     &:hover{
         background-color: #ededed;
     }

@@ -12,7 +12,7 @@ import SignIn from './Pages/SignIn/SignIn.component';
 import { io } from 'socket.io-client';
 
 const socket = io("http://localhost:5000");
-function App() {
+function App({theme, setTheme }) {
     // useEffect(() => {
     // if (!jwt) {
     //     navigate('/signin');
@@ -38,11 +38,10 @@ function App() {
     // }
     // },[navigate, jwt, dispatch, user._id]);
     return (
-        <div className="App">
             <Routes>
                 <Route path='/Signin' element={<SignIn />} />
                 <Route path="signup" element={<SignUpPage />} />
-                <Route path='/' element={<HomeLayout />}>
+            <Route path='/' element={<HomeLayout theme={theme} setTheme={setTheme} />}>
                     <Route index element={<Welcome y />} />
                     <Route path='chats' element={<SecondaryNav socket={socket} searchbox={true} type="Chats" NewChat={true} filter={true} />}>
                         <Route index element={<Welcome />} />
@@ -62,7 +61,6 @@ function App() {
                     </Route>
                 </Route>
             </Routes>
-        </div>
     );
 }
 

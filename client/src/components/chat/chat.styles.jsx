@@ -22,14 +22,13 @@ export const ChatBody = styled.div`
 
 export const ChatContainer = styled(NavLink)`
     text-decoration: none;
-    color: black;
+    color: ${({ theme }) => theme.textColors.primary};
     box-sizing: border-box;
     display: flex;
     flex-direction: row;
     align-items: center;
     width: 100%;
     border-radius: 5px;
-    /* box-shadow: 1px 1px 3px #ccc; */
     width: 96%;
     padding: 8px 10px;
     border: 1px solid transparent;
@@ -46,11 +45,12 @@ export const ChatContainer = styled(NavLink)`
         background-color: #ccc;
     }
     &:hover{
-        border: 1px solid #399918;
+        background-color: ${({ theme }) => theme.colors.quaternary};
+        border: 1px solid ${({ theme }) => theme.colors.primary};
     }
     &.active{
         z-index: 1;
-        border: 3px solid #399918;
-        transform: scale(1.02);
+        border: 1px solid ${({ theme }) => theme.colors.primary};
+        background-color: ${({ theme }) => theme.colors.quaternary};
     }
 `

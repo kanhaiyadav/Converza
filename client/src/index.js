@@ -10,13 +10,19 @@ import store from "./redux/store";
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { UserProvider } from './Context';
 import { ThemeProvider } from 'styled-components';
-import { lightTheme } from './Styles/theme';
+import { lightTheme, darkTheme } from './Styles/theme';
 import { persistCache } from 'apollo3-cache-persist';
 import localForage from 'localforage';
 import { resolvers, typeDefs } from './GraphQL/resolvers';
 
 const AppWrapper = () => {
     const [client, setClient] = useState(null);
+    const [theme, setTheme] = useState('dark');
+    
+    const themes = {
+        light: lightTheme,
+        dark: darkTheme,
+    };
 
     useEffect(() => {
         const setupApolloClient = async () => {
@@ -53,9 +59,9 @@ const AppWrapper = () => {
             <UserProvider>
                 <BrowserRouter>
                     <Provider store={store}>
-                        <ThemeProvider theme={lightTheme}>
+                        <ThemeProvider theme={themes[theme]}>
                             <GlobalStyle />
-                            <App />
+                            <App theme={theme} setTheme={setTheme} />
                         </ThemeProvider>
                     </Provider>
                 </BrowserRouter>

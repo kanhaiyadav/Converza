@@ -53,13 +53,36 @@ export const HomeNav = styled.div`
     height: 100vh;
     background-color: ${({ theme })=> theme.colors.primary};
     color: ${({ theme })=> theme.textColors.secondary};
-    position: fixed;
-    left: 0px;
+    /* position: fixed; */
+    /* left: 0px; */
     width: ${({ $menuOpen }) => ($menuOpen ? '170px' : '50px')};
     z-index: 2;
-    border-radius: 0px 30px 30px 0px;
     p{
         margin-left: 10px;
         display: ${({ $menuOpen }) => ($menuOpen ? 'inline-block' : 'none')};
     }
 `; 
+
+export const ThemeButton = styled.div`
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: ${({ theme })=> theme.colors.secondary};
+    color: ${({ theme })=> theme.textColors.primary};
+    i{
+        font-size: 1.2rem;
+    }
+`;
+
+export const HomeLayoutContainer = styled.div`
+    display: grid;
+    grid-template-columns: 50px 1fr;
+    width: 100%;
+    background-color: ${({ theme })=> theme.colors.secondary};
+`;
