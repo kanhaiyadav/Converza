@@ -8,6 +8,30 @@ const slideIn = keyframes`
         transform: translateX(0%);
     }
 `
+const slide = keyframes`
+    0%{
+        transform: translateX(-100%);
+    }
+    40%{
+        transform: translateX(10%);
+    }
+    70%{
+        transform: translateX(-5%);
+    }
+    100%{
+        transform: translateX(0%);
+    }`;
+
+const slideUp = keyframes`
+    from{
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to{
+        transform: translateY(0%);
+        opacity: 1;
+    }`;
+
 
 export const HeaderBody = styled.div`
     display: flex;
@@ -112,6 +136,8 @@ export const Footer = styled.div`
     align-items: center;
     justify-content: space-between;
     padding: 0px 15px;
+    opacity: 0;
+    animation: ${slideUp} 0.3s ease-in-out 0.8s forwards;     
 `
 
 
@@ -120,6 +146,5 @@ export const Container = styled.div`
     flex-direction: column;
     align-items: center;
     flex: 1 1;
-    background-color: white;
-    animation: ${slideIn} 0.5s ease forwards;
+    animation: ${slide} 1s ease-in-out forwards;
 `

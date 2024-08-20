@@ -67,4 +67,5 @@ export const ChatsLayoutContainer = styled.div`
     grid-template-columns: 350px 1fr;
     width: 100%;
     overflow: hidden;
+    background-color: ${({ theme }) => theme.colors.secondary};
 `;

@@ -3,13 +3,17 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useLazyQuery, gql } from '@apollo/client';
 import { isLoggedInVar } from '../../GraphQL/cache';
 import { useReactiveVar } from '@apollo/client';
+import { Container, SubContainer, Header } from './SignIn.styles';
 
 const SignIn = () => {
-    const [Mobile, setMobile] = React.useState('');
+    const [fields, setFields] = React.useState({
+        username: '',
+        password: '',
+    });
     const navigate = useNavigate();
     const isLoggedIn = useReactiveVar(isLoggedInVar);
-    const handleMobileChange = (e) => {
-        setMobile(e.target.value);
+    const handleChange = (e) => {
+        setFields({ ...fields, [e.target.name]: e.target.value });
     }
 
     const LOGIN = gql`
@@ -21,7 +25,7 @@ const SignIn = () => {
         `;
 
     const [login, { loading, error, data }] = useLazyQuery(LOGIN, {
-        variables: { phoneNo: Mobile },
+        variables: { phoneNo: fields.username },
     });
 
 
@@ -49,19 +53,24 @@ const SignIn = () => {
         return <h1>Loading...</h1>
     }
     return (
-        <>
-            <form
-                onSubmit={handleSubmit}
-                style={{
-                    margin: 'auto'
-                }}
-            >
-                <h1>Sign In</h1>
-                <input type="text" placeholder='Mobile no...' onChange={handleMobileChange} value={Mobile} />
-                <button type="submit">Sign In</button>
-            </form>
-            <Link to='/signup'>Don't have an account? Sign Up</Link>
-        </>
+        <Container>
+            <Header>
+                <h1>Welcome Back!</h1>
+                <p>Your Conversations Await</p>
+            </Header>
+            <SubContainer>
+                <form
+                    onSubmit={handleSubmit}
+                >
+                    <div><img src="/chat.png" alt="" /></div>
+                    <h1>Sign In</h1>
+                    <input type="text" name='username' placeholder='Username' autoFocus onChange={handleChange} value={fields.username} />
+                    <input type="password" name='password' placeholder='Password' onChange={handleChange} value={fields.password} />
+                    <button type="submit">Sign In</button>
+                </form>
+            </SubContainer>
+            <Link to='/signup'>Don't have an account? <span>SignUp</span></Link>
+        </Container>
     )
 }
 

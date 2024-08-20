@@ -1,5 +1,5 @@
 const commonTheme = {
-    fontFamily: {
+    fonts: {
         primary: "'Poppins', sans-serif",
         secondary: "Open Sans, sans-serif",
         handwriting1: "Playwrite PE",
@@ -158,6 +158,7 @@ export const darkTheme = {
         xl: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
         inner: "inset 0px 0px 4px rgba(0,0,0,0.6)",
         outer: "0px 0px 4px rgba(0,0,0,0.6)",
+        outerxl: "0px 0px 10px rgba(0,0,0,0.6)",
         outline: "0 0 0 3px rgba(66, 153, 225, 0.5)",
         none: "none",
     },
