@@ -13,16 +13,18 @@ import { ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from './Styles/theme';
 import { persistCache } from 'apollo3-cache-persist';
 import localForage from 'localforage';
-import { resolvers, typeDefs } from './GraphQL/resolvers';
+import { isLoggedInVar } from './GraphQL/cache';
+
+if (window.localStorage.getItem('token')) {
+    isLoggedInVar(true);
+}
+else
+    isLoggedInVar(false);
 
 const AppWrapper = () => {
     const [client, setClient] = useState(null);
     const [theme, setTheme] = useState('dark');
-    
-    const themes = {
-        light: lightTheme,
-        dark: darkTheme,
-    };
+
 
     useEffect(() => {
         const setupApolloClient = async () => {
@@ -35,8 +37,6 @@ const AppWrapper = () => {
             const clientInstance = new ApolloClient({
                 uri: 'http://localhost:3000/graphql',
                 cache,
-                typeDefs,
-                resolvers,
             });
             setClient(clientInstance);
         };
@@ -44,14 +44,16 @@ const AppWrapper = () => {
         setupApolloClient();
     }, []);
 
-    // client.writeData({
-    //     data: {
-    //         isLoggedIn: false
-    //     },
-    // })
+
+    const themes = {
+        light: lightTheme,
+        dark: darkTheme,
+    };
+
+
 
     if (!client) {
-        return <div>Loading...</div>; // Or any loading indicator
+        return <div>Loading...</div>;
     }
 
     return (

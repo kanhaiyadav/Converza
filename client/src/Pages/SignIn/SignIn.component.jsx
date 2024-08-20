@@ -1,24 +1,17 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { useLazyQuery, gql } from '@apollo/client';
-import { userContext } from '../../Context';
-import { useMutation } from '@apollo/client';
+import { isLoggedInVar } from '../../GraphQL/cache';
+import { useReactiveVar } from '@apollo/client';
 
 const SignIn = () => {
     const [Mobile, setMobile] = React.useState('');
     const navigate = useNavigate();
+    const isLoggedIn = useReactiveVar(isLoggedInVar);
     const handleMobileChange = (e) => {
         setMobile(e.target.value);
     }
-    const { setUserData } = React.useContext(userContext);
-    
-    
-    const TOGGLE_LOGIN = gql`
-        mutation {
-            toggleLogin @client
-        }`;
-    const [toggleLogin, {loading1, error1, data1}] = useMutation(TOGGLE_LOGIN);
-    
+
     const LOGIN = gql`
         query login($phoneNo: String!) {
             login(phoneNo: $phoneNo) {
@@ -36,17 +29,22 @@ const SignIn = () => {
         e.preventDefault();
         login();
     }
+
     React.useEffect(() => {
-        if (data) {
-            setUserData(data.login);
-            toggleLogin();
-            navigate('/home/chats');
+        if (!isLoggedIn) {
+            if (data) {
+                window.localStorage.setItem('token', data.login.token);
+                isLoggedInVar(true);
+                navigate('/chats');
+            }
+            else if (error) {
+                navigate('/signup');
+            }
         }
-        else if (error) {
-            navigate('/signup');
-            // throw new Error(error.message);
+        else {
+            navigate('/chats');
         }
-    }, [data, error, navigate, setUserData, toggleLogin]);
+    }, [data, error, navigate, isLoggedIn]);
     if (loading) {
         return <h1>Loading...</h1>
     }

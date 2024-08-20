@@ -1,30 +1,42 @@
-import { gql } from "@apollo/client";
+// import { gql } from "@apollo/client";
 
-export const typeDefs = gql`
-    extend type Query {
-        isLoggedIn: Boolean!
-    }
-`;
+// export const typeDefs = gql`
+//     extend type Query {
+//         isLoggedIn: Boolean!
+//     },
+//     extend type Mutation {
+//         toggleLogin: Boolean!
+//     }
+// `;
 
-const GET_LOGGED_IN = gql`
-    {
-        isLoggedIn @client
-    }
-`;
+// export const GET_LOGGED_IN = gql`
+//     {
+//         isLoggedIn @client
+//     }
+// `;
 
-export const resolvers = {
-    Mutation: {
-        toggleLogin: (_, __, { cache }) => {
-            const { isLoggedIn } = cache.readQuery({
-                query: GET_LOGGED_IN
-            });
+// export const resolvers = {
+//     // Query: {
+//     //     isLoggedIn: (_, __, { cache }) => {
+//     //         const { isLoggedIn } = cache.readQuery({
+//     //             query: GET_LOGGED_IN
+//     //         });
 
-            cache.writeQuery({
-                query: GET_LOGGED_IN,
-                data: { isLoggedIn: !isLoggedIn }
-            });
+//     //         return isLoggedIn;
+//     //     }
+//     // },
+//     Mutation: {
+//         toggleLogin: (_, __, { cache }) => {
+//             const { isLoggedIn } = cache.readQuery({
+//                 query: GET_LOGGED_IN
+//             });
 
-            return isLoggedIn;
-        }
-    }
-};
+//             cache.writeQuery({
+//                 query: GET_LOGGED_IN,
+//                 data: { isLoggedIn: !isLoggedIn }
+//             });
+
+//             return isLoggedIn;
+//         }
+//     }
+// };

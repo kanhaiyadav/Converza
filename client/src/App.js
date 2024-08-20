@@ -39,7 +39,7 @@ function App({theme, setTheme }) {
     // },[navigate, jwt, dispatch, user._id]);
     return (
             <Routes>
-                <Route path='/Signin' element={<SignIn />} />
+                <Route path='/signin' element={<SignIn />} />
                 <Route path="signup" element={<SignUpPage />} />
             <Route path='/' element={<HomeLayout theme={theme} setTheme={setTheme} />}>
                     <Route index element={<Welcome y />} />
