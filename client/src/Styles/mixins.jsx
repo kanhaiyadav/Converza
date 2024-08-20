@@ -19,3 +19,11 @@ export const scaleUp = keyframes`
         transform: scale(1);
         opacity: 1;
     }`;
+
+export const TextAnimation = keyframes`
+    from{
+        width: 0%;
+    }
+    to{
+        width: 100%;
+    }`;

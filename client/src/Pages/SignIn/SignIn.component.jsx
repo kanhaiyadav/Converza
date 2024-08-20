@@ -4,17 +4,26 @@ import { useLazyQuery, gql } from '@apollo/client';
 import { isLoggedInVar } from '../../GraphQL/cache';
 import { useReactiveVar } from '@apollo/client';
 import { Container, SubContainer, Header } from './SignIn.styles';
+import { TextAnimation } from '../../Styles/mixins';
+import { styled } from 'styled-components';
 
-const SignIn = () => {
+const SignIn = ({type}) => {
     const [fields, setFields] = React.useState({
+        displayName: '',
         username: '',
         password: '',
+        confirmPassword: '',
     });
     const navigate = useNavigate();
     const isLoggedIn = useReactiveVar(isLoggedInVar);
+
     const handleChange = (e) => {
         setFields({ ...fields, [e.target.name]: e.target.value });
     }
+
+    const signin = () => {
+        console.log('signing in');
+    };
 
     const LOGIN = gql`
         query login($phoneNo: String!) {
@@ -31,7 +40,7 @@ const SignIn = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        login();
+        type === 'signin' ? login() : signin();
     }
 
     React.useEffect(() => {
@@ -52,24 +61,50 @@ const SignIn = () => {
     if (loading) {
         return <h1>Loading...</h1>
     }
+
+    const AnimatedHeading = styled.h1`
+        animation: ${TextAnimation} 1s linear;
+    `;
+    
     return (
         <Container>
             <Header>
-                <h1>Welcome Back!</h1>
-                <p>Your Conversations Await</p>
+                <AnimatedHeading>
+                    {
+                        type === 'signin' ? 'Welcome Back!' : 'Hey, Join Us!'
+                    }
+                </AnimatedHeading>
+                <p>
+                    {
+                        type === 'signin' ? 'Your Conversations Await' : 'and Let the Conversations Flow!'
+                    }
+                </p>
             </Header>
             <SubContainer>
                 <form
                     onSubmit={handleSubmit}
                 >
                     <div><img src="/chat.png" alt="" /></div>
-                    <h1>Sign In</h1>
-                    <input type="text" name='username' placeholder='Username' autoFocus onChange={handleChange} value={fields.username} />
+                    <h1>
+                        {
+                            type === 'signup' ? 'Sign Up' : 'Sign In'
+                        }
+                    </h1>
+                    {
+                        type === 'signup' ? <input type="text" name='displayName' placeholder='Display Name' onChange={handleChange} autoFocus value={fields.displayName} /> : ''
+                    }
+                    <input type="text" name='username' placeholder='Username' autoFocus={type === 'signin'?true:false} onChange={handleChange} value={fields.username} />
                     <input type="password" name='password' placeholder='Password' onChange={handleChange} value={fields.password} />
+                    {
+                        type === 'signup' ? <input type="password" name='confirmPassword' placeholder='Confirm Password' onChange={handleChange} value={fields.confirmPassword} /> : ''
+                    }
                     <button type="submit">Sign In</button>
                 </form>
             </SubContainer>
-            <Link to='/signup'>Don't have an account? <span>SignUp</span></Link>
+            {
+                type === 'signin'?<Link to='/signup'>Don't have an account? <span>SignUp</span></Link>:<Link to='/signin'>Already have an account? <span>SignIn</span></Link>
+            }
+            
         </Container>
     )
 }

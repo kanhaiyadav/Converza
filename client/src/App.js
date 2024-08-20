@@ -12,7 +12,7 @@ import SignIn from './Pages/SignIn/SignIn.component';
 import { io } from 'socket.io-client';
 
 const socket = io("http://localhost:5000");
-function App({theme, setTheme }) {
+function App({ theme, setTheme }) {
     // useEffect(() => {
     // if (!jwt) {
     //     navigate('/signin');
@@ -38,29 +38,29 @@ function App({theme, setTheme }) {
     // }
     // },[navigate, jwt, dispatch, user._id]);
     return (
-            <Routes>
-                <Route path='/signin' element={<SignIn />} />
-                <Route path="signup" element={<SignUpPage />} />
+        <Routes>
+            <Route path='/signin' element={<SignIn type='signin' />} />
+            <Route path="signup" element={<SignIn type='signup' />} />
             <Route path='/' element={<HomeLayout theme={theme} setTheme={setTheme} />}>
-                    <Route index element={<Welcome y />} />
-                    <Route path='chats' element={<SecondaryNav socket={socket} searchbox={true} type="Chats" NewChat={true} filter={true} />}>
-                        <Route index element={<Welcome />} />
-                        <Route path=':id' element={<ChatPage socket={socket} />} />
-                    </Route>
-                    <Route path='calls' element={<SecondaryNav searchbox={true} type="Calls" addContacts={true} />}>
-                        <Route path=':id' element={<Calls />} />
-                    </Route>
-                    <Route path='status' element={<SecondaryNav type="Status" />}>
-                        <Route path=':id' element={<Status />} />
-                    </Route>
-                    <Route path='starred_message' element={<SecondaryNav type="Starred Messages" />}>
-                        <Route path=':id' element={<Status />} />
-                    </Route>
-                    <Route path='archive' element={<SecondaryNav type="Archive" />}>
-                        <Route path=':id' element={<Status />} />
-                    </Route>
+                <Route index element={<Welcome y />} />
+                <Route path='chats' element={<SecondaryNav socket={socket} searchbox={true} type="Chats" NewChat={true} filter={true} />}>
+                    <Route index element={<Welcome />} />
+                    <Route path=':id' element={<ChatPage socket={socket} />} />
                 </Route>
-            </Routes>
+                <Route path='calls' element={<SecondaryNav searchbox={true} type="Calls" addContacts={true} />}>
+                    <Route path=':id' element={<Calls />} />
+                </Route>
+                <Route path='status' element={<SecondaryNav type="Status" />}>
+                    <Route path=':id' element={<Status />} />
+                </Route>
+                <Route path='starred_message' element={<SecondaryNav type="Starred Messages" />}>
+                    <Route path=':id' element={<Status />} />
+                </Route>
+                <Route path='archive' element={<SecondaryNav type="Archive" />}>
+                    <Route path=':id' element={<Status />} />
+                </Route>
+            </Route>
+        </Routes>
     );
 }
 
