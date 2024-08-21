@@ -6,13 +6,14 @@ const userResolver = {
         getUsers: async () => {
             return await User.find();
         },
-        login: async (_, { phoneNo }) => {
+        login: async (_, { username, password }) => {
             try {
-                console.log(phoneNo);
-                const user = await User.findOne({ phoneNo: phoneNo });
-                console.log(user);
+                const user = await User.findOne({ username: username });
                 if (!user) {
                     throw new Error("User not found");
+                }
+                if (user.password !== password) {
+                    throw new Error("Invalid Password");
                 }
                 return {
                     user: user,
@@ -25,11 +26,12 @@ const userResolver = {
         },
     },
     Mutation: {
-        SignUp: async (_, {name, phoneNo}) => {
+        SignUp: async (_, { name, username, password }) => {
             try {
                 const user = await User.create({
                     name: name,
-                    phoneNo: phoneNo,
+                    username: username,
+                    password: password,
                 });
                 return ({
                     success: true,

@@ -1,7 +1,8 @@
 type User {
   id: ID!
   name: String!
-  phoneNo: String!
+  username: String!
+  password: String!
   avatar: String
   rooms: [Room]
 }
@@ -33,9 +34,9 @@ type Room {
 
 type Query {
   getUsers: [User]
-  login(phoneNo: String!): LoginPayload
+  login(username: String!, password: String!): LoginPayload
 }
 
 type Mutation {
-  SignUp(name: String!, phoneNo: String!): SignUpPayload
+  SignUp(name: String!, username: String!, password: String!): SignUpPayload
 }

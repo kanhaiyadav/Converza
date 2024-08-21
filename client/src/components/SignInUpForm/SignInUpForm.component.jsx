@@ -3,11 +3,12 @@ import { useLazyQuery, gql } from '@apollo/client';
 import { isLoggedInVar } from '../../GraphQL/cache';
 import { useNavigate } from 'react-router-dom';
 import { MyForm } from "./SignInUpForm.styles";
+import { useMutation } from '@apollo/client';
 
 const Form = ({ type }) => {
 
     const navigate = useNavigate();
-    
+
     const [fields, setFields] = useState({
         displayName: '',
         username: '',
@@ -20,24 +21,44 @@ const Form = ({ type }) => {
     }
 
     const LOGIN = gql`
-        query login($phoneNo: String!) {
-            login(phoneNo: $phoneNo) {
+        query login($username: String!, $password: String!) {
+            login(username: $username, password: $password) {
                 token
             }
         }
         `;
-
     const [login, { error, data }] = useLazyQuery(LOGIN, {
-        variables: { phoneNo: fields.username },
+        variables: { username: fields.username, password: fields.password },
     });
 
-    const signin = () => {
-        console.log('signing in');
-    };
+    const SIGN_UP = gql`
+        mutation SignUp($name: String!, $username: String!, $password: String!) {
+            SignUp(name: $name, username: $username, password:$password){
+                success
+                message
+            }
+        }`;
+
+    const [signUp, { signUpData, signUpLoading, signUpError }] = useMutation(SIGN_UP, {
+        variables: {
+            name: fields.displayName,
+            username: fields.username,
+            password: fields.password,
+        },
+        onCompleted: (data) => {
+            navigate('/signin');
+        }
+    });
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        type === 'signin' ? login() : signin();
+        setFields({
+            displayName: '',
+            username: '',
+            password: '',
+            confirmPassword: '',
+        });
+        type === 'signin' ? login() : signUp();
     }
 
     useEffect(() => {
@@ -47,7 +68,7 @@ const Form = ({ type }) => {
             navigate('/chats');
         }
         else if (error) {
-            navigate('/signup');
+            navigate('/signin');
         }
     }, [data, error, navigate]);
 
