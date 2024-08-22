@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const messageSchema = new mongoose.Schema({
-    message: {
+    content: {
         type: String,
         required: true
     },
@@ -13,10 +13,6 @@ const messageSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Room'
     },
-    timestamp: {
-        type: Date,
-        default: Date.now
-    }
 });
 
 const Message = mongoose.model('Message', messageSchema);

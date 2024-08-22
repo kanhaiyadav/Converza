@@ -1,4 +1,6 @@
 import User from "../../Models/user.js";
+import Contact from "../../models/contact.js";
+import Room from "../../models/room.js";
 import jwt from 'jsonwebtoken';
 
 const userResolver = {
@@ -45,10 +47,34 @@ const userResolver = {
                     message: err.message
                 });
             }
-        }
-    },
+        },
+        createContact: async (_, { username }) => {
+            try {
+                const user = await User.findOne({ username: username });
+                if (!user) {
+                    throw new Error("User not found");
+                }
+                else {
+                    if (await Contact.findOne({ user: user._id })) {
+                        throw new Error("Contact already exists");
+                    }
+                    else {
+                        const room = await Room.create({})
+                        const contact = await Contact.create({
+                            user: user,
+                            room: room,
+                        });
+                        return contact;
+                    }
+                }
+            }
+            catch (err) {
+                console.log(err);
+                throw new Error(err.message);
+            }
+        },
+    }
 };
-
 
 
 export default userResolver;

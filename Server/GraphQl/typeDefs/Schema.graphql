@@ -26,10 +26,17 @@ type SignUpPayload {
 
 type Room {
   id: ID!
-  name: String!
-  members: [User]
   messages: [Message]
   lastMessage: Message
+  isGroupChat: Boolean!
+  groupMembers: [User]
+  groupName: String! 
+}
+
+type Contact {
+  id: ID!
+  user: User!
+  room: Room!
 }
 
 type Query {
@@ -39,4 +46,5 @@ type Query {
 
 type Mutation {
   SignUp(name: String!, username: String!, password: String!): SignUpPayload
+  createContact(username: String!): Contact
 }
