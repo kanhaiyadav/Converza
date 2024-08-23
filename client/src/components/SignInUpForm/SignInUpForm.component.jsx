@@ -20,7 +20,7 @@ const Form = ({ type }) => {
         const promise = dispatch(signin(fields)).unwrap();
         promise.then((res) => {
             if (res) {
-                navigate('/chat');
+                navigate('/chats');
             }
         }).catch((err) => {
             navigate('/signin');

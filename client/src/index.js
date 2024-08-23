@@ -6,7 +6,8 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import GlobalStyle from './Styles/GlobalStyles';
 import { Provider } from "react-redux";
-import store from "./redux/store";
+import { store, persistor } from "./redux/store";
+import { PersistGate } from 'redux-persist/integration/react';
 import { UserProvider } from './Context';
 import { ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from './Styles/theme';
@@ -23,10 +24,12 @@ const AppWrapper = () => {
         <UserProvider>
             <BrowserRouter>
                 <Provider store={store}>
-                    <ThemeProvider theme={themes[theme]}>
-                        <GlobalStyle />
-                        <App theme={theme} setTheme={setTheme} />
-                    </ThemeProvider>
+                    <PersistGate loading={null} persistor={persistor}>
+                        <ThemeProvider theme={themes[theme]}>
+                            <GlobalStyle />
+                            <App theme={theme} setTheme={setTheme} />
+                        </ThemeProvider>
+                    </PersistGate>
                 </Provider>
             </BrowserRouter>
         </UserProvider>
