@@ -13,14 +13,6 @@ const HomeLayout = ({ theme, setTheme }) => {
     const dispatch = useDispatch();
     // const isLoggedIn = useReactiveVar(isLoggedInVar);
 
-
-    useEffect(() => {
-        if (!window.localStorage.getItem('token')) {
-            navigate('/signin');
-        }
-    }, [navigate]);
-
-
     return (
         <HomeLayoutContainer>
             <HomeNav $menuOpen={menuOpen}>

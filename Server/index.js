@@ -46,14 +46,14 @@ const createServer = async () => {
         console.log(`User connected: ${socket.id}`);
 
         socket.on('join', (data) => {
-            io.to(data.partner_id).emit('join_requested', data.source_id);
-        })
+            socket.join(data.room);
+            console.log(`User joined room: ${data.room}`);
+        });
 
         socket.on('message', (data) => {
-            console.log(data);
-            socket.broadcast.emit('messageRecieved', data.message);
+            console.log(data.message);
+            io.to(data.room).emit('message', data.message);
         })
-
 
         socket.on('disconnect', () => {
             console.log(`User disconnected: ${socket.id}`);
