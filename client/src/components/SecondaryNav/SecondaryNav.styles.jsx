@@ -22,15 +22,12 @@ export const HeaderButtons = styled.div`
     justify-content: center;
     gap: 10px;
     button{
-        font-size: 1.1rem;
+        font-size: 1.5rem;
         background: transparent;
         border: none;
         outline: none;
         padding: 8px 12px;
         border-radius: 5px;
-        &:hover{
-            background-color: #ededed;
-        }
     }
 `
 
@@ -68,4 +65,5 @@ export const ChatsLayoutContainer = styled.div`
     width: 100%;
     overflow: hidden;
     background-color: ${({ theme }) => theme.colors.secondary};
+    z-index: 10;
 `;

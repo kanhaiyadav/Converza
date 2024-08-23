@@ -3,14 +3,12 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 const initialState = {
     userInfo: {},
-    contacts: [],
-    chat_id: "",
     jwt: "",
 }
 
-export const create = createAsyncThunk('contacts/createOrUpdate', async (data) => {
+export const signup = createAsyncThunk('user/signup', async (data) => {
     try {
-        const response = await fetch(`http://localhost:3000/api/v1/user/create`, {
+        const response = await fetch(`http://localhost:3000/api/v1/user/signup`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -19,6 +17,7 @@ export const create = createAsyncThunk('contacts/createOrUpdate', async (data) =
         });
         if (response.ok) {
             const data = await response.json();
+            console.log(data);
             return data;
         } else {
             const data = await response.json();
@@ -29,9 +28,9 @@ export const create = createAsyncThunk('contacts/createOrUpdate', async (data) =
     }
 });
 
-export const login = createAsyncThunk('contacts/login', async (data) => {
+export const signin = createAsyncThunk('user/signin', async (data) => {
     try {
-        const response = await fetch(`http://localhost:3000/api/v1/user/login`, {
+        const response = await fetch(`http://localhost:3000/api/v1/user/signin`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -70,14 +69,10 @@ const userSlice = createSlice({
     initialState,
     reducers: {    },
     extraReducers: (builder) => {
-        builder.addCase(create.fulfilled, (state, action) => {
+        builder.addCase(signin.fulfilled, (state, action) => {
             state.userInfo = action.payload.data.user;
-        });
-        builder.addCase(login.fulfilled, (state, action) => {
-            state.userInfo = action.payload.data.user;
-            console.log(state.user)
+            console.log(state.userInfo)
             state.jwt = action.payload.data.jwt;
-            state.contacts = action.payload.data.contacts;
         });
         builder.addCase(update.fulfilled, (state, action) => {
             state.userInfo = action.payload.data.userInfo;

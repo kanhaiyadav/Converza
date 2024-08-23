@@ -1,30 +1,30 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { HomeNav, NavItem, MenuButton, HomeLayoutContainer, ThemeButton } from './Home.styles';
 import { Outlet } from 'react-router-dom';
-import { isLoggedInVar } from '../../GraphQL/cache';
-import { useApolloClient, useReactiveVar } from '@apollo/client';
+import { useApolloClient } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../../components/RoundedButton/RoundedButton.styles';
+import { PiSignOutFill } from "react-icons/pi";
 
 const HomeLayout = ({ theme, setTheme }) => {
     const [menuOpen, setMenuOpen] = useState(false);
     const navigate = useNavigate();
     const client = useApolloClient();
-    const isLoggedIn = useReactiveVar(isLoggedInVar);
+    // const isLoggedIn = useReactiveVar(isLoggedInVar);
 
-    const logout =async () => {
+    const logout = async () => {
         client.cache.reset();
         await client.clearStore(); 
         window.localStorage.clear();
-        isLoggedInVar(false);
+        console.log('logged out');
+        navigate('/signin');
     }
 
-
     useEffect(() => {
-        if (!isLoggedIn) {
+        if (!window.localStorage.getItem('token')) {
             navigate('/signin');
         }
-    }, [isLoggedIn, navigate]);
+    }, [navigate]);
 
 
     return (
@@ -43,7 +43,9 @@ const HomeLayout = ({ theme, setTheme }) => {
                 <NavItem to='settings'><span></span><i className="fa-solid fa-gear"></i><p>Settings</p></NavItem>
                 <NavItem to='profile'><span></span><i className="fa-solid fa-user"></i><p>Profile</p></NavItem>
                 <ThemeButton onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}><i className="fa-solid fa-moon"></i></ThemeButton>
-                <Button onClick={logout}>Sign Out</Button>
+                <Button onClick={logout} style={{
+                    fontSize: '1.3rem',
+                }}><PiSignOutFill /></Button>
             </HomeNav>
             <Outlet />
         </HomeLayoutContainer>

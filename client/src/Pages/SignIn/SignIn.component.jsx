@@ -1,20 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
-import { isLoggedInVar } from '../../GraphQL/cache';
-import { useReactiveVar } from '@apollo/client';
 import { Container, SubContainer, Header, AnimatedHeading } from './SignIn.styles';
 import Form from '../../components/SignInUpForm/SignInUpForm.component';
 
 const SignIn = ({type}) => {
-    
-    const navigate = useNavigate();
-    const isLoggedIn = useReactiveVar(isLoggedInVar);
-
-    React.useEffect(() => {
-        if (isLoggedIn) {
-            navigate('/chats');
-        }
-    }, [isLoggedIn, navigate]);
     
     return (
         <Container>

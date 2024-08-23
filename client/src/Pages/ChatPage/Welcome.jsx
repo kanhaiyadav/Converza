@@ -1,4 +1,5 @@
 import React from 'react'
+import { WelcomeTitle } from './Welcome.styles';
 
 const Welcome = () => {
   return (
@@ -10,7 +11,7 @@ const Welcome = () => {
               flexGrow: 1,
         }}
       >
-          <img src='https://cdn-icons-png.freepik.com/256/3992/3992601.png?uid=R119661384&ga=GA1.1.1818177471.1708742591&semt=ais_hybrid' alt=''
+          <img src='/chat.png' alt=''
               style={{ 
                   width: "150px",
                   height: "150px",
@@ -18,8 +19,11 @@ const Welcome = () => {
                }}
           />
 
-          <h2 style={{ color: "#399918" }}>Welcome to WhatsApp</h2>
-          <p>Click on a user to start chatting</p>
+          <WelcomeTitle>Converza</WelcomeTitle>
+          <p style={{
+                color: 'grey',
+                fontSize: '1.2rem'
+          }}>Your go-to for seamless conversations</p>
     </div>
   )
 }

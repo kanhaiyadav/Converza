@@ -1,8 +1,8 @@
 import { Button } from "./RoundedButton.styles";
 
-const RoundedButton = ({ children, onClick }) => {
+const RoundedButton = ({ children, ...otherProps }) => {
     return (
-        <Button onClick={onClick}>
+        <Button {...otherProps}>
             {children}
         </Button>
     )

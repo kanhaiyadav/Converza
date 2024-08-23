@@ -2,6 +2,8 @@ import styled from "styled-components";
 
 
 export const CustomStyledButton = styled.button`
+    display: flex;
+    margin: auto;
     width: fit-content;
     flex: 0 0 auto;
     font-size: 1.1rem;
@@ -12,6 +14,6 @@ export const CustomStyledButton = styled.button`
     border-radius: 5px;
     color: ${({ theme }) => theme.textColors.primary};
     &:hover{
-        background-color: #ededed;
+        background-color: ${({ theme }) => theme.colors.quaternary};
     }
 `

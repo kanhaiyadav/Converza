@@ -3,38 +3,34 @@ import cors from 'cors';
 import { Server } from "socket.io";
 import http from "http";
 import './config/mongoose.js';
-// import router from './router/index.js';
-import { ApolloServer } from '@apollo/server';
-import { startStandaloneServer } from '@apollo/server/standalone';
-import { fileURLToPath } from 'url';
 import path from 'path';
-import { loadFilesSync } from '@graphql-tools/load-files';
-import { mergeTypeDefs } from '@graphql-tools/merge';
-import { resolvers } from './GraphQl/resolvers/index.js';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import router from './router/index.js';
 
 const createServer = async () => {
     const app = express();
     const port = 3000;
     const chatPort = 5000;
 
+    const allowedOrigins = ["http://localhost:8000"];
+    const corsOptions = {
+        origin: function (origin, callback) {
+            // Allow requests with no origin like mobile apps or curl requests
+            if (!origin) return callback(null, true);
+            if (allowedOrigins.indexOf(origin) === -1) {
+                const msg = 'The CORS policy for this site does not allow access from the specified origin.';
+                return callback(new Error(msg), false);
+            }
+            return callback(null, true);
+        },
+        methods: ["GET", "POST", "PUT", "DELETE"],
+        credentials: true
+    };
+
+    // Apply CORS middleware
+    app.use(cors(corsOptions));
     app.use(cors());
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
-
-    //GraphQL Server
-    const typesArray = loadFilesSync(path.join(__dirname, './'), { extensions: ['graphql'] });
-    const apolloServer = new ApolloServer({
-        typeDefs: mergeTypeDefs(typesArray),
-        resolvers: resolvers,
-        introspection: true,
-    });
-    const { url } = await startStandaloneServer(apolloServer, {
-        listen: { port: port }
-    });
-    console.log(`Apollo Server ready at ${url}`);
 
     //chat server
     const server = http.createServer(app);
@@ -66,6 +62,12 @@ const createServer = async () => {
 
     server.listen(chatPort, () => {
         console.log(`Chat Server listening on port ${chatPort}`);
+    });
+
+    app.use('/', router);
+
+    app.listen(port, () => {
+        console.log(`Server listening on port ${port}`);
     });
 }
 
