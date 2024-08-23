@@ -122,7 +122,7 @@ export const darkTheme = {
     colors: {
         primary: "#932ef9",
         secondary: "#1d1d2a",
-        tertiary: "#f5eefc",
+        tertiary: "#a04df3",
         quaternary: "#2f3142",
         active: '#00984e',
         inactive: '#ff0a0a',

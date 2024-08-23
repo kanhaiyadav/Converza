@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, useNavigate } from 'react-router-dom';
 import GlobalStyle from './Styles/GlobalStyles';
 import { Provider } from "react-redux";
 import { store, persistor } from "./redux/store";
@@ -12,6 +12,7 @@ import { UserProvider } from './Context';
 import { ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from './Styles/theme';
 
+
 const AppWrapper = () => {
     const [theme, setTheme] = useState('dark');
 
@@ -19,6 +20,7 @@ const AppWrapper = () => {
         light: lightTheme,
         dark: darkTheme,
     };
+
 
     return (
         <UserProvider>

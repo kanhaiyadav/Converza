@@ -1,75 +1,30 @@
 import { Form } from "./AddContactFrom.styles"
 import { useEffect, useState } from 'react';
-import { gql } from "@apollo/client";
-import { useMutation } from "@apollo/client";
+import { useDispatch, useSelector } from 'react-redux';
+import { newContact } from '../../redux/contacts/contacts.slice';
+import { selectUserInfo } from "../../redux/user/user.selector";
 
 const AddContactFrom = ({closeModal}) => {
     const [username, setUsername] = useState('');
+    const dispatch = useDispatch();
+    const user = useSelector(selectUserInfo);
 
     const handleChange = (e) => {
         setUsername(e.target.value);
     }
 
-    const ADD_CONTACT = gql`
-        mutation addContact($username: String!){
-            createContact(username: $username){
-
-            currUser{
-                id
-                name
-            }
-                contact{
-                id
-                user {
-                    id
-                    name
-                    username
-                    avatar
-                }
-                room{
-                    id
-                    messages{
-                        id
-                        content
-                        sender{
-                            id
-                            name
-                            username
-                            avatar
-                        }
-                    }
-                }
-            }
-            }
-    }`;
-    
-    const [addContact, {loading, data, error}] = useMutation(ADD_CONTACT, {
-        variables: { username: username },
-        update(cache, { data }) {
-            const contact = data.createContact.contact;
-            const id = data.createContact.currUser.id;
-            cache.modify({
-                id: cache.identify({ id: id, __typename: 'User' }),
-                fields: {
-                    contacts(existingContacts = []) {
-                        return [...existingContacts, contact];
-                    }
-                }
-            });
-        }
-    });
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setUsername('');
-        addContact();
+        dispatch(newContact({
+            myUsername: user.username,
+            theirUsername: username
+        })).unwrap()
+            .then((res) => {
+                closeModal();
+                setUsername('');
+        })
     }
-
-    useEffect(() => {
-        if(data){
-            closeModal();
-        }
-    }, [data, closeModal]);
     
     return (
         <Form onSubmit={handleSubmit}>

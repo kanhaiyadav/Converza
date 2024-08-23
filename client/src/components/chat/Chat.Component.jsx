@@ -1,14 +1,14 @@
 import React from 'react'
 import { ChatBody, ChatContainer } from './chat.styles';
 
-const Chat = ({room}) => {
-    const { img, to, name, subtext } = room;
+const Chat = ({contact}) => {
+    const { room, user } = contact;
   return (
-      <ChatContainer to={to}>
-          <img src={img} alt="" />
+      <ChatContainer to={contact._id}>
+          <img src={user.avatar} alt="" />
           <ChatBody>
-              <p>{name}</p>
-              <span>{subtext}</span>
+              <p>{user.name}</p>
+              <span>{room.lastMessage?room.lastMessage:"No messages yet..."}</span>
           </ChatBody>
     </ChatContainer>
   )

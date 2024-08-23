@@ -49,6 +49,7 @@ export const signin = createAsyncThunk('user/signin', async (data) => {
     }
 });
 
+
 export const update = createAsyncThunk('contacts/update', async ({ chatid, id }) => {
     try {
         const response = await fetch(`http://localhost:3000/api/v1/user/update/${chatid}/${id}`);
@@ -67,7 +68,12 @@ export const update = createAsyncThunk('contacts/update', async ({ chatid, id })
 const userSlice = createSlice({
     name: 'user',
     initialState,
-    reducers: {    },
+    reducers: {  
+        logout: (state) => {
+            state.userInfo = {};
+            state.jwt = "";
+        }
+    },
     extraReducers: (builder) => {
         builder.addCase(signin.fulfilled, (state, action) => {
             state.userInfo = action.payload.data.user;
@@ -80,4 +86,5 @@ const userSlice = createSlice({
     }
 });
 
+export const { logout } = userSlice.actions;
 export default userSlice.reducer;

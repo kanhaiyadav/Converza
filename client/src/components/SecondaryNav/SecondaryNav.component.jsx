@@ -8,12 +8,20 @@ import { IoAddCircleOutline } from "react-icons/io5";
 import { LuFilter } from "react-icons/lu";
 import Modal from '../Modal/Modal.component';
 import AddContactFrom from '../AddContactForm/AddContactFrom.Component';
+import { useDispatch, useSelector } from "react-redux";
+import { getContacts } from "../../redux/contacts/contacts.slice";
+import { selectUserInfo } from "../../redux/user/user.selector";
 
 
 const SecondaryNav = ({ socket, type }) => {
 
+    const user = useSelector(selectUserInfo);
+    const dispatch = useDispatch();
     const [displayAddContactModal, setAddContactModal] = useState(false);
-
+    
+    useEffect(() => {
+        dispatch(getContacts(user._id));
+    }, [dispatch, user._id]);
 
 
     return (
@@ -44,7 +52,10 @@ const SecondaryNav = ({ socket, type }) => {
                     <input type="text" placeholder='Search a chat...' />
                     <CustomButton><i className="fa-solid fa-x"></i></CustomButton>
                 </Searchbox>
-                <Directory type={type} />
+                <Directory type={type} openModal={() => {
+                    setAddContactModal(true)
+                }}
+                />
             </SecondaryNavContainer>
             <Outlet />
         </ChatsLayoutContainer>

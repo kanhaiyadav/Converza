@@ -1,39 +1,29 @@
 import React from 'react'
-import { ListDirectory } from './Directory.styles'
+import { ListDirectory} from './Directory.styles'
 import Chat from '../chat/Chat.Component';
-// import { useContext } from 'react';
-// import { userContext } from '../../Context';
+import { selectContacts } from '../../redux/user/user.selector';
+import { useSelector } from 'react-redux';
+import { NoChat } from './Directory.styles';
 
-const Directory = ({ type }) => {
-    // const { userData } = useContext(userContext);
-    // console.log(userData);
-    // const user = userData.user;
+const Directory = ({ type, openModal }) => {
+    const contacts = useSelector(selectContacts);
+
     return (
         <ListDirectory>
-            <Chat room={{
-                img: 'https://cdn-icons-png.flaticon.com/512/149/149071.png',
-                name: 'John Doe',
-                subtext: 'Hey there',
-                to: '1'
-            }} />
-            <Chat room={{
-                img: 'https://cdn-icons-png.flaticon.com/128/4140/4140048.png',
-                name: 'Dhruv Jain',
-                subtext: 'is there any chance of rain today?',
-                to: '2'
-            }} />
-            <Chat room={{
-                img: 'https://cdn-icons-png.flaticon.com/128/16683/16683419.png',
-                name: 'Sabyasachi Sinha',
-                subtext: 'see you tommorrow',
-                to: '3'
-            }} />
-            <Chat room={{
-                img: 'https://cdn-icons-png.flaticon.com/128/6997/6997662.png',
-                name: 'Ananya Arya',
-                subtext: 'what are you doing?',
-                to: '4'
-            }} />
+            {
+                contacts.length !== 0 ?
+                    contacts.map((contact) => {
+                        return <Chat contact={contact} key={contact._id} />
+                    })
+                    :
+                    <NoChat>
+                        <div>
+                            <img src='/noChats.png' alt='No chats' />
+                        </div>
+                        <p>Looks like you’ve mastered the art of social distancing in your chat list!</p>
+                        <button onClick={openModal}>Create new contact</button>
+                    </NoChat>
+            }
         </ListDirectory>
     )
 }

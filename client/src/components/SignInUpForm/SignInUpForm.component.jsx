@@ -4,10 +4,12 @@ import { MyForm } from "./SignInUpForm.styles";
 import { useDispatch } from "react-redux";
 import { signup, signin } from "../../redux/user/user.slice";
 
+
 const Form = ({ type }) => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    console.log(type);
 
     const [fields, setFields] = useState({
         displayName: '',
