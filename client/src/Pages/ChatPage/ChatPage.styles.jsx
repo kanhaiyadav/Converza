@@ -88,6 +88,12 @@ export const Body = styled.div`
     overflow-y: auto;
     background-color: #ffffff;
     background-image: url(/darkBg.svg);;
+    padding: 20px;
+    gap: 10px;
+    padding-bottom: 100px;
+    /* max-height: 80vh; */
+    overflow-x: hidden;
+    overflow-y: auto;
     background-color: ${({ theme }) => {
     if (theme.type === 'light') {
         return 'white;'
@@ -97,32 +103,6 @@ export const Body = styled.div`
     }
 }} 
     width: 100%;
-`
-export const Form = styled.form`
-    display: flex;
-    flex: 1 1 auto;
-    gap: 10px;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    border: 1px solid transparent;
-    border-radius:${({ theme }) => theme.radii.full}; 
-    background-color: ${({ theme }) => theme.colors.quaternary}; 
-    box-shadow: ${({ theme }) => theme.shadows.outer};
-    padding: 5px 15px;
-    &:focus-within{
-        border: 1px solid ${({ theme }) => theme.colors.primary};
-        box-shadow: none;
-    }
-    input{
-        flex: 1 1 auto;
-        border: none;
-        outline: none;
-        background: transparent;
-        font-size: 1.1rem;
-        font-family: 'Open Sans';
-        color: ${({ theme }) => theme.textColors.primary};
-    }
 `
 
 export const Footer = styled.div`
@@ -142,6 +122,7 @@ export const Footer = styled.div`
 
 
 export const Container = styled.div`
+    max-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;

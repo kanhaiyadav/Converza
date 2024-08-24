@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { MyForm } from "./SignInUpForm.styles";
 import { useDispatch } from "react-redux";
 import { signup, signin } from "../../redux/user/user.slice";
+import { toast } from "react-toastify";
+import { signInMessageProvider, signUpMessageProvider } from "./messages";
 
 
 const Form = ({ type }) => {
@@ -18,28 +20,57 @@ const Form = ({ type }) => {
         confirmPassword: '',
     });
 
+    const reset = () => {
+        setFields({
+            displayName: '',
+            username: '',
+            password: '',
+            confirmPassword: '',
+        });
+    }
+
+    useEffect(() => {
+        reset();
+    }, [type]);
+
     const signIn = () => {
         const promise = dispatch(signin(fields)).unwrap();
-        promise.then((res) => {
-            if (res) {
-                navigate('/chats');
+        toast.promise(promise, {
+            pending: 'Signing In...',
+            success: {
+                render({ data }) {
+                    navigate('/chats');
+                    reset();
+                    return signInMessageProvider();
+                }
+            },
+            error: {
+                render({ data }) {
+                    navigate('/signin');
+                    return data.message;
+                }
             }
-        }).catch((err) => {
-            navigate('/signin');
-            console.log(err);
-        })
+        });
     }
 
     const signUp = () => {
         const promise = dispatch(signup(fields)).unwrap();
-        promise.then((res) => {
-            if (res) {
-                navigate('/signin');
+        toast.promise(promise, {
+            pending: 'Signing Up...',
+            success: {
+                render({ data }) {
+                    navigate('/signin');
+                    reset();
+                    return signUpMessageProvider();
+                }
+            },
+            error: {
+                render({ data }) {
+                    navigate('/signup');
+                    return data.message;
+                }
             }
-        }).catch((err) => {
-            navigate('/signup');
-            console.log(err);
-        })
+        });
     }
 
     const handleChange = (e) => {

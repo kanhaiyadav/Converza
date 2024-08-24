@@ -2,11 +2,12 @@ import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
 export const MenuButton = styled.div`
+    color: ${({ theme })=> theme.textColors.primary};
     margin: 25px 0px 10px 0px;
     border-radius: 5px;
     padding: 8px 12px;
     &:hover{
-        background-color: #50af30;
+        background-color: #7823ce;
 
     }
 `;
@@ -37,14 +38,21 @@ export const NavItem = styled(NavLink)`
             border-radius: 3px;
         }
     }
-    i{
+    i,svg{
     margin-left: 12px;
 
     }
 `;
 
+export const BottomNav = styled.div`
+    padding: 10px 0px;
+    margin-top: auto;
+    width: 100%;
+`;
+
 
 export const HomeNav = styled.div`
+    position: relative;
     padding: 0px 4px;
     box-sizing: border-box;
     display: flex;
@@ -62,23 +70,6 @@ export const HomeNav = styled.div`
         display: ${({ $menuOpen }) => ($menuOpen ? 'inline-block' : 'none')};
     }
 `; 
-
-export const ThemeButton = styled.div`
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    padding: 5px;
-    border-radius: 5px;
-    background-color: ${({ theme })=> theme.colors.secondary};
-    color: ${({ theme })=> theme.textColors.primary};
-    i{
-        font-size: 1.2rem;
-    }
-`;
 
 export const HomeLayoutContainer = styled.div`
     display: grid;

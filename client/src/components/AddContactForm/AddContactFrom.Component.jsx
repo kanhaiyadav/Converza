@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { newContact } from '../../redux/contacts/contacts.slice';
 import { selectUserInfo } from "../../redux/user/user.selector";
+import { toast } from 'react-toastify';
 
 const AddContactFrom = ({closeModal}) => {
     const [username, setUsername] = useState('');
@@ -16,14 +17,25 @@ const AddContactFrom = ({closeModal}) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(newContact({
+        const promise = dispatch(newContact({
             myUsername: user.username,
             theirUsername: username
-        })).unwrap()
-            .then((res) => {
-                closeModal();
-                setUsername('');
-        })
+        })).unwrap();
+        toast.promise(promise, {
+            pending: 'Adding Contact...',
+            success: {
+                render({ data }) {
+                    closeModal();
+                    setUsername('');
+                    return data.message;
+                }
+            },
+            error: {
+                render({ data }) {
+                    return data.message;
+                }
+            }
+        });
     }
     
     return (

@@ -10,12 +10,12 @@ const SignIn = ({type}) => {
             <Header>
                 <AnimatedHeading>
                     {
-                        type === 'signin' ? 'Welcome Back!' : 'Hey, Join Us!'
+                        type === 'signin' ? 'Welcome Back!' : 'Welcome to Converza'
                     }
                 </AnimatedHeading>
                 <p>
                     {
-                        type === 'signin' ? 'Your Conversations Await' : 'and Let the Conversations Flow!'
+                        type === 'signin' ? 'Your inbox is still waiting, just like we are' : 'Sign Up and get a new password to forget. 😜'
                     }
                 </p>
             </Header>

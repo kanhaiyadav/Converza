@@ -54,10 +54,10 @@ export const MyForm = styled.form`
                 border-bottom: 4px solid ${({ theme }) => theme.colors.primary};
                 background-color: white;
             }
-            &:not(:placeholder-shown){
+            /* &:not(:placeholder-shown){
                 border-bottom: 4px solid green;
                 background-color: white;
-            }
+            } */
         }
         button{
             padding: 5px;

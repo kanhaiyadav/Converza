@@ -5,24 +5,33 @@ import { selectContact } from '../../redux/user/user.selector';
 import { useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
-
+import { selectUserInfo } from '../../redux/user/user.selector';
+import Message from '../../components/Message/Message.component';
+import MessageFrom from './MessageForm/MessageForm.component';
 
 
 const ChatPage = ({ socket }) => {
     const id = useParams().id;
     const contact = useSelector(selectContact(id));
     const {user, room} = contact;
-    const [message, setMessage] = useState("");
+    const me = useSelector(selectUserInfo);
+    const [messages, setMessages] = useState([]);
 
     useEffect(() => {
         socket.emit("join", {
             room: room._id,
+        }, (err, responce) => {
+            if (err) {
+                console.log(err);
+            }
+            setMessages(responce);
         });
     }, [socket, room._id]);
 
     useEffect(() => {
-        socket.on('message', (message) => {
-            console.log(message);
+
+        socket.on('messageSent', (message) => {
+            setMessages((prev)=>[...prev, message]);
         });
         
         return () => {
@@ -30,19 +39,10 @@ const ChatPage = ({ socket }) => {
                 console.log(message);
             });
         };
+
     }, [socket]);
 
-    const handleMessageChange = (e) => {
-        setMessage(e.target.value);
-    }
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setMessage("");
-        socket.emit("message", {
-            message: message,
-            room: room._id,
-        });    
-    }
+
 
     return (
         <Container>
@@ -65,29 +65,16 @@ const ChatPage = ({ socket }) => {
                 </Buttons>
             </Header>
             <Body>
-
+                {
+                    messages.map((message) => {
+                        return (
+                            <Message key={message._id} message={message} currId={me._id} />
+                        )
+                    })
+                }
             </Body>
             <Footer>
-                <Form id='message-form'
-                onSubmit={handleSubmit}
-                >
-                    <span style={{
-                        borderRadius: '50%',
-                        padding: '8px',
-                        color: 'grey',
-
-                    }}><i className="fa-regular fa-face-smile"></i></span>
-                    <span
-                        style={{
-                            borderRadius: '50%',
-                            padding: '8px',
-                            color: 'grey',
-                            marginLeft: '-10px',
-    
-                        }}
-                    ><i className="fa-solid fa-paperclip"></i></span>
-                    <input onChange={handleMessageChange} type="text" placeholder='Type a message...' name="message" value={message} autoFocus required/>
-                </Form>
+                <MessageFrom socket={socket} contact={contact} />
                 <RoundedButton type='submit' form='message-form'><i className="fa-solid fa-paper-plane"></i></RoundedButton>
             </Footer>
         </Container>

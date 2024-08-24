@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter, useNavigate } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import GlobalStyle from './Styles/GlobalStyles';
 import { Provider } from "react-redux";
 import { store, persistor } from "./redux/store";
@@ -11,7 +11,8 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { UserProvider } from './Context';
 import { ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from './Styles/theme';
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AppWrapper = () => {
     const [theme, setTheme] = useState('dark');
@@ -21,7 +22,6 @@ const AppWrapper = () => {
         dark: darkTheme,
     };
 
-
     return (
         <UserProvider>
             <BrowserRouter>
@@ -29,8 +29,9 @@ const AppWrapper = () => {
                     <PersistGate loading={null} persistor={persistor}>
                         <ThemeProvider theme={themes[theme]}>
                             <GlobalStyle />
-                            <App theme={theme} setTheme={setTheme} />
+                            <App theme={theme} setTheme={setTheme}/>
                         </ThemeProvider>
+                        <ToastContainer theme={theme} />
                     </PersistGate>
                 </Provider>
             </BrowserRouter>
@@ -43,7 +44,4 @@ root.render(
     <AppWrapper />
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
