@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState} from 'react'
 import { HomeNav, NavItem, MenuButton, HomeLayoutContainer, ThemeButton } from './Home.styles';
 import { Outlet } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
@@ -11,7 +11,6 @@ const HomeLayout = ({ theme, setTheme }) => {
     const [menuOpen, setMenuOpen] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    // const isLoggedIn = useReactiveVar(isLoggedInVar);
 
     return (
         <HomeLayoutContainer>
