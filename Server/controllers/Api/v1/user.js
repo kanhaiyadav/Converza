@@ -5,22 +5,26 @@ import jwt from 'jsonwebtoken';
 
 export const signUp = async (req, res) => {
     try {
-        console.log("you're inside signup");
-        console.log(req.body);
         if (req.body.password !== req.body.confirmPassword) {
             return res.status(400).json({
                 message: "Password and Confirm Password do not match"
             });
         } else {
-
-            await User.create({
-                name: req.body.displayName,
-                username: req.body.username,
-                password: req.body.password,
-            });
-            return res.status(200).json({
-                message: "Signed Up Successfully",
-            });
+            const user = await User.findOne({ username: req.body.username });
+            if (user) {
+                return res.status(400).json({
+                    message: "User already exists"
+                });
+            } else {
+                await User.create({
+                    name: req.body.displayName,
+                    username: req.body.username,
+                    password: req.body.password,
+                });
+                return res.status(200).json({
+                    message: "Signed Up Successfully",
+                });
+            }
         }
     }
     catch (err) {

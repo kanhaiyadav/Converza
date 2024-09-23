@@ -5,6 +5,9 @@ import { useDispatch } from "react-redux";
 import { signup, signin } from "../../redux/user/user.slice";
 import { toast } from "react-toastify";
 import { signInMessageProvider, signUpMessageProvider } from "./messages";
+import { motion } from "framer-motion";
+
+
 
 
 const Form = ({ type }) => {
@@ -82,6 +85,28 @@ const Form = ({ type }) => {
         type === 'signin' ? signIn() : signUp();
     }
 
+    const parentVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1, // Adjust the stagger delay
+            },
+        },
+    };
+
+    const childVariants = {
+        hidden: { y: 100, opacity: 0 },
+        visible: {
+            y: 0,
+            opacity: 1,
+            transition: {
+                type: "spring",
+                damping: 12,
+            }
+        },
+    };
+
     return (
         <MyForm
             onSubmit={handleSubmit}
@@ -92,15 +117,21 @@ const Form = ({ type }) => {
                     type === 'signup' ? 'Sign Up' : 'Sign In'
                 }
             </h1>
-            {
-                type === 'signup' ? <input type="text" name='displayName' placeholder='Display Name' onChange={handleChange} autoFocus value={fields.displayName} required/> : ''
-            }
-            <input type="text" name='username' placeholder='Username' autoFocus={type === 'signin' ? true : false} onChange={handleChange} value={fields.username} required/>
-            <input type="password" name='password' placeholder='Password' onChange={handleChange} value={fields.password} required/>
-            {
-                type === 'signup' ? <input type="password" name='confirmPassword' placeholder='Confirm Password' onChange={handleChange} value={fields.confirmPassword} required/> : ''
-            }
-            <button type="submit">{type === 'signin' ? "Sign In" : "Sign Up"}</button>
+            <motion.main
+                variants={parentVariants}  // Apply variants to the parent
+                initial="hidden"           // Start with the hidden state
+                animate="visible"
+            >
+                {
+                    type === 'signup' ? <motion.input variants={childVariants} type="text" name='displayName' placeholder='Display Name' onChange={handleChange} autoFocus value={fields.displayName} required /> : ''
+                }
+                <motion.input variants={childVariants} type="text" name='username' placeholder='Username' autoFocus={type === 'signin' ? true : false} onChange={handleChange} value={fields.username} required />
+                <motion.input variants={childVariants} type="password" name='password' placeholder='Password' onChange={handleChange} value={fields.password} required />
+                {
+                    type === 'signup' ? <motion.input variants={childVariants} type="password" name='confirmPassword' placeholder='Confirm Password' onChange={handleChange} value={fields.confirmPassword} required /> : ''
+                }
+                <motion.button variants={childVariants} type="submit">{type === 'signin' ? "Sign In" : "Sign Up"}</motion.button>
+            </motion.main>
         </MyForm>
     )
 };

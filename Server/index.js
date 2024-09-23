@@ -5,6 +5,7 @@ import http from "http";
 import './config/mongoose.js';
 import path from 'path';
 import router from './router/index.js';
+import initializeSocket from './socket/socketHandler.js';
 
 const createServer = async () => {
     const app = express();
@@ -34,31 +35,8 @@ const createServer = async () => {
 
     //chat server
     const server = http.createServer(app);
-    const io = new Server(server, {
-        cors: {
-            origin: "http://localhost:8000",
-            methods: ["GET", "POST"],
-            credentials: true
-        },
-    });
-
-    io.on("connection", (socket) => {
-        console.log(`User connected: ${socket.id}`);
-
-        socket.on('join', (data) => {
-            socket.join(data.room);
-            console.log(`User joined room: ${data.room}`);
-        });
-
-        socket.on('message', (data) => {
-            console.log(data.message);
-            io.to(data.room).emit('message', data.message);
-        })
-
-        socket.on('disconnect', () => {
-            console.log(`User disconnected: ${socket.id}`);
-        })
-    });
+    
+    initializeSocket(server);
 
     server.listen(chatPort, () => {
         console.log(`Chat Server listening on port ${chatPort}`);

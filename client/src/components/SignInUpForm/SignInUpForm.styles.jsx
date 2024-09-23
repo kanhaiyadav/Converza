@@ -35,46 +35,50 @@ export const MyForm = styled.form`
                 font-size: 2.5rem;
             }
         }
-        input{
-            font-family: ${({ theme }) => theme.fonts.primary};
-            font-size: 1rem;
-            padding: 10px 15px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            outline: none;
+        main{
             width: 100%;
-            animation: ${slideUp} 0.3s ease-in-out;
-            border-bottom: 4px solid transparent;
-            background-color: ${({ theme }) => theme.colors.senary};
-            transition: all 0.3s ease-in-out;
-            @media screen and (min-width: ${({ theme }) => theme.breakpoints.md}){
-                font-size: 1.15rem;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            input{
+                font-family: ${({ theme }) => theme.fonts.primary};
+                font-size: 1rem;
+                padding: 10px 15px;
+                border-radius: 5px;
+                border: 1px solid #ccc;
+                outline: none;
+                width: 100%;
+                border-bottom: 4px solid transparent;
+                background-color: ${({ theme }) => theme.colors.senary};
+                /* transition: all 0.3s ease-in-out; */
+                @media screen and (min-width: ${({ theme }) => theme.breakpoints.md}){
+                    font-size: 1.15rem;
+                }
+                &:focus{
+                    border-bottom: 4px solid ${({ theme }) => theme.colors.primary};
+                    background-color: white;
+                }
+                /* &:not(:placeholder-shown){
+                    border-bottom: 4px solid green;
+                    background-color: white;
+                } */
             }
-            &:focus{
-                border-bottom: 4px solid ${({ theme }) => theme.colors.primary};
-                background-color: white;
-            }
-            /* &:not(:placeholder-shown){
-                border-bottom: 4px solid green;
-                background-color: white;
-            } */
-        }
-        button{
-            padding: 5px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            background-color: #6713b8;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            outline: none;
-            width: 100%;
-            font-size: 1.1rem;
-            font-family: ${({ theme }) => theme.fonts.secondary};
-            opacity: 0;
-            animation: ${slideUp} 0.3s ease-in-out 0.2s forwards;
-            &:hover{
-                background-color: ${({ theme }) => theme.colors.primary};
+            button{
+                padding: 10px 5px;
+                border-radius: 5px;
+                border: none;
+                background-color: #6713b8;
+                color: white;
+                font-weight: 600;
+                cursor: pointer;
+                outline: none;
+                width: 100%;
+                font-size: 1.1rem;
+                font-family: ${({ theme }) => theme.fonts.secondary};
+                /* opacity: 0; */
+                &:hover{
+                    background-color: ${({ theme }) => theme.colors.primary};
+                }
             }
         }
 `;

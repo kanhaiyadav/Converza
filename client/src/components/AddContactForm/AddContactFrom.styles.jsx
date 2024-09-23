@@ -1,7 +1,8 @@
 import styled from "styled-components";
-import { slideUp } from "../../Styles/mixins";
+// import { slideUp } from "../../Styles/mixins";
+import { motion } from "framer-motion";
 
-export const Form = styled.form`
+export const Form = styled(motion.form)`
     display: flex;
         flex-direction: column;
         align-items: center;
@@ -43,10 +44,8 @@ export const Form = styled.form`
             border: 1px solid #ccc;
             outline: none;
             width: 100%;
-            animation: ${slideUp} 0.3s ease-in-out;
             border-bottom: 4px solid transparent;
             background-color: ${({ theme }) => theme.colors.senary};
-            transition: all 0.3s ease-in-out;
             @media screen and (min-width: ${({ theme }) => theme.breakpoints.md}){
                 font-size: 1.15rem;
             }
@@ -60,9 +59,9 @@ export const Form = styled.form`
             }
         }
         button{
-            padding: 5px;
+            padding: 10px 5px;
             border-radius: 5px;
-            border: 1px solid #ccc;
+            /* border: 1px solid #ccc; */
             background-color: #6713b8;
             color: white;
             font-weight: 600;
@@ -72,7 +71,6 @@ export const Form = styled.form`
             font-size: 1.1rem;
             font-family: ${({ theme }) => theme.fonts.secondary};
             opacity: 0;
-            animation: ${slideUp} 0.3s ease-in-out 0.2s forwards;
             &:hover{
                 background-color: ${({ theme }) => theme.colors.primary};
             }

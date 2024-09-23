@@ -8,7 +8,16 @@ const Modal = ({ children, onClick, ...otherProps }) => {
         <OuterContainer onClick={onClick} {...otherProps}>
             <InnerContainer onClick={(e) => {
                 e.stopPropagation();
-            }}>
+            }}
+                initial={{ scale: 0 }}
+                animate={{
+                    scale: 1,
+                    transition: {
+                        duration: 0.3
+                    }
+                }}
+                exit={{ scale: 0 }}
+            >
                 <RoundedButton onClick={onClick} style={{ position: 'absolute', top: '8px', right: '8px' }}><ImCross /></RoundedButton>
                 {children}
             </InnerContainer>

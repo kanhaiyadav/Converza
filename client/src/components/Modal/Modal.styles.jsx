@@ -1,6 +1,7 @@
 import styled from "styled-components";
+import { motion } from "framer-motion";
 
-export const InnerContainer = styled.div`
+export const InnerContainer = styled(motion.div)`
     position: relative;
     background-color: ${({ theme }) => theme.colors.secondary};
     background-image: url(/modal.svg);
@@ -17,7 +18,7 @@ export const OuterContainer = styled.div`
     left: 0;
     width: 100%;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.8);
     display: flex;
     justify-content: center;
     align-items: center;

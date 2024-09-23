@@ -6,13 +6,15 @@ const messageSchema = new mongoose.Schema({
         required: true
     },
     sender: {
-        type: String,
-        required: true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     },
     room: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Room'
     },
+}, {
+    timestamps: true
 });
 
 const Message = mongoose.model('Message', messageSchema);
