@@ -73,7 +73,13 @@ export const getContacts = async (req, res) => {
             path: 'contacts',
             populate: [
                 { path: 'user' },
-                { path: 'room' }
+                {
+                    path: 'room',
+                    select: 'lastMessage',
+                    populate: {
+                        path: 'lastMessage',
+                    }
+                }
             ]
         });
         if (user) {

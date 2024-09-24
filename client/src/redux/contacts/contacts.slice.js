@@ -52,6 +52,12 @@ const contactsSlice = createSlice({
     reducers: {
         addContact: (state, action) => {
             state.contacts.push(action.payload);
+        },
+        updateContact: (state, action) => {
+            const index = state.contacts.findIndex(contact => contact._id === action.payload._id);
+            if (index !== -1) {
+                state.contacts[index].room.lastMessage = action.payload.message;
+            }
         }
     },
     extraReducers: (builder) => {
@@ -64,6 +70,6 @@ const contactsSlice = createSlice({
     }
 });
 
-export const { addContact } = contactsSlice.actions;
+export const { addContact, updateContact } = contactsSlice.actions;
 
 export default contactsSlice.reducer;

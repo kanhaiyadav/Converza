@@ -30,9 +30,10 @@ const initializeSocket = (server) => {
                 room: data.room,
             });
             callback(null, {status: 'ok'});
-            io.to(data.room).emit('messageSent', message);
+            io.to(data.room).emit(`messageSent-${data.room}`, message);
             const room = await Room.findById(data.room);
             room.messages.push(message._id);
+            room.lastMessage = message._id;
             await room.save();
         });
 

@@ -1,48 +1,52 @@
-import { Container, Header, HeaderBody, Buttons, Body, Footer, Form } from './ChatPage.styles';
+import React, { useEffect, useState, useRef } from 'react';
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { selectContact, selectUserInfo } from '../../redux/user/user.selector';
+import { Container, Header, HeaderBody, Buttons, Body, Footer } from './ChatPage.styles';
 import CustomButton from '../../components/CustomButton/CutomButton.component';
 import RoundedButton from '../../components/RoundedButton/RoundedButton';
-import { selectContact } from '../../redux/user/user.selector';
-import { useSelector } from 'react-redux';
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
-import { selectUserInfo } from '../../redux/user/user.selector';
 import Message from '../../components/Message/Message.component';
 import MessageFrom from './MessageForm/MessageForm.component';
-
+import { updateContact } from '../../redux/contacts/contacts.slice';
+import { useDispatch } from 'react-redux';
 
 const ChatPage = ({ socket }) => {
     const id = useParams().id;
     const contact = useSelector(selectContact(id));
-    const {user, room} = contact;
+    const { user, room } = contact;
     const me = useSelector(selectUserInfo);
     const [messages, setMessages] = useState([]);
+    const endOfMessagesRef = useRef(null);
+    const dispatch = useDispatch();
 
+    // Scroll to bottom when messages change
     useEffect(() => {
-        socket.emit("join", {
-            room: room._id,
-        }, (err, responce) => {
+        endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [messages]);
+
+    // Join the room when the component mounts
+    useEffect(() => {
+        socket.emit('join', { room: room._id }, (err, response) => {
             if (err) {
                 console.log(err);
             }
-            setMessages(responce);
+            setMessages(response);
         });
     }, [socket, room._id]);
 
+    // Listen for new messages (use a stable callback)
     useEffect(() => {
-
-        socket.on('messageSent', (message) => {
-            setMessages((prev)=>[...prev, message]);
-        });
-        
-        return () => {
-            socket.off('message', (message) => {
-                console.log(message);
-            });
+        const handleMessage = (message) => {
+            setMessages((prev) => [...prev, message]);
+            dispatch(updateContact({ _id: contact._id, message: message }));
         };
 
-    }, [socket]);
+        socket.on(`messageSent-${room._id}`, handleMessage); // Use a unique event name
 
-
+        return () => {
+            socket.off(`messageSent-${room._id}`, handleMessage); // Clean up the correct listener
+        };
+    }, [socket, room._id, dispatch, contact._id]);
 
     return (
         <Container>
@@ -56,29 +60,27 @@ const ChatPage = ({ socket }) => {
                     <div
                         style={{
                             display: 'flex',
-                            border: "1px solid #ccc",
+                            border: '1px solid #ccc',
                             borderRadius: '5px',
                         }}
-                    >
-                    </div>
-                    <CustomButton><i className="fa-solid fa-search"></i></CustomButton>
+                    />
+                    <CustomButton><i className="fa-solid fa-search" /></CustomButton>
                 </Buttons>
             </Header>
             <Body>
-                {
-                    messages.map((message) => {
-                        return (
-                            <Message key={message._id} message={message} currId={me._id} />
-                        )
-                    })
-                }
+                {messages.map((message) => (
+                    <Message key={message._id} message={message} currId={me._id} socket={socket} roomId={room._id} />
+                ))}
+                <div ref={endOfMessagesRef} />
             </Body>
             <Footer>
                 <MessageFrom socket={socket} contact={contact} />
-                <RoundedButton type='submit' form='message-form'><i className="fa-solid fa-paper-plane"></i></RoundedButton>
+                <RoundedButton type="submit" form="message-form">
+                    <i className="fa-solid fa-paper-plane" />
+                </RoundedButton>
             </Footer>
         </Container>
-    )
-}
+    );
+};
 
 export default ChatPage;

@@ -5,8 +5,19 @@ export const ChatBody = styled.div`
     width: 250px;
     p{
         margin: 0px;
-        font-size: 1rem;
-        font-weight: 500;
+        
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+        span{
+            width: fit-content;
+        }
+        span:first-child{
+            font-size: 1rem;
+            font-weight: 500;
+            /* color: grey; */
+        }
     }
     span{
         display: inline-block;

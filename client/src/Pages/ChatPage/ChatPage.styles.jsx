@@ -1,13 +1,5 @@
 import styled, { keyframes } from "styled-components";
 
-const slideIn = keyframes`
-    from{
-        transform: translateX(-100%);
-    }
-    to{
-        transform: translateX(0%);
-    }
-`
 const slide = keyframes`
     0%{
         transform: translateX(-100%);
@@ -89,11 +81,12 @@ export const Body = styled.div`
     background-color: #ffffff;
     background-image: url(/darkBg.svg);;
     padding: 20px;
-    gap: 10px;
+    gap:5px;
     padding-bottom: 100px;
     /* max-height: 80vh; */
     overflow-x: hidden;
     overflow-y: auto;
+    width: 100%;
     background-color: ${({ theme }) => {
     if (theme.type === 'light') {
         return 'white;'
@@ -102,7 +95,6 @@ export const Body = styled.div`
         return '#1d1d2a;'
     }
 }} 
-    width: 100%;
 `
 
 export const Footer = styled.div`
