@@ -6,7 +6,7 @@ const commonTheme = {
         handwriting2: "Playwrite AU TAS",
     },
     fontSizes: {
-        xxs: "0.65rem",
+        xxs: "0.6rem",
         xs: "0.8rem",
         sm: "0.9rem",
         md: "1rem",
@@ -122,7 +122,7 @@ export const darkTheme = {
     type: "dark",
     colors: {
         primary: "#932ef9",
-        secondary: "#1d1d2a",
+        secondary: "#252532",
         tertiary: "#a04df3",
         quaternary: "#2f3142",
         active: '#00984e',
@@ -157,8 +157,8 @@ export const darkTheme = {
         md: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
         lg: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
         xl: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
-        inner: "inset 0px 0px 4px rgba(0,0,0,0.6)",
-        outer: "0px 0px 4px rgba(0,0,0,0.6)",
+        inner: "inset 0px 0px 4px rgb(0,0,0)",
+        outer: "0px 0px 4px rgb(0,0,0)",
         outerxl: "0px 0px 10px rgba(0,0,0,0.6)",
         outline: "0 0 0 3px rgba(66, 153, 225, 0.5)",
         none: "none",

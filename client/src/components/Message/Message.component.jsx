@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Container } from "./Message.styles";
-// import { MdCircle } from "react-icons/md";
+import { MdCircle } from "react-icons/md";
 
 const Message = ({ message, currId, socket, roomId }) => {
     const { content, sender } = message;
@@ -25,11 +25,18 @@ const Message = ({ message, currId, socket, roomId }) => {
     return (
         <Container style={{
             alignSelf: isSentByCurrentUser ? 'flex-end' : 'flex-start',
-            backgroundColor: isSentByCurrentUser ? "#932ef9" : '#2979FF',
+            background: isSentByCurrentUser && "linear-gradient(130deg, #4A00E0 0%, #8E2DE2 100%)",
             textAlign: isSentByCurrentUser ? 'right' : 'left',
         }}>
-            <p>{content}</p>
-            <span>{formattedTime}</span>
+            <p style={{ color: isSentByCurrentUser && "white"}}>{content}</p>
+            <span style={{ color: isSentByCurrentUser && "white", alignSelf: isSentByCurrentUser ? 'flex-end' : 'flex-start', }}>
+                {formattedTime}
+                {
+                    isSentByCurrentUser && (
+                        <MdCircle style={{ color: "#00ff00", fontSize: "0.7rem", marginLeft: "5px" }} />
+                    )
+                }
+            </span>
         </Container>
     );
 };

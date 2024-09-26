@@ -57,7 +57,7 @@ export const ChatContainer = styled(NavLink)`
     }
     &:hover{
         background-color: ${({ theme }) => theme.colors.quaternary};
-        border: 1px solid ${({ theme }) => theme.colors.primary};
+        /* border: 1px solid ${({ theme }) => theme.colors.primary}; */
     }
     &.active{
         z-index: 1;

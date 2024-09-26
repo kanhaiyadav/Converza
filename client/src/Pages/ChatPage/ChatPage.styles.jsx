@@ -4,12 +4,6 @@ const slide = keyframes`
     0%{
         transform: translateX(-100%);
     }
-    40%{
-        transform: translateX(10%);
-    }
-    70%{
-        transform: translateX(-5%);
-    }
     100%{
         transform: translateX(0%);
     }`;
@@ -62,7 +56,7 @@ export const Header = styled.div`
     gap: 10px;
     align-items: center;
     padding: 8px 15px;
-    background-color: ${({ theme }) => theme.colors.quaternary};
+    background-color: ${({ theme }) => theme.colors.secondary};
     img{
         width: 40px;
         height: 40px;
@@ -78,7 +72,6 @@ export const Body = styled.div`
     flex-direction: column;
     flex: 1 1;
     overflow-y: auto;
-    background-color: #ffffff;
     background-image: url(/darkBg.svg);;
     padding: 20px;
     gap:5px;
@@ -89,10 +82,10 @@ export const Body = styled.div`
     width: 100%;
     background-color: ${({ theme }) => {
     if (theme.type === 'light') {
-        return 'white;'
+        return '#f0f0f0;'
     }
     else {
-        return '#1d1d2a;'
+        return '#2f3142;'
     }
 }} 
 `
@@ -109,15 +102,20 @@ export const Footer = styled.div`
     justify-content: space-between;
     padding: 0px 15px;
     opacity: 0;
-    animation: ${slideUp} 0.3s ease-in-out 0.8s forwards;     
+    animation: ${slideUp} 0.3s ease-in-out 0.2s forwards;   
+    button{
+        box-shadow: 0px 0px 8px rgba(0,0,0,0.8);
+        background-color: #4A00E0;
+    }  
 `
 
 
 export const Container = styled.div`
+    box-shadow: ${({ theme }) => theme.shadows.inner};
     max-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     flex: 1 1;
-    animation: ${slide} 1s ease-in-out forwards;
+    animation: ${slide} 0.3s ease-in-out forwards;
 `

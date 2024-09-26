@@ -56,7 +56,8 @@ export const SecondaryNavContainer = styled.div`
     z-index: 1;
     overflow: hidden;
     animation: ${slideIn} 0.5s ease;
-    border-right: 1px solid ${({ theme }) => theme.colors.primary};
+    box-shadow: ${({ theme }) => theme.shadows.outer};
+    /* border-right: 1px solid ${({ theme }) => theme.colors.primary}; */
 `;
 
 export const ChatsLayoutContainer = styled.div`

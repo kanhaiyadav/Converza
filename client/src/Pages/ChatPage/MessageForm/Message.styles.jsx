@@ -9,12 +9,13 @@ export const Form = styled.form`
     justify-content: space-between;
     border: 1px solid transparent;
     border-radius:${({ theme }) => theme.radii.full}; 
-    background-color: ${({ theme }) => theme.colors.quaternary}; 
-    box-shadow: ${({ theme }) => theme.shadows.outer};
+    background-color: ${({ theme }) => theme.colors.secondary}; 
+    /* box-shadow: ${({ theme }) => theme.shadows.outer}; */
     padding: 5px 15px;
+    border: 1px solid ${({ theme }) => theme.colors.primary};
     &:focus-within{
-        border: 1px solid ${({ theme }) => theme.colors.primary};
         box-shadow: none;
+        outline: 2px solid ${({ theme }) => theme.colors.primary};
     }
     input{
         flex: 1 1 auto;

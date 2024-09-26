@@ -59,7 +59,7 @@ export const HomeNav = styled.div`
     flex-direction: column;
     align-items: baseline;
     height: 100vh;
-    background-color: ${({ theme })=> theme.colors.primary};
+    background: linear-gradient(130deg, #8E2DE2 0%, #4A00E0 100%);
     color: ${({ theme })=> theme.textColors.secondary};
     /* position: fixed; */
     /* left: 0px; */
