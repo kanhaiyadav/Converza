@@ -5,9 +5,21 @@ const roomSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Message'
     }],
+    unreadMessages: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Message'
+    }],
+    unsentMessages: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Message'
+    }],
     lastMessage: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Message'
+    },
+    unreadMessagesCount: {
+        type: Number,
+        default: 0
     },
     isGroupChat: {
         type: Boolean,

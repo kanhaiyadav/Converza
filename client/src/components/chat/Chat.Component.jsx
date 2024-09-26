@@ -18,18 +18,19 @@ const Chat = ({ contact }) => {
     console.log(formattedTime);  // This will display the time in your local time zone
 
 
-  return (
-      <ChatContainer to={contact._id}>
-          <img src={user.avatar} alt="" />
-          <ChatBody>
-              <p><span>{user.name}</span><span>{formattedTime}</span></p>
-              <span>
-                  {room.lastMessage ? room.lastMessage.sender === me._id ? "You: " : "" : ""}
-                  {room.lastMessage ? room.lastMessage.content : "No messages yet..."}
-              </span>
-          </ChatBody>
-    </ChatContainer>
-  )
+    return (
+        <ChatContainer to={contact._id}>
+            <img src={user.avatar} alt="" />
+            <ChatBody>
+                <p><span>{user.name}</span><span>{formattedTime}</span></p>
+                <span>
+                    {room.lastMessage ? room.lastMessage.sender === me._id ? "You: " : "" : ""}
+                    {room.lastMessage ? room.lastMessage.content : "No messages yet..."}
+                </span>
+                {room.unreadMessagesCount ? <span style={{ color: "white" }}>{room.unreadMessagesCount}</span> : ""}
+            </ChatBody>
+        </ChatContainer>
+    )
 }
 
 export default React.memo(Chat);

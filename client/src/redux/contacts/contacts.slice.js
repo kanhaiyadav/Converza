@@ -58,6 +58,13 @@ const contactsSlice = createSlice({
             if (index !== -1) {
                 state.contacts[index].room.lastMessage = action.payload.message;
             }
+        },
+        incUnreadMessagesCount: (state, action) => {
+            const index = state.contacts.findIndex(contact => contact._id === action.payload.roomId);
+            if (index !== -1) {
+                console.log("Incrementing unread messages count");
+                state.contacts[index].room.unreadMessagesCount += 1;
+            }
         }
     },
     extraReducers: (builder) => {
@@ -70,6 +77,6 @@ const contactsSlice = createSlice({
     }
 });
 
-export const { addContact, updateContact } = contactsSlice.actions;
+export const { addContact, updateContact, incUnreadMessagesCount } = contactsSlice.actions;
 
 export default contactsSlice.reducer;

@@ -21,6 +21,7 @@ const MessageFrom = ({ socket, contact }) => {
             content: message,
             sender: me._id,
             room: room._id,
+            contact: contact._id,
         }, (err, responce) => {
             if (err) {
                 console.log(err);
