@@ -10,15 +10,13 @@ export const ChatBody = styled.div`
         flex-direction: row;
         justify-content: space-between;
         width: 100%;
-        span{
-            width: fit-content;
-        }
         span:first-child{
+            width: fit-content;
             font-size: 1rem;
             font-weight: 500;
-            /* color: grey; */
+            color: #bcbcbc;
         }
-        p{
+        div{
             display: flex;
             align-items: center;
             justify-content: center;    
@@ -67,10 +65,11 @@ export const ChatContainer = styled(NavLink)`
     img{
         width: 50px;
         height: 50px;
+        padding: 5px;
         border-radius: 50%;
         object-fit: contain;
         margin-right: 10px;
-        background-color: #ccc;
+        background-color: #22222a;
     }
     &:hover{
         background-color: ${({ theme }) => theme.colors.quaternary};

@@ -1,7 +1,6 @@
 import { Server } from "socket.io";
 import Message from '../models/message.js';
 import Room from '../models/room.js';
-import Contact from '../models/contact.js';
 
 const initializeSocket = (server) => {
 
@@ -20,6 +19,7 @@ const initializeSocket = (server) => {
 
         socket.on('join', async (data, callback) => {
             socket.join(data.room);
+            console.log(`User joined room: ${data.room}`);
             const room = await Room.findById(data.room)?.populate('messages');
             const messages = room.messages;
             if (room.unreadMessagesSender !== data.userId) {
@@ -33,7 +33,7 @@ const initializeSocket = (server) => {
             socket.join(data.room);
             const room = await Room.findById(data.room)?.populate('messages');
             callback(null, {});
-            console.log(`bulk join: ${data.room}`);
+            // console.log(`bulk join: ${data.room}`);
         });
 
         socket.on('message', async (data, callback) => {
@@ -44,13 +44,23 @@ const initializeSocket = (server) => {
                 room: data.room,
             });
             callback(null, { status: 'ok' });
+            const roomDetails = io.sockets.adapter.rooms.get(data.room);
+            const room = await Room.findById(data.room);
+            if (roomDetails.size === 1) {
+                console.log(room.unreadMessagesCount);
+                console.log('Room has only one member');
+                room.unreadMessagesCount += 1;
+                room.unreadMessagesSender = data.sender;
+                await room.save();
+                console.log(room.unreadMessagesCount);
+            }
             io.to(data.room).emit(`messageSent`, {
                 message,
                 roomId: data.room,
                 contactId: data.contact,
             });
-            const room = await Room.findById(data.room);
             room.messages.push(message._id);
+            room.messagesCount += 1;
             room.lastMessage = message._id;
             await room.save();
         });

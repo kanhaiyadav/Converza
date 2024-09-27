@@ -22,7 +22,7 @@ const Chat = ({ contact }) => {
         <ChatContainer to={contact._id}>
             <img src={user.avatar} alt="" />
             <ChatBody>
-                <p><span>{user.name}</span>{(me._id !== contact.room.unreadMessagesSender) && contact.room.unreadMessagesCount ? <p>{room.unreadMessagesCount}</p> : ""}</p>
+                <p><span>{user.name}</span>{(me._id !== contact.room.unreadMessagesSender) && contact.room.unreadMessagesCount ? <div>{room.unreadMessagesCount}</div> : ""}</p>
                 <span>
                     {room.lastMessage ? room.lastMessage.sender === me._id ? "You: " : "" : ""}
                     {room.lastMessage ? room.lastMessage.content : "No messages yet..."}

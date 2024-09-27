@@ -21,7 +21,7 @@ const ChatPage = ({ socket }) => {
 
     // Scroll to bottom when messages change
     useEffect(() => {
-        endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth' });
+        endOfMessagesRef.current?.scrollIntoView();
     }, [messages]);
 
     // Join the room when the component mounts

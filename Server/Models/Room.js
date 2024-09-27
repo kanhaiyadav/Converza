@@ -5,6 +5,10 @@ const roomSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Message'
     }],
+    messagesCount: {
+        type: Number,
+        default: 0
+    },
     unreadMessagesCount: {
         type: Number,
         default: 0
