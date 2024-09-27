@@ -18,16 +18,33 @@ export const ChatBody = styled.div`
             font-weight: 500;
             /* color: grey; */
         }
+        p{
+            display: flex;
+            align-items: center;
+            justify-content: center;    
+            min-width: 23px;
+            width: fit-content;
+            height: fit-content;
+            background-color: ${({ theme }) => theme.colors.primary};
+            color: white;
+            border-radius: 15px;
+            padding: 2px 5px;
+            font-size: 0.8rem;
+            margin-left: auto;
+            box-shadow: 1px 1px 2px 0px rgba(0,0,0,1);
+        }
     }
     span{
-        display: inline-block;
-        width: 100%;
+        display: flex;
         font-size: 0.9rem;
         color: grey;
         font-weight: 300;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
+        span{
+            margin-left: auto;
+        }
     }
 `
 

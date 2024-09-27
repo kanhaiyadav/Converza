@@ -23,9 +23,9 @@ function App({ theme, setTheme }) {
                 <Route path='/signin' element={<SignIn type='signin' />} />
                 <Route path="signup" element={<SignIn type='signup' />} />
                 <Route path='/' element={<HomeLayout theme={theme} setTheme={setTheme} />}>
-                    <Route index element={<Welcome />} />
+                    <Route index element={<Welcome socket={socket} />} />
                     <Route path='chats' element={<SecondaryNav socket={socket} type="Chats" />}>
-                        <Route index element={<Welcome />} />
+                        <Route index element={<Welcome socket={socket} />} />
                         <Route path=':id' element={<ChatPage socket={socket} />} />
                     </Route>
                     <Route path='archive' element={<SecondaryNav type="Archive" />}>

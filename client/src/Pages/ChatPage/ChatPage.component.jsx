@@ -7,7 +7,7 @@ import CustomButton from '../../components/CustomButton/CutomButton.component';
 import RoundedButton from '../../components/RoundedButton/RoundedButton';
 import Message from '../../components/Message/Message.component';
 import MessageFrom from './MessageForm/MessageForm.component';
-import { updateContact } from '../../redux/contacts/contacts.slice';
+import { updateContact, incUnreadMessagesCount, resetUnreadMessagesCount } from '../../redux/contacts/contacts.slice';
 import { useDispatch } from 'react-redux';
 
 const ChatPage = ({ socket }) => {
@@ -26,25 +26,36 @@ const ChatPage = ({ socket }) => {
 
     // Join the room when the component mounts
     useEffect(() => {
-        socket.emit('join', { room: room._id }, (err, response) => {
+        socket.emit('join', { room: room._id, userId: me._id }, (err, response) => {
             if (err) {
                 console.log(err);
             }
             setMessages(response);
+            dispatch(resetUnreadMessagesCount(room._id));
         });
-    }, [socket, room._id]);
+    }, [socket, room._id, dispatch, me._id]);
 
     // Listen for new messages (use a stable callback)
     useEffect(() => {
-        const handleMessage = (message) => {
-            setMessages((prev) => [...prev, message]);
-            dispatch(updateContact({ _id: contact._id, message: message }));
+        const handleMessage = (data) => {
+            if (data.roomId === room._id)
+            {
+                console.log("user is active");
+                setMessages((prev) => [...prev, data.message]);
+                dispatch(updateContact ({ _id: room._id, message: data.message }));
+            }
+            else {
+                console.log("user is inactive");
+                socket.emit('unreadMessage', { roomId: data.roomId, sender: data.message.sender });
+                dispatch(updateContact({ _id: data.roomId, message: data.message }));
+                dispatch(incUnreadMessagesCount(data.roomId));
+            }
         };
 
-        socket.on(`messageSent-${room._id}`, handleMessage); // Use a unique event name
+        socket.on(`messageSent`, handleMessage); // Use a unique event name
 
         return () => {
-            socket.off(`messageSent-${room._id}`, handleMessage); // Clean up the correct listener
+            socket.off(`messageSent`, handleMessage); // Clean up the correct listener
         };
     }, [socket, room._id, dispatch, contact._id]);
 
@@ -83,4 +94,4 @@ const ChatPage = ({ socket }) => {
     );
 };
 
-export default ChatPage;
+export default React.memo(ChatPage);

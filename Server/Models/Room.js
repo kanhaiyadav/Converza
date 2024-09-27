@@ -5,14 +5,14 @@ const roomSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Message'
     }],
-    unreadMessages: [{
+    unreadMessagesCount: {
+        type: Number,
+        default: 0
+    },
+    unreadMessagesSender: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Message'
-    }],
-    unsentMessages: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Message'
-    }],
+        ref: 'User'
+    },
     lastMessage: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Message'

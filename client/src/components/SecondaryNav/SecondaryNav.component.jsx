@@ -52,7 +52,7 @@ const SecondaryNav = ({ socket, type }) => {
                     <input type="text" placeholder='Search a chat...' />
                     <CustomButton><i className="fa-solid fa-x"></i></CustomButton>
                 </Searchbox>
-                <Directory type={type} openModal={() => {
+                <Directory socket={socket} type={type} openModal={() => {
                     setAddContactModal(true)
                 }}
                 />
@@ -62,4 +62,4 @@ const SecondaryNav = ({ socket, type }) => {
     )
 }
 
-export default SecondaryNav;
+export default React.memo(SecondaryNav);
