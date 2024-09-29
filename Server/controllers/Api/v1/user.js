@@ -36,8 +36,6 @@ export const signUp = async (req, res) => {
 
 export const signIn = async (req, res) => {
     try {
-        console.log("you're inside signin");
-        console.log(req.body);
         const user = await User.findOne({ username: req.body.username });
         if (user) {
             if (user.password !== req.body.password) {
@@ -69,13 +67,14 @@ export const signIn = async (req, res) => {
 
 export const getContacts = async (req, res) => {
     try {
+        console.log(await User.findById(req.params.id));
         const user = await User.findById(req.params.id).populate({
             path: 'contacts',
             populate: [
                 { path: 'user' },
                 {
                     path: 'room',
-                    select: 'messageCount lastMessage unreadMessagesCount unreadMessagesSender',
+                    select: 'readMessagesCount lastMessage unreadMessagesCount unreadMessagesSender',
                     populate: {
                         path: 'lastMessage',
                     }
@@ -97,6 +96,7 @@ export const getContacts = async (req, res) => {
         }
     }
     catch (err) {
+        console.log(err);
         return res.status(500).json({
             message: err.message
         });

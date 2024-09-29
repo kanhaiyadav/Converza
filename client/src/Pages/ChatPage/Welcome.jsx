@@ -1,7 +1,7 @@
 import React from 'react'
 import { WelcomeTitle } from './Welcome.styles';
 import { useDispatch } from 'react-redux';
-import { updateContact, incUnreadMessagesCount } from '../../redux/contacts/contacts.slice';
+import { updateBulkJoin } from '../../redux/contacts/contacts.slice';
 
 const Welcome = ({socket}) => {
     const dispatch = useDispatch();
@@ -11,8 +11,7 @@ const Welcome = ({socket}) => {
         const handleMessage = (data) => {
             console.log("user is inactive");
             socket.emit('unreadMessage', { roomId: data.roomId, sender: data.message.sender });
-            dispatch(updateContact({ _id: data.roomId, message: data.message }));   
-            dispatch(incUnreadMessagesCount(data.roomId));
+            dispatch(updateBulkJoin({ roomId: data.roomId, message: data.message }));   
         };
 
         socket.on(`messageSent`, handleMessage); // Use a unique event name

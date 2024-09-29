@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
-import { HomeNav, NavItem, MenuButton, HomeLayoutContainer, ThemeButton, BottomNav } from './Home.styles';
+import { HomeNav, NavItem, MenuButton, HomeLayoutContainer, BottomNav } from './Home.styles';
 import { Outlet } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '../../components/RoundedButton/RoundedButton.styles';
 import { PiSignOutFill } from "react-icons/pi";
-import { logout } from '../../redux/user/user.slice';
 import { useDispatch } from 'react-redux';
+import { logout } from '../../actions/authActions';
 
 const HomeLayout = ({ theme, setTheme }) => {
     const [menuOpen, setMenuOpen] = useState(false);

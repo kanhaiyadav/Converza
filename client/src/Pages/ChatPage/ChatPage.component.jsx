@@ -1,13 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { selectContact, selectUserInfo } from '../../redux/user/user.selector';
+import { selectUserInfo } from '../../redux/user/user.selector';
+import { selectContact, selectMessages } from '../../redux/contacts/contact.selector';
 import { Container, Header, HeaderBody, Buttons, Body, Footer } from './ChatPage.styles';
 import CustomButton from '../../components/CustomButton/CutomButton.component';
 import RoundedButton from '../../components/RoundedButton/RoundedButton';
 import Message from '../../components/Message/Message.component';
 import MessageFrom from './MessageForm/MessageForm.component';
-import { updateContact, incUnreadMessagesCount, resetUnreadMessagesCount } from '../../redux/contacts/contacts.slice';
+import { roomJoinUpdate, addOneReadMessage, addOneUnreadMessage } from '../../redux/contacts/contacts.slice';
 import { useDispatch } from 'react-redux';
 
 const ChatPage = ({ socket }) => {
@@ -15,9 +16,9 @@ const ChatPage = ({ socket }) => {
     const contact = useSelector(selectContact(id));
     const { user, room } = contact;
     const me = useSelector(selectUserInfo);
-    const [messages, setMessages] = useState([]);
     const endOfMessagesRef = useRef(null);
     const dispatch = useDispatch();
+    const messages = useSelector(selectMessages(room._id));
 
     // Scroll to bottom when messages change
     useEffect(() => {
@@ -30,8 +31,7 @@ const ChatPage = ({ socket }) => {
             if (err) {
                 console.log(err);
             }
-            setMessages(response);
-            dispatch(resetUnreadMessagesCount(room._id));
+            dispatch(roomJoinUpdate({ roomId: room._id, messages: response }));
         });
     }, [socket, room._id, dispatch, me._id]);
 
@@ -41,14 +41,12 @@ const ChatPage = ({ socket }) => {
             if (data.roomId === room._id)
             {
                 console.log("user is active");
-                setMessages((prev) => [...prev, data.message]);
-                dispatch(updateContact ({ _id: room._id, message: data.message }));
+                dispatch(addOneReadMessage({ message: data.message }));
             }
             else {
                 console.log("user is inactive");
-                socket.emit('unreadMessage', { roomId: data.roomId, sender: data.message.sender });
-                dispatch(updateContact({ _id: data.roomId, message: data.message }));
-                dispatch(incUnreadMessagesCount(data.roomId));
+                socket.emit('unreadMessage', { roomId: data.roomId, sender: data.message.sender, messageId: data.message._id });
+                dispatch(addOneUnreadMessage({message: data.message}));
             }
         };
 

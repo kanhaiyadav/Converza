@@ -1,7 +1,7 @@
 import React from 'react'
 import { ListDirectory} from './Directory.styles'
 import Chat from '../chat/Chat.Component';
-import { selectContacts } from '../../redux/user/user.selector';
+import { selectContacts } from '../../redux/contacts/contact.selector';
 import { useSelector } from 'react-redux';
 import { NoChat } from './Directory.styles';
 import { selectUserInfo } from '../../redux/user/user.selector';
@@ -9,31 +9,44 @@ import { selectUserInfo } from '../../redux/user/user.selector';
 const Directory = ({ socket, type, openModal }) => {
     const me = useSelector(selectUserInfo); 
     const contacts = useSelector(selectContacts);
-    const blank_room = '66f656d722b21e5df07dcc79';
+    const blank_room = '66f9499a5fd39ff250be10f9';
     React.useEffect(() => {
-        contacts.forEach((contact) => {
-            socket.emit('bulkJoin', { room: contact.room._id, userId: me._id }, (err, response) => {
+        const joinRooms = async () => {
+            // Join all the contact rooms sequentially
+            for (const key of Object.keys(contacts)) {
+                await new Promise((resolve, reject) => {
+                    socket.emit('bulkJoin', { room: key, userId: me._id }, (err, response) => {
+                        if (err) {
+                            console.log(err);
+                            reject(err);
+                        } else {
+                            resolve(response);
+                        }
+                    });
+                });
+            }
+
+            // After all contact rooms are joined, join the blank_room
+            socket.emit('bulkJoin', { room: blank_room, userId: me._id }, (err, response) => {
                 if (err) {
                     console.log(err);
                 }
+                // Optionally, handle the response or set state here
+                // setMessages(response);
+                // dispatch(resetUnreadMessagesCount(blank_room));
             });
-        });
-        socket.emit('bulkJoin', { room: blank_room, userId: me._id }, (err, response) => {
-            if (err) {
-                console.log(err);
-            }
-            // setMessages(response);
-            // dispatch(resetUnreadMessagesCount(room._id));
-        });
+        };
+
+        joinRooms(); // Call the async function
 
     }, [socket, me._id, contacts]);
 
     return (
         <ListDirectory>
             {
-                contacts.length !== 0 ?
-                    contacts.map((contact) => {
-                        return <Chat contact={contact} key={contact._id} />
+                Object.keys(contacts).length !== 0?
+                    Object.keys(contacts).map((key) => {
+                        return <Chat contact={contacts[key]} key={key} />
                     })
                     :
                     <NoChat>

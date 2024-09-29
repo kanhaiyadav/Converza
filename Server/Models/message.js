@@ -13,6 +13,10 @@ const messageSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Room'
     },
+    status: {
+        type: String,
+        default: 'sent'
+    }
 }, {
     timestamps: true
 });

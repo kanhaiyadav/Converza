@@ -5,10 +5,17 @@ import contactsSlice from "./contacts/contacts.slice";
 import persistReducer from "redux-persist/es/persistReducer";
 import storage from "redux-persist/lib/storage";
 
-const rootReducer = combineReducers({
+const appReducer = combineReducers({
     user: userSlice,
     contacts: contactsSlice
 });
+
+const rootReducer = (state, action) => {
+    if (action.type === 'LOGOUT') {
+        state = undefined;  // Reset the state to initial state
+    }
+    return appReducer(state, action);
+};
 
 const persistConfig = {
     key: 'root',

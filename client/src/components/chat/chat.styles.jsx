@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 
 export const ChatBody = styled.div`
     width: 250px;
-    p{
+    div{
         margin: 0px;
         
         display: flex;
@@ -16,7 +16,7 @@ export const ChatBody = styled.div`
             font-weight: 500;
             color: #bcbcbc;
         }
-        div{
+        p{
             display: flex;
             align-items: center;
             justify-content: center;    

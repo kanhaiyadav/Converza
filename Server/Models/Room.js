@@ -1,15 +1,21 @@
 import mongoose from "mongoose";
 
 const roomSchema = new mongoose.Schema({
-    messages: [{
+    readMessages: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Message'
     }],
-    messagesCount: {
+    unreadMessages: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Message'
+    }],
+    readMessagesCount: {
+        required: true,
         type: Number,
         default: 0
     },
     unreadMessagesCount: {
+        required: true,
         type: Number,
         default: 0
     },
@@ -20,10 +26,6 @@ const roomSchema = new mongoose.Schema({
     lastMessage: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Message'
-    },
-    unreadMessagesCount: {
-        type: Number,
-        default: 0
     },
     isGroupChat: {
         type: Boolean,

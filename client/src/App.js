@@ -8,14 +8,14 @@ import Welcome from './Pages/ChatPage/Welcome';
 import ChatPage from './Pages/ChatPage/ChatPage.component';
 import SignIn from './Pages/SignIn/SignIn.component';
 import { io } from 'socket.io-client';
-import handleChatEvents from './sockets/chatSocket';
-import { useDispatch } from 'react-redux';
+// import handleChatEvents from './sockets/chatSocket';
+// import { useDispatch } from 'react-redux';
 
 const socket = io("http://localhost:5000");
 
 function App({ theme, setTheme }) {    
-    const dispatch = useDispatch();
-    handleChatEvents(socket, dispatch);
+    // const dispatch = useDispatch();
+    // handleChatEvents(socket, dispatch);
     
     return (
         <>

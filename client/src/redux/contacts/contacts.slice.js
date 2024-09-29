@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 const initialState = {
-    contacts: [],
+    contacts: {},
 }
 
 export const getContacts = createAsyncThunk('contacts/getContacts', async (id) => {
@@ -50,39 +50,85 @@ const contactsSlice = createSlice({
     name: 'contacts',
     initialState,
     reducers: {
-        addContact: (state, action) => {
-            state.contacts.push(action.payload);
-        },
-        updateContact: (state, action) => {
-            const index = state.contacts.findIndex(contact => contact.room._id === action.payload._id);
-            if (index !== -1) {
-                state.contacts[index].room.lastMessage = action.payload.message;
+        roomJoinUpdate: (state, action) => {
+            const contact = state.contacts[action.payload.roomId];
+            if (contact) {
+                // Create a new object for messages
+                const readMessages = { ...contact.room.readMessages };
+                const unreadMessages = { ...contact.room.unreadMessages };
+
+                console.log(action.payload);
+
+                // Add new messages to the new object
+                action.payload.messages.readMessages.forEach(message => {
+                    readMessages[message._id] = message;
+                });
+                action.payload.messages.unreadMessages.forEach(message => {
+                    unreadMessages[message._id] = message;
+                });
+
+                // Update contact's room messages in one go
+                contact.room.readMessages = readMessages;
+                contact.room.unreadMessages = unreadMessages;
+
+                //reset unread messages count
+                contact.room.unreadMessagesCount = 0;
             }
         },
-        incUnreadMessagesCount: (state, action) => {
-            const index = state.contacts.findIndex(contact => contact.room._id === action.payload);
-            if (index !== -1) {
-                console.log("Incrementing unread messages count");
-                state.contacts[index].room.unreadMessagesCount += 1;
+        addOneReadMessage: (state, action) => {
+            const contact = state.contacts[action.payload.message.room];
+            if (contact) {
+                contact.room.readMessages = { ...contact.room.readMessages, [action.payload.message._id]: action.payload.message };
+                contact.room.readMessagesCount += 1;
+                contact.room.lastMessage = action.payload.message;
             }
         },
-        resetUnreadMessagesCount: (state, action) => {
-            const index = state.contacts.findIndex(contact => contact.room._id === action.payload);
-            if (index !== -1) {
-                state.contacts[index].room.unreadMessagesCount = 0;
+        addOneUnreadMessage: (state, action) => {
+            const contact = state.contacts[action.payload.message.room];
+            if (contact) {
+                contact.room.unreadMessages = { ...contact.room.unreadMessages, [action.payload.message._id]: action.payload.message };
+                contact.room.unreadMessagesCount += 1;
+                contact.room.lastMessage = action.payload.message;
             }
-        }
+        },
+        updateBulkJoin: (state, action) => {
+            const contact = state.contacts[action.payload.roomId];
+            if (contact) {
+                contact.room.lastMessage = action.payload.message;
+                contact.room.unreadMessagesCount += 1;
+            }
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(getContacts.fulfilled, (state, action) => {
-            state.contacts = action.payload.data.contacts;
+            // Create a new object to hold the updated contacts
+            const newContacts = { ...state.contacts };
+
+            // Populate the new object with the contacts from the action payload
+            action.payload.data.contacts.forEach(contact => {
+                newContacts[contact.room._id] = contact;
+            });
+
+            // Assign the new object to state.contacts
+            state.contacts = newContacts;
+
+            console.log(action.payload.data.contacts);
         });
+
+        // builder.addCase(getContacts.fulfilled, (state, action) => {
+        //     action.payload.data.contacts.forEach(contact => {
+        //         state.contacts = { ...state.contacts, [contact.room._id]: contact };
+        //     });
+        //     console.log(action.payload.data.contacts);
+        //     // state.contacts = action.payload.data.contacts;
+        // });
         builder.addCase(newContact.fulfilled, (state, action) => {
-            state.contacts.push(action.payload.data.contact);
+            state.contacts = { ...state.contacts, [action.payload.data.contact.room._id]: action.payload.data.contact };
+            // state.contacts.push(action.payload.data.contact);
         })
     }
 });
 
-export const { addContact, updateContact, incUnreadMessagesCount, resetUnreadMessagesCount } = contactsSlice.actions;
+export const { updateBulkJoin ,roomJoinUpdate, addOneReadMessage, addOneUnreadMessage } = contactsSlice.actions;
 
 export default contactsSlice.reducer;
