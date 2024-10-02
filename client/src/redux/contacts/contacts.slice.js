@@ -55,7 +55,7 @@ const contactsSlice = createSlice({
             if (contact) {
                 // Create a new object for messages
                 const readMessages = { ...contact.room.readMessages };
-                const unreadMessages = { };
+                const unreadMessages = { ...contact.room.unreadMessages };
 
                 console.log(action.payload);
 
