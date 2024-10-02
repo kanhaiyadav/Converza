@@ -55,7 +55,7 @@ const contactsSlice = createSlice({
             if (contact) {
                 // Create a new object for messages
                 const readMessages = { ...contact.room.readMessages };
-                const unreadMessages = { ...contact.room.unreadMessages };
+                const unreadMessages = { };
 
                 console.log(action.payload);
 
@@ -70,9 +70,6 @@ const contactsSlice = createSlice({
                 // Update contact's room messages in one go
                 contact.room.readMessages = readMessages;
                 contact.room.unreadMessages = unreadMessages;
-
-                //reset unread messages count
-                contact.room.unreadMessagesCount = 0;
             }
         },
         addOneReadMessage: (state, action) => {
@@ -96,6 +93,23 @@ const contactsSlice = createSlice({
             if (contact) {
                 contact.room.lastMessage = action.payload.message;
                 contact.room.unreadMessagesCount += 1;
+                contact.room.unreadMessages = { ...contact.room.unreadMessages, [action.payload.message._id]: action.payload.message };
+            }
+        },
+        markMessagesRead: (state, action) => {
+            const contact = state.contacts[action.payload.roomId];
+            const updatedMessages = {};
+            if (contact) {
+                Object.values(contact.room.unreadMessages).forEach(message => {
+                    updatedMessages[message._id] = message;
+                    contact.room.readMessagesCount += 1;
+                });
+                // console.log(updatedMessages, contact.room.readMessages);
+                console.log(updatedMessages);
+                contact.room.unreadMessages = [];
+                contact.room.unreadMessagesCount = 0;
+                contact.room.readMessages = { ...contact.room.readMessages, ...updatedMessages };
+                // console.log(contact.room.readMessages);
             }
         },
     },
@@ -129,6 +143,6 @@ const contactsSlice = createSlice({
     }
 });
 
-export const { updateBulkJoin ,roomJoinUpdate, addOneReadMessage, addOneUnreadMessage } = contactsSlice.actions;
+export const { updateBulkJoin, markMessagesRead ,roomJoinUpdate, addOneReadMessage, addOneUnreadMessage } = contactsSlice.actions;
 
 export default contactsSlice.reducer;

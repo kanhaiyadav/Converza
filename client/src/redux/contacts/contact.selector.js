@@ -21,3 +21,13 @@ export const selectMessages = (roomId) => createSelector(
             return Object.values(contacts[roomId].room.readMessages);
     }
 );
+
+export const selectUnreadMessages = (roomId) => createSelector(
+    [selectContacts],
+    (contacts) => {
+        if (!contacts[roomId].room.unreadMessages)
+            return [];
+        else
+            return Object.values(contacts[roomId].room.unreadMessages);
+    }
+);

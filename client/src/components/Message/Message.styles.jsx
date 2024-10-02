@@ -15,6 +15,7 @@ export const Container = styled.div`
         font-size: 1rem;
         color: ${({ theme }) => theme.textColors.primary};
         display: inline-block;
+        font-family: 'Playwrite De Grund';
     }
     span{
         display: flex;

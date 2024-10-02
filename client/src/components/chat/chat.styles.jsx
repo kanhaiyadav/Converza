@@ -11,10 +11,11 @@ export const ChatBody = styled.div`
         justify-content: space-between;
         width: 100%;
         span:first-child{
+            font-family: 'Open Sans';
             width: fit-content;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 500;
-            color: #bcbcbc;
+            color: #d9d9d9;
         }
         p{
             display: flex;
@@ -34,12 +35,13 @@ export const ChatBody = styled.div`
     }
     span{
         display: flex;
-        font-size: 0.9rem;
+        font-size: 0.8rem;
         color: grey;
         font-weight: 300;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
+        font-family: 'Merienda';
         span{
             margin-left: auto;
         }
@@ -63,8 +65,8 @@ export const ChatContainer = styled(NavLink)`
         transform: scale(0.98);
     }
     img{
-        width: 50px;
-        height: 50px;
+        width: 40px;
+        height: 40px;
         padding: 5px;
         border-radius: 50%;
         object-fit: contain;

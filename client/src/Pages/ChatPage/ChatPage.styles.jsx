@@ -25,9 +25,10 @@ export const HeaderBody = styled.div`
     justify-content: center;
     p{
         margin: 0px;
-        font-size: 1rem;
+        font-size: 0.95rem;
         font-weight: 500;   
-        color: ${({ theme }) => theme.textColors.primary};
+        color: #d9d9d9;
+        font-family: 'Open Sans';
     }
     span{
         display: inline-block;
@@ -62,6 +63,8 @@ export const Header = styled.div`
         height: 40px;
         border-radius: 50%;
         object-fit: cover;
+        padding: 5px;
+        background-color: #22222a;
     }
 
 `;

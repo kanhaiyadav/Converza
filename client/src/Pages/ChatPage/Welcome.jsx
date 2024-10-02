@@ -16,8 +16,16 @@ const Welcome = ({socket}) => {
 
         socket.on(`messageSent`, handleMessage); // Use a unique event name
 
+        socket.on('newMessage', (data, callback) => {
+            callback({ messageSeen: false });
+            console.log("new message received");
+            socket.emit('messageNotSeen', { roomId: data.roomId, sender: data.message.sender });
+            dispatch(updateBulkJoin({ roomId: data.roomId, message: data.message }));
+        });
+
         return () => {
             socket.off(`messageSent`, handleMessage); // Clean up the correct listener
+            socket.off('newMessage');
         };
     }, [socket, dispatch]);
 
