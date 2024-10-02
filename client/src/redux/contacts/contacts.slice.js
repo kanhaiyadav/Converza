@@ -83,7 +83,8 @@ const contactsSlice = createSlice({
         addOneUnreadMessage: (state, action) => {
             const contact = state.contacts[action.payload.message.room];
             if (contact) {
-                contact.room.unreadMessages = { ...contact.room.unreadMessages, [action.payload.message._id]: action.payload.message };
+                if(contact.room.unreadMessageSender !== action.payload.message.sender)
+                    contact.room.unreadMessages = { ...contact.room.unreadMessages, [action.payload.message._id]: action.payload.message };
                 contact.room.unreadMessagesCount += 1;
                 contact.room.lastMessage = action.payload.message;
             }
@@ -100,12 +101,13 @@ const contactsSlice = createSlice({
             const contact = state.contacts[action.payload.roomId];
             const updatedMessages = {};
             if (contact) {
-                Object.values(contact.room.unreadMessages).forEach(message => {
-                    updatedMessages[message._id] = message;
-                    contact.room.readMessagesCount += 1;
-                });
+                if (contact.room.unreadMessages) {
+                    Object.values(contact.room.unreadMessages).forEach(message => {
+                        updatedMessages[message._id] = message;
+                        contact.room.readMessagesCount += 1;
+                    });
+                }
                 // console.log(updatedMessages, contact.room.readMessages);
-                console.log(updatedMessages);
                 contact.room.unreadMessages = [];
                 contact.room.unreadMessagesCount = 0;
                 contact.room.readMessages = { ...contact.room.readMessages, ...updatedMessages };

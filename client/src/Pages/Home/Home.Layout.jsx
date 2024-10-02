@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { HomeNav, NavItem, MenuButton, HomeLayoutContainer, BottomNav } from './Home.styles';
 import { Outlet } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';

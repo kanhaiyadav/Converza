@@ -12,6 +12,7 @@ import { roomJoinUpdate, addOneReadMessage, addOneUnreadMessage, markMessagesRea
 import { useDispatch } from 'react-redux';
 
 const ChatPage = ({ socket }) => {
+    const [showUnreadBanner, setShowUnreadBanner] = useState(false);
     const id = useParams().id;
     const contact = useSelector(selectContact(id));
     const { user, room } = contact;
@@ -20,6 +21,19 @@ const ChatPage = ({ socket }) => {
     const dispatch = useDispatch();
     const messages = useSelector(selectMessages(room._id));
     const unreadMessages = useSelector(selectUnreadMessages(room._id));
+
+    useEffect(() => {
+        if (unreadMessages.length > 0) {
+            setShowUnreadBanner(true);
+
+            const timer = setTimeout(() => {
+                setShowUnreadBanner(false);
+            }, 5000);
+
+            return () => clearTimeout(timer);
+        }
+    }, [unreadMessages.length]); // Use length instead of the full array to avoid deep comparisons
+
 
 
     // Scroll to bottom when messages change
@@ -48,7 +62,7 @@ const ChatPage = ({ socket }) => {
             else {
                 console.log("user is inactive");
                 socket.emit('unreadMessage', { roomId: data.roomId, sender: data.message.sender, messageId: data.message._id });
-                dispatch(addOneUnreadMessage({message: data.message}));
+                dispatch(addOneUnreadMessage({message: data.message, sender: data.message.sender}));
             }
         };
 
@@ -69,6 +83,7 @@ const ChatPage = ({ socket }) => {
                 callback({ messageSeen: false });
                 dispatch(addOneUnreadMessage({ message: data.message }));
             }
+            console.log(contact.room.unreadMessagesSender, me._id);
         });
 
         socket.on('messageSeen', (data) => {
@@ -80,9 +95,7 @@ const ChatPage = ({ socket }) => {
         });
 
         socket.on('markMessagesRead', (data) => {
-            setTimeout(() => {
-                dispatch(markMessagesRead({ roomId: data.roomId }));
-            }, 10000);
+            dispatch(markMessagesRead({ roomId: data.roomId }));
         });
 
         return () => {
@@ -115,7 +128,7 @@ const ChatPage = ({ socket }) => {
                     <Message key={message._id} message={message} currId={me._id} socket={socket} roomId={room._id} color="#00ff00"/>
                 ))}
                 <div ref={endOfMessagesRef} />
-                {contact.room.unreadMessagesSender !== me._id && unreadMessages.length > 0 && <p style={{textAlign: 'center', color: 'red', borderBottom: '2px solid red'}}>You have unread messages</p>}
+                {contact.room.unreadMessagesSender !== me._id && showUnreadBanner && unreadMessages.length > 0 && <p style={{textAlign: 'center', color: 'red', borderBottom: '2px solid red'}}>You have unread messages</p>}
                 {unreadMessages.map((message) => (
                     <Message key={message._id} message={message} currId={me._id} socket={socket} roomId={room._id} color="yellow"/>
                 ))}
