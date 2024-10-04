@@ -22,6 +22,7 @@ const Message = ({ message, currId, socket, roomId, color }) => {
             alignSelf: isSentByCurrentUser ? 'flex-end' : 'flex-start',
             background: isSentByCurrentUser && "linear-gradient(130deg, #4A00E0 0%, #8E2DE2 100%)",
             textAlign: isSentByCurrentUser ? 'right' : 'left',
+            marginRight: isSentByCurrentUser ? '10px' : '0px',
         }}>
             <p style={{ color: isSentByCurrentUser && "white"}}>{content}</p>
             <span style={{ color: isSentByCurrentUser && "white", alignSelf: isSentByCurrentUser ? 'flex-end' : 'flex-start', }}>

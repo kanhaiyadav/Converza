@@ -23,7 +23,11 @@ const initializeSocket = (server) => {
             const room = await Room.findById(data.room)?.populate('readMessages').populate('unreadMessages');
             const messages = room.readMessages;
             const unreadMessages = room.unreadMessages;
-            if (room.unreadMessagesSender !== data.userId) {
+            callback(null, {
+                readMessages: messages,
+                unreadMessages: unreadMessages,
+            });
+            if (room.unreadMessageSender && (room.unreadMessageSender !== data.userId)) {
                 room.unreadMessagesCount = 0;
                 unreadMessages.map(async (message) => {
                     room.readMessages.push(message);
@@ -33,10 +37,6 @@ const initializeSocket = (server) => {
                 await room.save();
                 io.to(data.room).emit('markMessagesRead', { roomId: data.room });
             }
-            callback(null, {
-                readMessages: messages,
-                unreadMessages: unreadMessages,
-            });
             console.log(`User joined room: ${data.room}`);
         });
 
@@ -44,7 +44,7 @@ const initializeSocket = (server) => {
             const room = await Room.findById(data.roomId);
             room.unreadMessagesCount += 1;
             room.unreadMessages.push(data.messageId);
-            room.unreadMessagesSender = data.sender;
+            room.unreadMessageSender = data.sender;
             room.lastMessage = data.messageId;
             room.lastMessageSender = data.sender;
             await room.save();

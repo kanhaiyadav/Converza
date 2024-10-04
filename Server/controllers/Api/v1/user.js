@@ -74,7 +74,7 @@ export const getContacts = async (req, res) => {
                 { path: 'user' },
                 {
                     path: 'room',
-                    select: 'readMessagesCount lastMessage unreadMessagesCount unreadMessagesSender',
+                    select: 'readMessagesCount lastMessage unreadMessagesCount unreadMessageSender',
                     populate: {
                         path: 'lastMessage',
                     }

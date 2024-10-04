@@ -14,7 +14,10 @@ export const GlobalStyle = createGlobalStyle`
 
     ::-webkit-scrollbar {
         width: 8px;
-        height: 5px;
+    }
+    ::-webkit-scrollbar:hover {
+        width: 12px;
+        ${'' /* height: 5px; */}
     }
 
     ::-webkit-scrollbar-corner {
@@ -24,15 +27,16 @@ export const GlobalStyle = createGlobalStyle`
     ::-webkit-scrollbar-track {
         -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
         border-radius: 10px;
-        background-color: transparent;
+        background-color: #d9d9d9;
     }
     
     ::-webkit-scrollbar-thumb {
-        background-color: #2f3142;
+        background-color: #5d5d5d;
         border-radius: 10px;
     }
+    
     ::-webkit-scrollbar-thumb:hover {
-            background-color: darken(#9c9c9c, 5%);
+            background-color: darken(#5d5d5d, 5%);
             border-radius: 10px;
         }
 `;

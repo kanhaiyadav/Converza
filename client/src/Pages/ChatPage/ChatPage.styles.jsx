@@ -76,7 +76,7 @@ export const Body = styled.div`
     flex: 1 1;
     overflow-y: auto;
     background-image: url(/darkBg.svg);;
-    padding: 20px;
+    /* padding: 20px; */
     gap:5px;
     padding-bottom: 100px;
     /* max-height: 80vh; */

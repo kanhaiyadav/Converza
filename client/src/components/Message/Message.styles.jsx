@@ -1,9 +1,10 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
+    margin-left: 10px;
     padding: 5px 10px;
     border-radius: 6px;
-    background: linear-gradient(130deg, ${({ theme }) => theme.colors.secondary}, ${({ theme }) => theme.colors.quaternary});
+    background: linear-gradient(130deg, ${({ theme }) => theme.colors.secondary} 0%, ${({ theme }) => theme.colors.quaternary} 70%);
     width: fit-content;
     max-width: 80%;
     flex-shrink: 0;

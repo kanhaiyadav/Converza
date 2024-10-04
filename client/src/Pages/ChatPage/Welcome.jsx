@@ -8,14 +8,6 @@ const Welcome = ({socket}) => {
     
 
     React.useEffect(() => {
-        const handleMessage = (data) => {
-            console.log("user is inactive");
-            socket.emit('unreadMessage', { roomId: data.roomId, sender: data.message.sender });
-            dispatch(updateBulkJoin({ roomId: data.roomId, message: data.message }));   
-        };
-
-        socket.on(`messageSent`, handleMessage); // Use a unique event name
-
         socket.on('newMessage', (data, callback) => {
             callback({ messageSeen: false });
             console.log("new message received");
@@ -24,7 +16,6 @@ const Welcome = ({socket}) => {
         });
 
         return () => {
-            socket.off(`messageSent`, handleMessage); // Clean up the correct listener
             socket.off('newMessage');
         };
     }, [socket, dispatch]);

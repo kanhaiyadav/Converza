@@ -19,7 +19,7 @@ const roomSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    unreadMessagesSender: {
+    unreadMessageSender: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
