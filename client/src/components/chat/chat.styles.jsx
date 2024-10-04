@@ -60,6 +60,7 @@ export const ChatContainer = styled(NavLink)`
     width: 96%;
     padding: 8px 10px;
     border: 1px solid transparent;
+    position: relative;
     cursor: default;
     &:active{
         transform: scale(0.98);

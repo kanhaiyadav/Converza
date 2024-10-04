@@ -51,7 +51,7 @@ export const BottomNav = styled.div`
 `;
 
 
-export const HomeNav = styled.div`
+export const HomeNavStyles = styled.div`
     position: relative;
     padding: 0px 4px;
     box-sizing: border-box;
@@ -64,7 +64,7 @@ export const HomeNav = styled.div`
     /* position: fixed; */
     /* left: 0px; */
     width: ${({ $menuOpen }) => ($menuOpen ? '170px' : '50px')};
-    z-index: 2;
+    z-index: 20;
     p{
         margin-left: 10px;
         display: ${({ $menuOpen }) => ($menuOpen ? 'inline-block' : 'none')};

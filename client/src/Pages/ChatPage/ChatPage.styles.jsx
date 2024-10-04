@@ -40,15 +40,6 @@ export const HeaderBody = styled.div`
     }
 `;
 
-export const Buttons = styled.div`
-    margin-left: auto;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-`
-
 export const Header = styled.div`
     width: 100%;
     display: flex;
@@ -65,6 +56,14 @@ export const Header = styled.div`
         object-fit: cover;
         padding: 5px;
         background-color: #22222a;
+    }
+    button{
+        background: transparent;
+        border: none;
+        outline: none;
+        font-size: 1.3rem;
+        color: ${({ theme }) => theme.textColors.primary};
+        margin-left: auto;
     }
 
 `;

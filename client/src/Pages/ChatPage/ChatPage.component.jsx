@@ -8,9 +8,10 @@ import CustomButton from '../../components/CustomButton/CutomButton.component';
 import RoundedButton from '../../components/RoundedButton/RoundedButton';
 import Message from '../../components/Message/Message.component';
 import MessageFrom from './MessageForm/MessageForm.component';
-import { roomJoinUpdate, addOneReadMessage, addOneUnreadMessage, markMessagesRead} from '../../redux/contacts/contacts.slice';
+import { roomJoinUpdate, addOneReadMessage, addOneUnreadMessage, markMessagesRead } from '../../redux/contacts/contacts.slice';
 import { useDispatch } from 'react-redux';
 import { NewMessageBanner } from './NewMessageBanner.styles';
+import { RiMenu5Fill } from "react-icons/ri";
 
 const ChatPage = ({ socket }) => {
     const [showUnreadBanner, setShowUnreadBanner] = useState(false);
@@ -57,15 +58,14 @@ const ChatPage = ({ socket }) => {
     // Listen for new messages (use a stable callback)
     useEffect(() => {
         const handleMessage = (data) => {
-            if (data.roomId === room._id)
-            {
+            if (data.roomId === room._id) {
                 console.log("user is active");
                 dispatch(addOneReadMessage({ message: data.message }));
             }
             else {
                 console.log("user is inactive");
                 socket.emit('unreadMessage', { roomId: data.roomId, sender: data.message.sender, messageId: data.message._id });
-                dispatch(addOneUnreadMessage({message: data.message, sender: data.message.sender}));
+                dispatch(addOneUnreadMessage({ message: data.message, sender: data.message.sender }));
             }
         };
 
@@ -117,39 +117,30 @@ const ChatPage = ({ socket }) => {
                     <p>{user.name}</p>
                     <span>Active now</span>
                 </HeaderBody>
-                <Buttons>
-                    <div
-                        style={{
-                            display: 'flex',
-                            border: '1px solid #ccc',
-                            borderRadius: '5px',
-                        }}
-                    />
-                    <CustomButton><i className="fa-solid fa-search" /></CustomButton>
-                </Buttons>
+                <button><RiMenu5Fill /></button>
             </Header>
             <Body>
                 {
                     messages.map((message, index) => {
-                        if(index !== (messagesCount-unreadMessageBannerHeight))
+                        if (index !== (messagesCount - unreadMessageBannerHeight))
                             return <Message key={message._id} message={message} currId={me._id} socket={socket} roomId={room._id} color="#00ff00" />
                         else {
                             if ((contact.room.unreadMessageSender !== me._id) && showUnreadBanner)
                                 return (
                                     <>
-                                    <NewMessageBanner><p>You have unread messages</p></NewMessageBanner>
-                                    <Message key={message._id} message={message} currId={me._id} socket={socket} roomId={room._id} color="#00ff00" />
+                                        <NewMessageBanner><p>You have unread messages</p></NewMessageBanner>
+                                        <Message key={message._id} message={message} currId={me._id} socket={socket} roomId={room._id} color="#00ff00" />
                                     </>
                                 )
                             else
                                 return <Message key={message._id} message={message} currId={me._id} socket={socket} roomId={room._id} color="#00ff00" />
                         }
                     }
-                )
+                    )
                 }
                 <div ref={endOfMessagesRef} />
                 {unreadMessages.map((message) => (
-                    <Message key={message._id} message={message} currId={me._id} socket={socket} roomId={room._id} color="yellow"/>
+                    <Message key={message._id} message={message} currId={me._id} socket={socket} roomId={room._id} color="yellow" />
                 ))}
             </Body>
             <Footer>
