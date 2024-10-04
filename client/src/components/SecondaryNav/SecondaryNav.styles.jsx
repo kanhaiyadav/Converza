@@ -21,14 +21,6 @@ export const HeaderButtons = styled.div`
     align-items: center;
     justify-content: center;
     gap: 10px;
-    button{
-        font-size: 1.5rem;
-        background: transparent;
-        border: none;
-        outline: none;
-        padding: 8px 12px;
-        border-radius: 5px;
-    }
 `
 
 export const NavHeader = styled.div`

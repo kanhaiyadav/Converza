@@ -33,8 +33,7 @@ const SecondaryNav = ({ socket, type }) => {
                         <CustomButton onClick={() => {
                             console.log('clicked');
                             setAddContactModal(true)
-                        }}><IoAddCircleOutline /></CustomButton>
-                        <CustomButton><LuFilter /></CustomButton>
+                        }}><span style={{fontSize: '1.5rem'}}>+</span><p style={{fontSize: "1rem"}}>New</p></CustomButton>
                         {
                             displayAddContactModal &&
                             <Modal onClick={() => {
@@ -50,7 +49,7 @@ const SecondaryNav = ({ socket, type }) => {
                 <Searchbox>
                     <i className="fa-solid fa-magnifying-glass fa-bounce"></i>
                     <input type="text" placeholder='Search a chat...' />
-                    <CustomButton><i className="fa-solid fa-x"></i></CustomButton>
+                    <button><i className="fa-solid fa-x"></i></button>
                 </Searchbox>
                 <Directory socket={socket} type={type} openModal={() => {
                     setAddContactModal(true)

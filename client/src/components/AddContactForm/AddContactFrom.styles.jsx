@@ -30,10 +30,11 @@ export const Form = styled(motion.form)`
             font-size: 2rem;
             white-space: nowrap;
             color: #bd4fff;
-            text-shadow: 5px 5px 0px rgba(0, 0, 0);
+            text-shadow: 5px 0px 0px black;
+            letter-spacing: 0px;
             font-family: ${({ theme }) => theme.fonts.primary};
             @media screen and (min-width: ${({ theme }) => theme.breakpoints.md}){
-                font-size: 2.5rem;
+                font-size: 2.7rem;
             }
         }
         input{

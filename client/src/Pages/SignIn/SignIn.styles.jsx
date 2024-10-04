@@ -8,6 +8,10 @@ export const AnimatedHeading = styled.h1`
 
 export const Header = styled.div`
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     h1{
         white-space: nowrap;
         overflow: hidden;
@@ -19,6 +23,8 @@ export const Header = styled.div`
         }
     }
     p{
+        max-width: 70%;
+        text-align: center;
         font-size: 1rem;
         color: ${({ theme }) => theme.textColors.tertiary};
         font-family: ${({ theme }) => theme.fonts.handwriting2};
@@ -30,9 +36,9 @@ export const Header = styled.div`
 
 
 export const SubContainer = styled.div`
-    background-image: url(/siginBgV.svg);
+    background-image: url(/signinBgV.svg);
     display: flex;
-    aspect-ratio: 1/2;
+    aspect-ratio: 2/3;
     width: clamp(300px, 80%, 350px);
     background-color: ${({ theme }) => theme.colors.quaternary};
     border-radius: 10px;

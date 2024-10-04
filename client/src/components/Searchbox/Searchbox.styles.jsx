@@ -39,5 +39,13 @@ export const SearchboxContainer = styled.div`
     button{
         color: ${({ theme }) => theme.textColors.primary};
         font-size: inherit;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        padding: 7px;
+        border-radius: 5px;
+        &:hover{
+            background-color: ${({ theme }) => theme.colors.quaternary};
+        }
     }
 `;
