@@ -3,8 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectUserInfo } from '../../redux/user/user.selector';
 import { selectContact, selectMessages, selectUnreadMessages } from '../../redux/contacts/contact.selector';
-import { Container, Header, HeaderBody, Buttons, Body, Footer } from './ChatPage.styles';
-import CustomButton from '../../components/CustomButton/CutomButton.component';
+import { Container, Header, HeaderBody, Body, Footer } from './ChatPage.styles';
 import RoundedButton from '../../components/RoundedButton/RoundedButton';
 import Message from '../../components/Message/Message.component';
 import MessageFrom from './MessageForm/MessageForm.component';
@@ -57,24 +56,9 @@ const ChatPage = ({ socket }) => {
 
     // Listen for new messages (use a stable callback)
     useEffect(() => {
-        const handleMessage = (data) => {
-            if (data.roomId === room._id) {
-                console.log("user is active");
-                dispatch(addOneReadMessage({ message: data.message }));
-            }
-            else {
-                console.log("user is inactive");
-                socket.emit('unreadMessage', { roomId: data.roomId, sender: data.message.sender, messageId: data.message._id });
-                dispatch(addOneUnreadMessage({ message: data.message, sender: data.message.sender }));
-            }
-        };
-
-
         socket.on('messageNotRecieved', (data) => {
             dispatch(addOneUnreadMessage({ message: data.message, userId: me._id }));
         });
-
-        socket.on(`messageSent`, handleMessage); // Use a unique event name
 
         socket.on('newMessage', (data, callback) => {
             console.log("new message received");
