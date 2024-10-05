@@ -1,14 +1,29 @@
+import ReactDOM from "react-dom";
 import { Container, SubContainer } from "./OptionModal.styles";
 
 
 const OptionModal = ({ closeModal, initial, animate, style, children }) => {
-    return (
-        <Container onClick={closeModal}>
+    console.log(document.getElementById('modal-root'));
+    return ReactDOM.createPortal(
+        <Container onClick={(e) => {
+            e.stopPropagation();
+            closeModal();
+        }}
+            onContextMenu={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                closeModal();
+            }}
+        >
             <SubContainer
                 initial={initial}
                 animate={animate}
 
                 onClick={(e) => {
+                    e.stopPropagation();
+                }}
+                onContextMenu={(e) => {
+                    e.preventDefault();
                     e.stopPropagation();
                 }}
 
@@ -18,7 +33,8 @@ const OptionModal = ({ closeModal, initial, animate, style, children }) => {
             >
                 {children}
             </SubContainer>
-        </Container>
+        </Container>,
+        document.getElementById('modal-root')
     );
 };
 

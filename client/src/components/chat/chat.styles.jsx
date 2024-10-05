@@ -1,6 +1,41 @@
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 
+export const OptionsContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    header{
+        padding-bottom: 5px;
+        border-bottom: 1px solid #d9d9d9;
+        p{
+            font-size: 1rem;
+            font-weight: 500;
+            color: ${({ theme }) => theme.textColors.primary};
+        }
+    }
+    section{
+        display: flex;
+        flex-direction: column;
+        div{
+            margin-top: 5px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 10px;
+            &:hover{
+                background-color: ${({ theme }) => theme.colors.secondary};
+            }
+            color: ${({ theme }) => theme.textColors.primary};
+            span{
+                font-size: 0.9rem;
+            }
+        }
+    }
+`;
+
 export const ChatBody = styled.div`
     width: 250px;
     div{

@@ -21,4 +21,5 @@ export const Container = styled.div`
     left: 0px;
     top: 0px;
     background-color: transparent;
+    z-index: 1000;
 `;

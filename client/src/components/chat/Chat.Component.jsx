@@ -7,6 +7,7 @@ import Options from './Options';
 const Chat = ({ contact }) => {
 
     const [options, setOptions] = React.useState(false);
+    const [position, setPosition] = React.useState({ x: 0, y: 0 });
     const me = useSelector(selectUserInfo);
     const { room, user } = contact;
     const date = new Date(room.lastMessage?.createdAt);
@@ -22,6 +23,7 @@ const Chat = ({ contact }) => {
         <ChatContainer to={contact.room._id}
             onContextMenu={(e) => { 
                 e.preventDefault();
+                setPosition({ x: e.pageX, y: e.pageY });
                 setOptions(true);
             }}
         >
@@ -34,7 +36,7 @@ const Chat = ({ contact }) => {
                     <span>{formattedTime}</span>
                 </span>
             </ChatBody>
-            {options && <Options closeOptions={()=>setOptions(false)}/>}
+            {options && <Options closeOptions={() => setOptions(false)} style={{ top: position.y, left: position.x }} contact={contact} />}
         </ChatContainer>
     )
 }
