@@ -9,17 +9,24 @@ import ChatPage from './Pages/ChatPage/ChatPage.component';
 import SignIn from './Pages/SignIn/SignIn.component';
 import { io } from 'socket.io-client';
 import Loader from './components/Loader/Loader';
-// import handleChatEvents from './sockets/chatSocket';
-// import { useDispatch } from 'react-redux';
+import { deleteMessage } from './redux/contacts/contacts.slice';
+import { useDispatch } from 'react-redux';
 
 const socket = io("http://localhost:5000");
 
 function App({ theme, setTheme }) {
     const [isLoading, setIsLoading] = useState(true);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         setIsLoading(false);
-    }, []);
+        socket.on('messageDeleted', (data) => {
+            dispatch(deleteMessage(data));
+        });
+        return () => {
+            socket.off('messageDeleted');
+        };
+    }, [dispatch]);
 
     return (
         <>

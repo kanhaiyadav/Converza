@@ -11,8 +11,13 @@ import { roomJoinUpdate, addOneReadMessage, addOneUnreadMessage, markMessagesRea
 import { useDispatch } from 'react-redux';
 import { NewMessageBanner } from './NewMessageBanner.styles';
 import { RiMenu5Fill } from "react-icons/ri";
+import Options from './options';
+import { useNavigate } from 'react-router-dom';
+
 
 const ChatPage = ({ socket }) => {
+    const [options, setOptions] = React.useState(false);
+    const [position, setPosition] = React.useState({ x: 0, y: 0 });
     const [showUnreadBanner, setShowUnreadBanner] = useState(false);
     const id = useParams().id;
     const contact = useSelector(selectContact(id));
@@ -24,6 +29,7 @@ const ChatPage = ({ socket }) => {
     const unreadMessages = useSelector(selectUnreadMessages(room._id));
     const unreadMessageBannerHeight = contact.room.unreadMessageBannerHeight ? contact.room.unreadMessageBannerHeight : 0;
     const messagesCount = messages.length;
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (unreadMessageBannerHeight > 0) {
@@ -93,6 +99,10 @@ const ChatPage = ({ socket }) => {
         };
     }, [socket, room._id, dispatch, contact._id, me._id]);
 
+    const closeChat = () => {
+        navigate("../");
+    };
+
     return (
         <Container>
             <Header>
@@ -103,7 +113,13 @@ const ChatPage = ({ socket }) => {
                 </HeaderBody>
                 <button><RiMenu5Fill /></button>
             </Header>
-            <Body>
+            <Body
+                onContextMenu={(e) => {
+                    e.preventDefault();
+                    setPosition({ x: e.pageX, y: e.pageY });
+                    setOptions(true);
+                }}
+            >
                 {
                     messages.map((message, index) => {
                         if (index !== (messagesCount - unreadMessageBannerHeight))
@@ -133,6 +149,8 @@ const ChatPage = ({ socket }) => {
                     <i className="fa-solid fa-paper-plane" />
                 </RoundedButton>
             </Footer>
+            {options && <Options closeChat={closeChat} closeOptions={() => setOptions(false)} style={{ top: position.y, left: position.x }} contact={contact} />}
+
         </Container>
     );
 };

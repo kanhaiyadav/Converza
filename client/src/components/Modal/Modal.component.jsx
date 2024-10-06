@@ -1,10 +1,11 @@
+import ReactDOM from "react-dom";
 import RoundedButton from "../RoundedButton/RoundedButton";
 import { OuterContainer, InnerContainer } from "./Modal.styles";
 import { ImCross } from "react-icons/im";
 
 
-const Modal = ({ children, onClick, ...otherProps }) => {
-    return (
+const Modal = ({ children, onClick, innerStyles, ...otherProps }) => {
+    return ReactDOM.createPortal(
         <OuterContainer onClick={onClick} {...otherProps}>
             <InnerContainer onClick={(e) => {
                 e.stopPropagation();
@@ -17,11 +18,15 @@ const Modal = ({ children, onClick, ...otherProps }) => {
                     }
                 }}
                 exit={{ scale: 0 }}
+                style={{
+                    ...innerStyles
+                }}
             >
                 <RoundedButton onClick={onClick} style={{ position: 'absolute', top: '8px', right: '8px' }}><ImCross /></RoundedButton>
                 {children}
             </InnerContainer>
-        </OuterContainer>
+        </OuterContainer>,
+        document.getElementById('modal-root')
     )
 }
 

@@ -22,5 +22,5 @@ export const OuterContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 10;
+    z-index: 1000;
 `;

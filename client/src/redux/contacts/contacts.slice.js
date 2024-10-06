@@ -136,6 +136,28 @@ const contactsSlice = createSlice({
                 // console.log(contact.room.readMessages);
             }
         },
+        deleteMessage: (state, action) => {
+            const contact = state.contacts[action.payload.roomId];
+            if (contact) {
+                const readMessages = { ...contact.room.readMessages };
+                const unreadMessages = { ...contact.room.unreadMessages };
+
+                if (readMessages[action.payload.messageId]) {
+                    const message = readMessages[action.payload.messageId];
+                    message.content = "This message has been deleted";
+                    message.status = "deleted";
+                    readMessages[action.payload.messageId] = message;
+                }
+                else if (unreadMessages[action.payload.messageId]) {
+                    const message = unreadMessages[action.payload.messageId];
+                    message.content = "This message has been deleted";
+                    message.status = "deleted";
+                    unreadMessages[action.payload.messageId] = message;
+                }
+                // contact.room.readMessages = readMessages;
+                // contact.room.unreadMessages = unreadMessages;
+            }
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(getContacts.fulfilled, (state, action) => {
@@ -167,6 +189,6 @@ const contactsSlice = createSlice({
     }
 });
 
-export const { updateBulkJoin, markMessagesRead, roomJoinUpdate, addOneReadMessage, addOneUnreadMessage } = contactsSlice.actions;
+export const { deleteMessage, updateBulkJoin, markMessagesRead, roomJoinUpdate, addOneReadMessage, addOneUnreadMessage } = contactsSlice.actions;
 
 export default contactsSlice.reducer;

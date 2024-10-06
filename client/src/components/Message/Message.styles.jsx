@@ -4,7 +4,21 @@ export const Container = styled.div`
     margin-left: 10px;
     padding: 5px 10px;
     border-radius: 6px;
-    background: linear-gradient(130deg, ${({ theme }) => theme.colors.secondary} 0%, ${({ theme }) => theme.colors.quaternary} 70%);
+    background: ${({ $isCurrentUser, $isDeleted, theme }) => {
+        if ($isDeleted) {
+            return "#ff000022";
+        } else {
+            console.log($isCurrentUser);
+            if ($isCurrentUser) {
+                return "linear-gradient(130deg, #4A00E0 0%, #8E2DE2 100%)";
+            } else {
+                return `linear-gradient(130deg, ${theme.colors.secondary} 0%, ${theme.colors.quaternary} 70%)`;
+            }
+        }
+    }};
+    align-self: ${({ $isCurrentUser }) => $isCurrentUser ? 'flex-end' : 'flex-start'};
+    text-align: ${({ $isCurrentUser }) => $isCurrentUser ? 'right' : 'left'};
+    margin-right: ${({ $isCurrentUser }) => $isCurrentUser ? '10px' : '0px'};
     width: fit-content;
     max-width: 80%;
     flex-shrink: 0;
@@ -14,7 +28,14 @@ export const Container = styled.div`
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
     p{
         font-size: 1rem;
-        color: ${({ theme }) => theme.textColors.primary};
+        color: ${({ theme, $isCurrentUser, $isDeleted }) => {
+            if ($isDeleted) {
+                return "gray";
+            } else {
+                return $isCurrentUser ? "white" : theme.textColors.primary;
+            }
+        }};
+        font-style: ${({ $isDeleted }) => $isDeleted ? "italic" : "normal"};
         display: inline-block;
         font-family: 'Playwrite De Grund';
     }

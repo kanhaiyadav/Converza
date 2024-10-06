@@ -33,7 +33,7 @@ const Welcome = ({ socket }) => {
         >
             <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke="none" stroke-width="0" fill="#932ef9">
+                    <path stroke="none"  fill="#932ef9">
                         <animate
                             attributeName='d'
                             dur='5s'
@@ -49,7 +49,7 @@ const Welcome = ({ socket }) => {
                     </path>
                 </svg>
                 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke="none" stroke-width="0" fill="#be55f6">
+                    <path stroke="none"  fill="#be55f6">
                         <animate
                             attributeName='d'
                             dur='5s'
@@ -65,7 +65,7 @@ const Welcome = ({ socket }) => {
                     </path>
                 </svg>
                 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke="none" stroke-width="0" fill="#df55e5">
+                    <path stroke="none"  fill="#df55e5">
                         <animate
                             attributeName='d'
                             dur='5s'

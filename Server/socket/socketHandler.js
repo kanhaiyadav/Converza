@@ -1,5 +1,5 @@
 import { Server } from "socket.io";
-import Message from '../models/message.js';
+import Message from "../Models/message.js";
 import Room from '../models/room.js';
 
 const initializeSocket = (server) => {
@@ -106,6 +106,13 @@ const initializeSocket = (server) => {
                     console.log(err);
                 }
             }
+        });
+        socket.on('deleteMessage', async (data) => {
+            const message = await Message.findById(data.messageId);
+            message.status = 'deleted';
+            message.content = 'This message has been deleted';
+            message.save();
+            io.to(data.roomId).emit('messageDeleted', { messageId: data.messageId, roomId: data.roomId });
         });
         // socket.on('messageSeen', async (data) => {
         //     handleReadMessage(data);

@@ -23,7 +23,7 @@ export const OptionsContainer = styled.div`
             align-items: center;
             gap: 5px;
             cursor: pointer;
-            padding: 6px;
+            padding: 6px 10px;
             border-radius: 10px;
             &:hover{
                 background-color: ${({ theme }) => theme.colors.secondary};

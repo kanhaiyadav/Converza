@@ -1,8 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Container } from "./Message.styles";
 import { MdCircle } from "react-icons/md";
+import Options from "./Options";
 
 const Message = ({ message, currId, socket, roomId, color }) => {
+    const [options, setOptions] = React.useState(false);
+    const [position, setPosition] = React.useState({ x: 0, y: 0 });
     const { content, sender } = message;
     const isSentByCurrentUser = sender === currId;
     
@@ -16,23 +19,34 @@ const Message = ({ message, currId, socket, roomId, color }) => {
     // Format time as HH:MM
     const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
 
+    const deleteMessage = () => {
+        socket.emit("deleteMessage", { roomId, messageId: message._id });
+    };
 
     return (
-        <Container style={{
-            alignSelf: isSentByCurrentUser ? 'flex-end' : 'flex-start',
-            background: isSentByCurrentUser && "linear-gradient(130deg, #4A00E0 0%, #8E2DE2 100%)",
-            textAlign: isSentByCurrentUser ? 'right' : 'left',
-            marginRight: isSentByCurrentUser ? '10px' : '0px',
-        }}>
-            <p style={{ color: isSentByCurrentUser && "white"}}>{content}</p>
-            <span style={{ color: isSentByCurrentUser && "white", alignSelf: isSentByCurrentUser ? 'flex-end' : 'flex-start', }}>
+        <Container 
+            $isCurrentUser={isSentByCurrentUser}
+            $isDeleted={message.status === "deleted"}
+
+            onContextMenu={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                setPosition({ x: e.pageX, y: e.pageY });
+                setOptions(true);
+            }}
+        
+        >
+            <p>{content}</p>
+            {message.status !== "deleted" && <span style={{ color: isSentByCurrentUser && "white", alignSelf: isSentByCurrentUser ? 'flex-end' : 'flex-start', }}>
                 {formattedTime}
                 {
                     isSentByCurrentUser && (
                         <MdCircle style={{ color: color, fontSize: "0.7rem", marginLeft: "5px" }} />
                     )
                 }
-            </span>
+            </span>}
+            {options && isSentByCurrentUser && <Options deleteMessage={deleteMessage} closeOptions={() => setOptions(false)} style={{ top: position.y, left: position.x }} />}
+
         </Container>
     );
 };
