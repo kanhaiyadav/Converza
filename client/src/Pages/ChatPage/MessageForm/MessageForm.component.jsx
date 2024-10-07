@@ -1,11 +1,15 @@
-import { Form } from "./Message.styles";
+import { Form, EmojiContainer } from "./Message.styles";
 import { useState } from "react";
 import { selectUserInfo } from "../../../redux/user/user.selector";
 import { useSelector } from 'react-redux';
+import data from '@emoji-mart/data'
+import Picker from '@emoji-mart/react'
+import OptionModal from "../../../components/OptionModal/OptionModal";
 
 
 const MessageFrom = ({ socket, contact }) => {
-
+    const [position, setPosition] = useState({ x: 0, y: 0 });
+    const [emoji, setEmoji] = useState(false);
     const { room, user } = contact;
     const me = useSelector(selectUserInfo);
 
@@ -13,6 +17,9 @@ const MessageFrom = ({ socket, contact }) => {
     const handleMessageChange = (e) => {
         setMessage(e.target.value);
     }
+    const addEmoji = (emoji) => {
+        setMessage(message + emoji.native);
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -34,12 +41,19 @@ const MessageFrom = ({ socket, contact }) => {
         <Form id='message-form'
             onSubmit={handleSubmit}
         >
-            <span style={{
+            <div style={{
                 borderRadius: '50%',
                 padding: '8px',
                 color: 'grey',
 
-            }}><i className="fa-regular fa-face-smile"></i></span>
+            }}
+                onClick={(e) => {
+                    setPosition({ x: e.pageX, y: e.pageY });
+                    setEmoji(!emoji);
+                }}
+            >
+                <i className="fa-regular fa-face-smile"></i>
+            </div>
             <span
                 style={{
                     borderRadius: '50%',
@@ -50,6 +64,22 @@ const MessageFrom = ({ socket, contact }) => {
                 }}
             ><i className="fa-solid fa-paperclip"></i></span>
             <input onChange={handleMessageChange} type="text" placeholder='Type a message...' name="message" value={message} autoFocus required />
+            {
+                emoji &&
+                <OptionModal closeModal={() => setEmoji(false)}
+                        initial={{ top: position.y-100, opacity: 0 }}
+                        animate={{ top: position.y - 470, opacity: 1 }}
+                        transition={{ type: 'spring', stiffness: 200, damping: 17, duration: 0.1 }}
+                    innerStyle={{
+                        top: position.y-470,
+                        left: position.x - 10,
+                        backgroundColor: 'transparent',
+                        padding: '0',
+                        boxShadow: 'none',
+                    }}>
+                    <Picker data={data} onEmojiSelect={addEmoji} />
+                </OptionModal>
+            }
         </Form>
     )
 };

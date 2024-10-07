@@ -75,5 +75,5 @@ export const HomeLayoutContainer = styled.div`
     display: grid;
     grid-template-columns: 50px 1fr;
     width: 100%;
-    background-color: ${({ theme })=> theme.colors.secondary};
+    background-color: ${({ theme }) => theme.colors.secondary};
 `;

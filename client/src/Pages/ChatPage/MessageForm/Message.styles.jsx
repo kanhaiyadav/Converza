@@ -1,6 +1,7 @@
 import styled from "styled-components"
 
 export const Form = styled.form`
+    position: relative;
     display: flex;
     flex: 1 1 auto;
     gap: 10px;

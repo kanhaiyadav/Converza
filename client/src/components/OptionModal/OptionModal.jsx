@@ -2,7 +2,7 @@ import ReactDOM from "react-dom";
 import { Container, SubContainer } from "./OptionModal.styles";
 
 
-const OptionModal = ({ closeModal, initial, animate, outerStyle, innerStyle, children }) => {
+const OptionModal = ({ closeModal, initial, animate, transition, outerStyle, innerStyle, children }) => {
     console.log(document.getElementById('modal-root'));
     return ReactDOM.createPortal(
         <Container
@@ -22,6 +22,7 @@ const OptionModal = ({ closeModal, initial, animate, outerStyle, innerStyle, chi
             <SubContainer
                 initial={initial}
                 animate={animate}
+                transition={transition}
 
                 onClick={(e) => {
                     e.stopPropagation();

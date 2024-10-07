@@ -5,8 +5,6 @@ export const SubContainer = styled(motion.div)`
     position: absolute;
     display: flex;
     flex-direction: column;
-    bottom: 10px;
-    left: 60px;
     padding: 10px;
     background-color: ${({ theme }) => theme.colors.quaternary};
     box-shadow: 3px 3px 10px rgba(0,0,0,0.6);
@@ -22,4 +20,5 @@ export const Container = styled.div`
     top: 0px;
     background-color: transparent;
     z-index: 1000;
+    overflow: hidden;
 `;
