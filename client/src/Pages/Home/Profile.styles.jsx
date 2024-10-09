@@ -24,7 +24,7 @@ export const Header = styled.div`
         }
         span{
             font-size: 1.2rem;
-            color: #bcbcbc;
+            color: ${({ theme }) => theme.textColors.primary};
             font-family: 'Open Sans', sans-serif;
         }
     }
@@ -41,11 +41,13 @@ export const Body = styled.div`
     overflow-y: auto;
     margin-top: 10px;
     div{
+        background-color: #7c7e9450;
+        backdrop-filter: blur(1px);
         width: 100%;
         font-size: 1.2rem;
         display: flex;
         align-items: center;
-        color: #bcbcbc;
+        color: ${({ theme }) => theme.textColors.primary};
         gap: 10px;
         border-radius: 10px;
         padding: 10px;

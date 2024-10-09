@@ -30,7 +30,7 @@ const MessageFrom = ({ socket, contact }) => {
             room: room._id,
             contact: contact._id,
         }, (err, responce) => {
-            if (err) {
+            if (err) {  
                 console.log(err);
             }
             console.log(responce);

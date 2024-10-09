@@ -50,7 +50,7 @@ export const ChatBody = styled.div`
             width: fit-content;
             font-size: 0.95rem;
             font-weight: 500;
-            color: #d9d9d9;
+            color: ${({ theme }) => theme.textColors.primary};
         }
         p{
             display: flex;
@@ -107,7 +107,7 @@ export const ChatContainer = styled(NavLink)`
         border-radius: 50%;
         object-fit: contain;
         margin-right: 10px;
-        background-color: #22222a;
+        background-color: #bbbbbb;
     }
     &:hover{
         background-color: ${({ theme }) => theme.colors.quaternary};

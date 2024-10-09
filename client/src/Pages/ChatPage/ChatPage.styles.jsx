@@ -19,6 +19,33 @@ const slideUp = keyframes`
     }`;
 
 
+export const NoMessagesContainer = styled.div`
+    padding: 30px 100px;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    width: fit-content;
+    flex-direction: column;
+    background-color: #2f314252;
+    backdrop-filter: blur(2px);
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
+    box-shadow: 0px 0px 10px 5px rgba(0,0,0,0.1);
+    img{
+        height: 410px;
+    }
+    span{
+        font-size: 1.1rem;
+        font-weight: 500;
+        color: ${({ theme }) => theme.textColors.primary};
+        text-align: center;
+    }
+`;
+
+
 export const HeaderBody = styled.div`
     display: flex;
     flex-direction: column;
@@ -27,7 +54,7 @@ export const HeaderBody = styled.div`
         margin: 0px;
         font-size: 0.95rem;
         font-weight: 500;   
-        color: #d9d9d9;
+        color: ${({ theme }) => theme.textColors.primary};
         font-family: 'Open Sans';
     }
     span{
@@ -55,7 +82,7 @@ export const Header = styled.div`
         border-radius: 50%;
         object-fit: cover;
         padding: 5px;
-        background-color: #22222a;
+        background-color: #bbbbbb;
     }
     button{
         background: transparent;
@@ -69,6 +96,7 @@ export const Header = styled.div`
 `;
 
 export const Body = styled.div`
+    position: relative;
     box-shadow: ${({ theme }) => theme.shadows.inner};
     display: flex;
     flex-direction: column;
@@ -82,6 +110,7 @@ export const Body = styled.div`
     overflow-x: hidden;
     overflow-y: auto;
     width: 100%;
+    padding-top: 20px;
     background-color: ${({ theme }) => {
     if (theme.type === 'light') {
         return '#f0f0f0;'

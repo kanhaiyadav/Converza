@@ -46,6 +46,26 @@ export const newContact = createAsyncThunk('contacts/newContact', async (data) =
     }
 });
 
+export const clearChat = createAsyncThunk('contacts/clearChat', async (roomId) => {
+    try {
+        const response = await fetch(`http://localhost:3000/api/v1/contact/clearChat/${roomId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        if (response.ok) {
+            const data = await response.json();
+            return data;
+        } else {
+            const data = await response.json();
+            throw new Error(data.message);
+        }
+    } catch (err) {
+        throw err;
+    }
+});
+
 const contactsSlice = createSlice({
     name: 'contacts',
     initialState,
@@ -154,38 +174,37 @@ const contactsSlice = createSlice({
                     message.status = "deleted";
                     unreadMessages[action.payload.messageId] = message;
                 }
-                // contact.room.readMessages = readMessages;
-                // contact.room.unreadMessages = unreadMessages;
             }
         },
     },
     extraReducers: (builder) => {
         builder.addCase(getContacts.fulfilled, (state, action) => {
-            // Create a new object to hold the updated contacts
             const newContacts = { ...state.contacts };
 
-            // Populate the new object with the contacts from the action payload
             action.payload.data.contacts.forEach(contact => {
                 newContacts[contact.room._id] = contact;
             });
 
-            // Assign the new object to state.contacts
             state.contacts = newContacts;
 
             console.log(action.payload.data.contacts);
         });
 
-        // builder.addCase(getContacts.fulfilled, (state, action) => {
-        //     action.payload.data.contacts.forEach(contact => {
-        //         state.contacts = { ...state.contacts, [contact.room._id]: contact };
-        //     });
-        //     console.log(action.payload.data.contacts);
-        //     // state.contacts = action.payload.data.contacts;
-        // });
         builder.addCase(newContact.fulfilled, (state, action) => {
             state.contacts = { ...state.contacts, [action.payload.data.contact.room._id]: action.payload.data.contact };
-            // state.contacts.push(action.payload.data.contact);
         })
+
+        builder.addCase(clearChat.fulfilled, (state, action) => {
+            const contact = state.contacts[action.meta.arg];
+            if (contact) {
+                contact.room.readMessages = [];
+                contact.room.unreadMessages = [];
+                contact.room.readMessagesCount = 0;
+                contact.room.unreadMessagesCount = 0;
+                contact.room.unreadMessageSender = null;
+                contact.room.lastMessage = null;
+            }
+        });
     }
 });
 

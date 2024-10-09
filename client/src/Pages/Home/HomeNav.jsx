@@ -26,9 +26,9 @@ const HomeNav = ({theme, setTheme}) => {
             </NavItem>
             <BottomNav>
                 <NavItem as='div' onClick={() => setProfile(true)}><span></span><i className="fa-solid fa-user"></i><p>Profile</p></NavItem>
-                <NavItem as='div' onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}><span></span><i className="fa-solid fa-moon"></i><p>Theme</p></NavItem>
+                {/* <NavItem as='div' onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}><span></span><i className="fa-solid fa-moon"></i><p>Theme</p></NavItem> */}
             </BottomNav>
-            {profile && <Profile closeProfile={() => setProfile(false)} />}
+            {profile && <Profile closeProfile={() => setProfile(false)} theme={theme} setTheme={setTheme} />}
         </HomeNavStyles>
     );
 }

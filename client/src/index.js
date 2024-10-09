@@ -15,7 +15,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const AppWrapper = () => {
-    const [theme, setTheme] = useState('dark');
+    const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
 
     const themes = {
         light: lightTheme,

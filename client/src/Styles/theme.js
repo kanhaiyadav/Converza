@@ -91,7 +91,7 @@ export const lightTheme = {
         transparent: "transparent",
     },
     textColors: {
-        primary: "#000000",
+        primary: "#2a2a2a",
         secondary: "#ffffff",
         tertiary: "#c7c7c7",
         quaternary: "#ededed",
@@ -138,7 +138,7 @@ export const darkTheme = {
         transparent: "transparent",
     },
     textColors: {
-        primary: "#ffffff",
+        primary: "#bcbcbc",
         secondary: "#000000",
         tertiary: "#c7c7c7",
         quaternary: "#ededed",

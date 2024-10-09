@@ -15,9 +15,11 @@ const Chat = ({ contact }) => {
     // Get local time hours and minutes
     const hours = date.getHours();  // Get the hours in the local time zone
     const minutes = date.getMinutes();  // Get the minutes in the local time zone
+    let formattedTime = ''
 
     // Format time as HH:MM
-    const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+    if(hours && minutes)
+        formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
 
     return (
         <ChatContainer to={contact.room._id}

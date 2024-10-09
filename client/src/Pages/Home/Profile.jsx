@@ -3,20 +3,21 @@ import { Header, Body } from "./Profile.styles";
 import { useSelector } from "react-redux";
 import { selectUserInfo } from "../../redux/user/user.selector";
 import { FiUserPlus } from "react-icons/fi";
-import { LuUserCog } from "react-icons/lu";
+import { FaRegSun } from "react-icons/fa6";
+import { BsMoonStars } from "react-icons/bs";
+// import { LuUserCog } from "react-icons/lu";
 import { PiSignOutFill } from "react-icons/pi";
 import { logout } from "../../actions/authActions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import OptionModal from "../../components/OptionModal/OptionModal";
 
-const Profile = ({ closeProfile }) => {
-    const [position, setPosition] = useState({ x: 0, y: 0 });
-    const [settings, setSettings] = useState(false);
+const Profile = ({ closeProfile, theme, setTheme }) => {
+    // const [position, setPosition] = useState({ x: 0, y: 0 });
+    // const [settings, setSettings] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const user = useSelector(selectUserInfo);
-    console.log(position)
     return (
         <OptionModal
             initial={{ opacity: 0, x: '-100%' }}
@@ -27,6 +28,7 @@ const Profile = ({ closeProfile }) => {
                 left: "60px",
                 width: "300px",
                 height: "400px",
+                background: theme === 'light' ? 'url(/sunny.svg)' : 'url(/moon.svg)',
             }}
         >
             <Header>
@@ -42,6 +44,27 @@ const Profile = ({ closeProfile }) => {
                     <span>Add Contact</span>
                 </div>
                 <div
+                    onClick={() => {
+                        setTheme(theme === 'light' ? 'dark' : 'light');
+                        localStorage.setItem('theme', theme === 'light' ? 'dark' : 'light');
+                    }}
+                >
+                    {
+                        theme === 'light' ? (
+                            <>
+                                <BsMoonStars />
+                                <span>Dark Theme</span>
+                            </>
+                        ) : (
+                            <>
+                                <FaRegSun />
+                                <span>Light Theme</span>
+                            </>
+                        )
+                    }
+
+                </div>
+                {/* <div
                     onClick={(e) => {
                         setPosition({ x: e.pageX, y: e.pageY });
                         setSettings(true)
@@ -49,7 +72,7 @@ const Profile = ({ closeProfile }) => {
                 >
                     <LuUserCog />
                     <span>Profile & Settings</span>
-                </div>
+                </div> */}
                 <div
                     onClick={(e) => {
                         dispatch(logout());
@@ -61,7 +84,7 @@ const Profile = ({ closeProfile }) => {
                 </div>
 
             </Body>
-            {settings && (
+            {/* {settings && (
                 <OptionModal closeModal={() => setSettings(false)}
                     initial={{ opacity: 0, scale: 0.3}}
                     animate={{ opacity: 1, scale: 1 }}
@@ -86,7 +109,7 @@ const Profile = ({ closeProfile }) => {
                     </div>
                 </OptionModal>
             )
-            }
+            } */}
         </OptionModal>
     );
 };

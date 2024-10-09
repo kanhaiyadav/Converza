@@ -13,6 +13,7 @@ import { NewMessageBanner } from './NewMessageBanner.styles';
 import { RiMenu5Fill } from "react-icons/ri";
 import Options from './options';
 import { useNavigate } from 'react-router-dom';
+import NoMessages from './NoMessages';
 
 
 const ChatPage = ({ socket }) => {
@@ -116,32 +117,61 @@ const ChatPage = ({ socket }) => {
             <Body
                 onContextMenu={(e) => {
                     e.preventDefault();
-                    setPosition({ x: e.pageX, y: e.pageY });
+                    const menuWidth = 150; // Approximate width of the options menu
+                    const menuHeight = 75; // Approximate height of the options menu
+                    const windowWidth = window.innerWidth;
+                    const windowHeight = window.innerHeight;
+
+                    let x = e.pageX;
+                    let y = e.pageY;
+
+                    console.log(x + menuWidth, windowWidth);
+                    console.log(y + menuHeight, windowHeight);
+
+                    // Check if the menu would overflow on the right
+                    if (x + menuWidth > windowWidth) {
+                        x = windowWidth - menuWidth;
+                    }
+
+                    // Check if the menu would overflow on the bottom
+                    if (y + menuHeight > windowHeight) {
+                        y = windowHeight - menuHeight;
+                    }
+                    setPosition({ x: x, y: y });
                     setOptions(true);
                 }}
             >
                 {
-                    messages.map((message, index) => {
-                        if (index !== (messagesCount - unreadMessageBannerHeight))
-                            return <Message key={message._id} message={message} currId={me._id} socket={socket} roomId={room._id} color="#00ff00" />
-                        else {
-                            if ((contact.room.unreadMessageSender !== me._id) && showUnreadBanner)
-                                return (
-                                    <>
-                                        <NewMessageBanner><p>You have unread messages</p></NewMessageBanner>
-                                        <Message key={message._id} message={message} currId={me._id} socket={socket} roomId={room._id} color="#00ff00" />
-                                    </>
+                    messages.length === 0 && unreadMessages.length === 0 ? (
+                        <NoMessages />
+                    ) : (
+                        <>
+                            {
+
+                                messages.map((message, index) => {
+                                    if (index !== (messagesCount - unreadMessageBannerHeight))
+                                        return <Message key={message._id} message={message} currId={me._id} socket={socket} roomId={room._id} color="#00ff00" />
+                                    else {
+                                        if ((contact.room.unreadMessageSender !== me._id) && showUnreadBanner)
+                                            return (
+                                                <>
+                                                    <NewMessageBanner><p>You have unread messages</p></NewMessageBanner>
+                                                    <Message key={message._id} message={message} currId={me._id} socket={socket} roomId={room._id} color="#00ff00" />
+                                                </>
+                                            )
+                                        else
+                                            return <Message key={message._id} message={message} currId={me._id} socket={socket} roomId={room._id} color="#00ff00" />
+                                    }
+                                }
                                 )
-                            else
-                                return <Message key={message._id} message={message} currId={me._id} socket={socket} roomId={room._id} color="#00ff00" />
-                        }
-                    }
+                            }
+                            <div ref={endOfMessagesRef} />
+                            {unreadMessages.map((message) => (
+                                <Message key={message._id} message={message} currId={me._id} socket={socket} roomId={room._id} color="yellow" />
+                            ))}
+                        </>
                     )
                 }
-                <div ref={endOfMessagesRef} />
-                {unreadMessages.map((message) => (
-                    <Message key={message._id} message={message} currId={me._id} socket={socket} roomId={room._id} color="yellow" />
-                ))}
             </Body>
             <Footer>
                 <MessageFrom socket={socket} contact={contact} />

@@ -7,8 +7,6 @@ export const CustomStyledButton = styled.button`
     justify-content: center;
     gap: 5px;
     margin: auto;
-    width: fit-content;
-    flex: 0 0 auto;
     font-size: 1.1rem;
     border: none;
     outline: none;
@@ -16,7 +14,13 @@ export const CustomStyledButton = styled.button`
     border-radius: 5px;
     color: white;
     background-color: #4b00e0;
+    transition: all 0.1s;
     &:hover{
-        background-color: ${({ theme }) => theme.colors.quaternary};
+        box-shadow: 0 0 8px 5px rgba(0,0,0,0.5);
+        scale: 1.05;
+    }
+    &:active{
+        box-shadow: 0 0 8px 5px rgba(0,0,0,0.5);
+        scale: 0.95;
     }
 `

@@ -27,7 +27,6 @@ const initializeSocket = (server) => {
                 readMessages: messages,
                 unreadMessages: unreadMessages,
             });
-            console.log(room.unreadMessageSender.toString(), data.userId, room.unreadMessageSender.toString() !== data.userId);
             if (room.unreadMessageSender && (room.unreadMessageSender.toString() !== data.userId)) {
                 room.unreadMessagesCount = 0;
                 unreadMessages.map(async (message) => {
