@@ -11,7 +11,7 @@ export const Header = styled.div`
         width: 100px;
         border-radius: 50%;
         padding: 5px;
-        background-color: ${({ theme }) => theme.colors.secondary};
+        background-color: #bbbbbb;
     }
     div{
         display: flex;
@@ -24,7 +24,7 @@ export const Header = styled.div`
         }
         span{
             font-size: 1.2rem;
-            color: ${({ theme }) => theme.textColors.primary};
+            color: gray;
             font-family: 'Open Sans', sans-serif;
         }
     }
@@ -42,7 +42,7 @@ export const Body = styled.div`
     margin-top: 10px;
     div{
         background-color: #7c7e9450;
-        backdrop-filter: blur(1px);
+        backdrop-filter: blur(2px);
         width: 100%;
         font-size: 1.2rem;
         display: flex;

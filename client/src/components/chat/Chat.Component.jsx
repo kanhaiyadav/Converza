@@ -18,6 +18,8 @@ const Chat = ({ contact }) => {
     let formattedTime = ''
 
     // Format time as HH:MM
+
+    
     if(hours && minutes)
         formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
 

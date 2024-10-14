@@ -12,6 +12,11 @@ const Directory = ({ socket, type, openModal }) => {
     const contacts = useSelector(selectContacts);
     const blank_room = '66f9499a5fd39ff250be10f9';
     const [contactsArray, setContactsArray] = React.useState(Object.values(contacts));
+
+    React.useEffect(() => {
+        setContactsArray(Object.values(contacts));
+    }, [contacts]);
+    
     React.useEffect(() => {
         const joinRooms = async () => {
             // Join all the contact rooms sequentially
@@ -82,6 +87,7 @@ const Directory = ({ socket, type, openModal }) => {
                 {
                     Object.values(contacts).length !== 0 ?
                         contactsArray.map((contact, index) => {
+                            console.log(contact, contact.room.unreadMessageSender, me._id, contact.room.unreadMessagesCount);
                             return <Chat contact={contact} key={index} />
                         })
                         :

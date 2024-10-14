@@ -7,7 +7,7 @@ import { Container, Header, HeaderBody, Body, Footer } from './ChatPage.styles';
 import RoundedButton from '../../components/RoundedButton/RoundedButton';
 import Message from '../../components/Message/Message.component';
 import MessageFrom from './MessageForm/MessageForm.component';
-import { roomJoinUpdate, addOneReadMessage, addOneUnreadMessage, markMessagesRead } from '../../redux/contacts/contacts.slice';
+import { roomJoinUpdate, addOneReadMessage, addOneUnreadMessage, markMessagesRead, bannerShown } from '../../redux/contacts/contacts.slice';
 import { useDispatch } from 'react-redux';
 import { NewMessageBanner } from './NewMessageBanner.styles';
 import { RiMenu5Fill } from "react-icons/ri";
@@ -32,17 +32,19 @@ const ChatPage = ({ socket }) => {
     const messagesCount = messages.length;
     const navigate = useNavigate();
 
+
     useEffect(() => {
         if (unreadMessageBannerHeight > 0) {
             setShowUnreadBanner(true);
 
             const timer = setTimeout(() => {
+                dispatch(bannerShown({ roomId: room._id }));
                 setShowUnreadBanner(false);
             }, 5000);
 
             return () => clearTimeout(timer);
         }
-    }, [unreadMessageBannerHeight]); // Use length instead of the full array to avoid deep comparisons
+    }, [unreadMessageBannerHeight, dispatch, room._id]); // Use length instead of the full array to avoid deep comparisons
 
 
 
@@ -68,7 +70,7 @@ const ChatPage = ({ socket }) => {
         });
 
         socket.on('newMessage', (data, callback) => {
-            console.log("new message received");
+            console.log(contact.room.unreadMessageSender, me._id);
             if (data.roomId === room._id) {
                 callback({ messageSeen: true });
                 dispatch(addOneReadMessage({ message: data.message }));
@@ -98,7 +100,7 @@ const ChatPage = ({ socket }) => {
             socket.off('markMessagesRead');
             socket.off('newMessage');
         };
-    }, [socket, room._id, dispatch, contact._id, me._id]);
+    }, [socket, room._id, dispatch, contact._id, me._id, contact.room.unreadMessageSender]);
 
     const closeChat = () => {
         navigate("../");
@@ -152,13 +154,14 @@ const ChatPage = ({ socket }) => {
                                     if (index !== (messagesCount - unreadMessageBannerHeight))
                                         return <Message key={message._id} message={message} currId={me._id} socket={socket} roomId={room._id} color="#00ff00" />
                                     else {
-                                        if ((contact.room.unreadMessageSender !== me._id) && showUnreadBanner)
+                                        if ((contact.room.unreadMessageSender !== me._id) && showUnreadBanner) {
                                             return (
                                                 <>
                                                     <NewMessageBanner><p>You have unread messages</p></NewMessageBanner>
                                                     <Message key={message._id} message={message} currId={me._id} socket={socket} roomId={room._id} color="#00ff00" />
                                                 </>
                                             )
+                                        }
                                         else
                                             return <Message key={message._id} message={message} currId={me._id} socket={socket} roomId={room._id} color="#00ff00" />
                                     }

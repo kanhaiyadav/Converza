@@ -8,7 +8,7 @@ export const Container = styled.div`
         if ($isDeleted) {
             return "#ff000022";
         } else {
-            console.log($isCurrentUser);
+            // console.log($isCurrentUser);
             if ($isCurrentUser) {
                 return "linear-gradient(130deg, #4A00E0 0%, #8E2DE2 100%)";
             } else {

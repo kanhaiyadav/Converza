@@ -3,7 +3,6 @@ import { SecondaryNavContainer, NavHeader, Title, HeaderButtons, ChatsLayoutCont
 import { Outlet } from 'react-router-dom';
 import CustomButton from '../CustomButton/CutomButton.component';
 import Directory from '../Directory/Directory.component';
-
 import Modal from '../Modal/Modal.component';
 import AddContactFrom from '../AddContactForm/AddContactFrom.Component';
 import { useDispatch, useSelector } from "react-redux";
@@ -31,7 +30,11 @@ const SecondaryNav = ({ socket, type }) => {
                         <CustomButton onClick={() => {
                             console.log('clicked');
                             setAddContactModal(true)
-                        }}><span style={{fontSize: '1.5rem'}}>+</span><p style={{fontSize: "1rem"}}>New</p></CustomButton>
+                        }}
+                            style={{
+                            boxShadow: 'none',
+                        }}
+                        ><span style={{ fontSize: '1.5rem' }}>+</span><p style={{ fontSize: "1rem" }}>New</p></CustomButton>
                         {
                             displayAddContactModal &&
                             <Modal onClick={() => {

@@ -176,6 +176,9 @@ const contactsSlice = createSlice({
                 }
             }
         },
+        bannerShown: (state, action) => {
+            state.contacts[action.payload.roomId].room.unreadMessageBannerHeight = 0;
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(getContacts.fulfilled, (state, action) => {
@@ -208,6 +211,6 @@ const contactsSlice = createSlice({
     }
 });
 
-export const { deleteMessage, updateBulkJoin, markMessagesRead, roomJoinUpdate, addOneReadMessage, addOneUnreadMessage } = contactsSlice.actions;
+export const { deleteMessage, updateBulkJoin, markMessagesRead, roomJoinUpdate, addOneReadMessage, addOneUnreadMessage, bannerShown } = contactsSlice.actions;
 
 export default contactsSlice.reducer;

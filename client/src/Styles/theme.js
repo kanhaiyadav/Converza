@@ -78,17 +78,13 @@ export const lightTheme = {
         secondary: "white",
         tertiary: "#f5eefc",
         quaternary: "#f6efff",
+        // blur: 
         active: '#00984e',
         inactive: '#ff0a0a',
-        quinary: "#f5f5f5",
-        senary: "#e2e2e2",
-        white: "#ffffff",
-        black: "#000000",
         error: "#ff0000",
         success: "#00ff00",
         warning: "#ffcc00",
         info: "#00ccff",
-        transparent: "transparent",
     },
     textColors: {
         primary: "#2a2a2a",

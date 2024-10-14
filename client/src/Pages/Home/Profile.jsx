@@ -11,8 +11,11 @@ import { logout } from "../../actions/authActions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import OptionModal from "../../components/OptionModal/OptionModal";
+import Modal from "../../components/Modal/Modal.component";
+import AddContactFrom from "../../components/AddContactForm/AddContactFrom.Component";
 
 const Profile = ({ closeProfile, theme, setTheme }) => {
+    const [displayAddContactModal, setAddContactModal] = useState(false);
     // const [position, setPosition] = useState({ x: 0, y: 0 });
     // const [settings, setSettings] = useState(false);
     const dispatch = useDispatch();
@@ -28,7 +31,7 @@ const Profile = ({ closeProfile, theme, setTheme }) => {
                 left: "60px",
                 width: "300px",
                 height: "400px",
-                background: theme === 'light' ? 'url(/sunny.svg)' : 'url(/moon.svg)',
+                background: theme === 'light' ? 'url(/sunny.svg)' : 'url(/moon1.svg)',
             }}
         >
             <Header>
@@ -39,9 +42,23 @@ const Profile = ({ closeProfile, theme, setTheme }) => {
                 </div>
             </Header>
             <Body>
-                <div>
+                <div
+                    onClick={
+                        () => setAddContactModal(true)
+                    }
+                >
                     <FiUserPlus />
                     <span>Add Contact</span>
+                    {
+                        displayAddContactModal &&
+                        <Modal onClick={() => {
+                            setAddContactModal(false)
+                        }}>
+                            <AddContactFrom closeModal={() => {
+                                setAddContactModal(false)
+                            }} />
+                        </Modal>
+                    }
                 </div>
                 <div
                     onClick={() => {
