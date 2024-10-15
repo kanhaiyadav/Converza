@@ -1,8 +1,8 @@
 import { Server } from "socket.io";
 import Message from "../Models/message.js";
-import Room from '../models/room.js';
-import User from '../models/user.js';
-import Contact from "../models/contact.js";
+import Room from '../Models/room.js';
+import User from '../Models/user.js';
+import Contact from "../Models/contact.js";
 
 const initializeSocket = (server) => {
 
@@ -17,24 +17,25 @@ const initializeSocket = (server) => {
     });
 
     const connectedUsers = {};
-     
+
 
     io.on("connection", (socket) => {
         console.log(`User connected: ${socket.id}`);
 
-        socket.on('markOnline', async (data) => {
-            connectedUsers[socket.id] = data.userId;
-            const user = await User.findById(data.userId);
-            console.log(`User ${user.name} is online`);
-            user.status = 'online';
-            await user.save();
-            const contacts = await Contact.find({ user: data.userId });
-            contacts.map(async (id) => {
-                const contact = await Contact.findById(id);
-                io.to(contact.room).emit('contactStatusUpdate', { roomId: contact.room, status: 'online' });
-            });
-            console.log(connectedUsers);
-        });
+        // socket.on('markOnline', async (data) => {
+        //     connectedUsers[socket.id] = data.userId;
+        //     const user = await User.findById(data.userId);
+        //     console.log(`User ${user.name} is online`);
+        //     user.status = 'online';
+        //     await user.save();
+        //     const contacts = await Contact.find({ user: data.userId });
+        //     contacts.map(async (id) => {
+        //         const contact = await Contact.findById(id);
+        //         console.log(contact.room);
+        //         io.to(contact.room).emit('contactStatusUpdate', { roomId: contact.room, status: 'online' });
+        //     });
+        //     console.log(connectedUsers);
+        // });
 
         socket.on('join', async (data, callback) => {
             socket.join(data.room);
@@ -146,6 +147,7 @@ const initializeSocket = (server) => {
             console.log(`User disconnected: ${socket.id}`);
             const userId = connectedUsers[socket.id];
             const user = await User.findById(userId);
+            console.log(connectedUsers, userId, user);
             const currentTime = new Date();
             const formattedTime = `${currentTime.getHours()}:${currentTime.getMinutes()}`;
             user.status = `last seen at ${formattedTime}`;
@@ -154,6 +156,7 @@ const initializeSocket = (server) => {
             contacts.map(async (contact) => {
                 io.to(contact.room).emit('contactStatusUpdate', { roomId: contact.room, status: `last seen at ${formattedTime}` });
             });
+            delete connectedUsers[socket.id];
         });
     });
 

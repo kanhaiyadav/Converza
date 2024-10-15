@@ -112,7 +112,7 @@ const ChatPage = ({ socket }) => {
                 <img src={'/user.png'} alt="" />
                 <HeaderBody>
                     <p>{user.name}</p>
-                    <span>Active now</span>
+                    <span>{user.status}</span>
                 </HeaderBody>
                 <button><RiMenu5Fill /></button>
             </Header>

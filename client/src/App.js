@@ -32,9 +32,9 @@ function App({ theme, setTheme }) {
             newSocket.emit('markOnline', { userId: user._id });
         }
 
-        newSocket.on('contactStatusUpdate', (data) => {
-            console.log(data);
-        });
+        // newSocket.on('contactStatusUpdate', (data) => {
+        //     console.log(data);
+        // });
 
         newSocket.on('messageDeleted', (data) => {
             dispatch(deleteMessage(data));

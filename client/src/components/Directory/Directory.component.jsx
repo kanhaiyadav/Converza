@@ -87,7 +87,6 @@ const Directory = ({ socket, type, openModal }) => {
                 {
                     Object.values(contacts).length !== 0 ?
                         contactsArray.map((contact, index) => {
-                            console.log(contact, contact.room.unreadMessageSender, me._id, contact.room.unreadMessagesCount);
                             return <Chat contact={contact} key={index} />
                         })
                         :
