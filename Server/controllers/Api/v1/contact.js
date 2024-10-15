@@ -1,4 +1,4 @@
-import Room from "../../../models/room.js";
+import Room from "../../../Models/Room.js";
 // import Contact from "../../../models/contact.js";
 // import User from "../../../models/user.js";
 
