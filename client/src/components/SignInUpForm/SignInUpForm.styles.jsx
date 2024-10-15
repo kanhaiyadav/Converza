@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { slideUp } from "../../Styles/mixins";
 
 export const MyForm = styled.form`
     display: flex;

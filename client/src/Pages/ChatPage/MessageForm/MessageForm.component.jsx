@@ -1,4 +1,4 @@
-import { Form, EmojiContainer } from "./Message.styles";
+import { Form } from "./Message.styles";
 import { useState } from "react";
 import { selectUserInfo } from "../../../redux/user/user.selector";
 import { useSelector } from 'react-redux';
@@ -10,7 +10,7 @@ import OptionModal from "../../../components/OptionModal/OptionModal";
 const MessageFrom = ({ socket, contact }) => {
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [emoji, setEmoji] = useState(false);
-    const { room, user } = contact;
+    const { room } = contact;
     const me = useSelector(selectUserInfo);
 
     const [message, setMessage] = useState("");

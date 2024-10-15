@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 
 const Options = ({ closeOptions, style, contact }) => {
     const [modalOpen, setModalOpen] = useState(false);
-    const { room, user } = contact;
+    const { user } = contact;
     const dispatch = useDispatch();
     return (
         <OptionModal

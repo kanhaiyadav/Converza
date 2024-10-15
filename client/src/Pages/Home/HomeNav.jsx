@@ -1,17 +1,11 @@
 import React, { useState } from 'react'
 import { HomeNavStyles, NavItem, MenuButton, BottomNav } from './Home.styles';
-import { useNavigate } from 'react-router-dom';
-import { PiSignOutFill } from "react-icons/pi";
-import { useDispatch } from 'react-redux';
-import { logout } from '../../actions/authActions';
 import Profile from './Profile';
 
 
 const HomeNav = ({theme, setTheme}) => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [profile, setProfile] = useState(false);
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
 
     return (
         <HomeNavStyles $menuOpen={menuOpen}>

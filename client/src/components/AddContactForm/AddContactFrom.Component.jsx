@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { newContact } from '../../redux/contacts/contacts.slice';
 import { selectUserInfo } from "../../redux/user/user.selector";
 import { toast } from 'react-toastify';
-import { delay, motion } from "framer-motion";
+import { motion } from "framer-motion";
 
 const AddContactFrom = ({ closeModal }) => {
     const [username, setUsername] = useState('');
