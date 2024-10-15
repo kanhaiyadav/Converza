@@ -1,6 +1,6 @@
-import User from '../../../models/user.js';
-import Contact from '../../../models/contact.js';
-import Room from '../../../models/room.js';
+import User from '../../../Models/user.js';
+import Contact from '../../../Models/contact.js';
+import Room from '../../../Models/Room.js';
 import jwt from 'jsonwebtoken';
 
 export const signUp = async (req, res) => {
