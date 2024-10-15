@@ -24,6 +24,7 @@
     "react-router-dom": "^6.24.1",
     "react-scripts": "5.0.1",
     "react-toastify": "^10.0.5",
+    "redux-persist": "^6.0.0",
     "socket.io-client": "^4.7.5",
     "styled-components": "^6.1.11",
     "web-vitals": "^2.1.4"
@@ -35,6 +36,11 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
+    "rules": {
+        "import/named": "off",
+        "import/default": "off",
+        "import/namespace": "off"
+    },
     "extends": [
       "react-app",
       "react-app/jest"
