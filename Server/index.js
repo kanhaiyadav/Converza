@@ -1,6 +1,13 @@
+import express from 'express';
+import cors from 'cors';
+import http from 'http';
+import './config/mongoose.js'; // MongoDB connection
+import router from './router/index.js';
+import initializeSocket from './socket/socketHandler.js'; // Import the socket handler
+
 const createServer = async () => {
     const app = express();
-    const port = process.env.PORT || 3000; // Use one port for both servers (Render will provide this)
+    const port = 3000;
 
     const allowedOrigins = ["http://localhost:8000"];
     const corsOptions = {
@@ -16,21 +23,23 @@ const createServer = async () => {
         credentials: true
     };
 
+    // Apply CORS and body parsers
     app.use(cors(corsOptions));
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
 
-    const server = http.createServer(app); // Create one server
-
-    // Initialize socket on the same server
-    initializeSocket(server);
-
-    // Add your routes
+    // Set up routes
     app.use('/', router);
 
-    // Listen on the same port for both HTTP and Socket.io
+    // Create an HTTP server using the Express app
+    const server = http.createServer(app);
+
+    // Initialize Socket.io server, passing the HTTP server
+    initializeSocket(server);
+
+    // Start listening for both HTTP and WebSocket requests
     server.listen(port, () => {
-        console.log(`Server and Chat server both listening on port ${port}`);
+        console.log(`Server running on port ${port}`);
     });
 };
 

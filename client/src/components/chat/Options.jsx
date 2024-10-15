@@ -1,7 +1,6 @@
 import { useState } from "react";
 import OptionModal from "../OptionModal/OptionModal";
 import { OptionsContainer } from "./chat.styles";
-import { GoTrash } from "react-icons/go";
 import { LiaBroomSolid } from "react-icons/lia";
 import { TbMessageShare } from "react-icons/tb";
 import Modal from "../Modal/Modal.component";

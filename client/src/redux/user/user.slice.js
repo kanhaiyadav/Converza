@@ -8,7 +8,7 @@ const initialState = {
 
 export const signup = createAsyncThunk('user/signup', async (data) => {
     try {
-        const response = await fetch(`http://localhost:3000/api/v1/user/signup`, {
+        const response = await fetch(`${process.env.REACT_APP_SERVER_URI}/api/v1/user/signup`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -30,7 +30,7 @@ export const signup = createAsyncThunk('user/signup', async (data) => {
 
 export const signin = createAsyncThunk('user/signin', async (data) => {
     try {
-        const response = await fetch(`http://localhost:3000/api/v1/user/signin`, {
+        const response = await fetch(`${process.env.REACT_APP_SERVER_URI}/api/v1/user/signin`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -52,7 +52,7 @@ export const signin = createAsyncThunk('user/signin', async (data) => {
 
 export const update = createAsyncThunk('contacts/update', async ({ chatid, id }) => {
     try {
-        const response = await fetch(`http://localhost:3000/api/v1/user/update/${chatid}/${id}`);
+        const response = await fetch(`${process.env.REACT_APP_SERVER_URI}/api/v1/user/update/${chatid}/${id}`);
         if (response.ok) {
             const data = await response.json();
             return data;

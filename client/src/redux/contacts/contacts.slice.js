@@ -7,7 +7,7 @@ const initialState = {
 
 export const getContacts = createAsyncThunk('contacts/getContacts', async (id) => {
     try {
-        const response = await fetch(`http://localhost:3000/api/v1/user/contacts/${id}`, {
+        const response = await fetch(`${process.env.REACT_APP_SERVER_URI}/api/v1/user/contacts/${id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -27,7 +27,7 @@ export const getContacts = createAsyncThunk('contacts/getContacts', async (id) =
 
 export const newContact = createAsyncThunk('contacts/newContact', async (data) => {
     try {
-        const response = await fetch(`http://localhost:3000/api/v1/user/newContact`, {
+        const response = await fetch(`${process.env.REACT_APP_SERVER_URI}/api/v1/user/newContact`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -48,7 +48,7 @@ export const newContact = createAsyncThunk('contacts/newContact', async (data) =
 
 export const clearChat = createAsyncThunk('contacts/clearChat', async (roomId) => {
     try {
-        const response = await fetch(`http://localhost:3000/api/v1/contact/clearChat/${roomId}`, {
+        const response = await fetch(`${process.env.REACT_APP_SERVER_URI}/api/v1/contact/clearChat/${roomId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
