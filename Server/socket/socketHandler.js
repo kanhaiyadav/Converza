@@ -1,6 +1,6 @@
 import { Server } from "socket.io";
 import Message from "../Models/message.js";
-import Room from '../Models/room.js';
+import Room from '../Models/Room.js';
 import User from '../Models/user.js';
 import Contact from "../Models/contact.js";
 
