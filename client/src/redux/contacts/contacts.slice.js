@@ -77,7 +77,7 @@ const contactsSlice = createSlice({
                 const readMessages = {};
                 const unreadMessages = {};
 
-                console.log(action.payload);
+                // console.log(action.payload);
 
                 // Add new messages to the new object
                 action.payload.messages.readMessages.forEach(message => {
@@ -119,7 +119,7 @@ const contactsSlice = createSlice({
         addOneUnreadMessage: (state, action) => {
             const contact = state.contacts[action.payload.message.room];
             if (contact) {
-                console.log(action.payload.message.sender === action.payload.userId, action.payload.message.sender, action.payload.userId)
+                // console.log(action.payload.message.sender === action.payload.userId, action.payload.message.sender, action.payload.userId)
                 if (action.payload.message.sender === action.payload.userId)
                     contact.room.unreadMessages = { ...contact.room.unreadMessages, [action.payload.message._id]: action.payload.message };
                 contact.room.unreadMessagesCount += 1;
@@ -190,7 +190,7 @@ const contactsSlice = createSlice({
 
             state.contacts = newContacts;
 
-            console.log(action.payload.data.contacts);
+            // console.log(action.payload.data.contacts);
         });
 
         builder.addCase(newContact.fulfilled, (state, action) => {

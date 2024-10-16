@@ -31,9 +31,9 @@ const MessageFrom = ({ socket, contact }) => {
             contact: contact._id,
         }, (err, responce) => {
             if (err) {  
-                console.log(err);
+                // console.log(err);
             }
-            console.log(responce);
+            // console.log(responce);
         });
     }
 

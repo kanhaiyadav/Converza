@@ -57,7 +57,7 @@ const ChatPage = ({ socket }) => {
     useEffect(() => {
         socket.emit('join', { room: room._id, userId: me._id }, (err, response) => {
             if (err) {
-                console.log(err);
+                // console.log(err);
             }
             dispatch(roomJoinUpdate({ roomId: room._id, messages: response, userId: me._id }));
         });
@@ -70,7 +70,7 @@ const ChatPage = ({ socket }) => {
         });
 
         socket.on('newMessage', (data, callback) => {
-            console.log(contact.room.unreadMessageSender, me._id);
+            // console.log(contact.room.unreadMessageSender, me._id);
             if (data.roomId === room._id) {
                 callback({ messageSeen: true });
                 dispatch(addOneReadMessage({ message: data.message }));
@@ -127,8 +127,8 @@ const ChatPage = ({ socket }) => {
                     let x = e.pageX;
                     let y = e.pageY;
 
-                    console.log(x + menuWidth, windowWidth);
-                    console.log(y + menuHeight, windowHeight);
+                    // console.log(x + menuWidth, windowWidth);
+                    // console.log(y + menuHeight, windowHeight);
 
                     // Check if the menu would overflow on the right
                     if (x + menuWidth > windowWidth) {

@@ -3,7 +3,7 @@ import { Container, SubContainer } from "./OptionModal.styles";
 
 
 const OptionModal = ({ closeModal, initial, animate, transition, outerStyle, innerStyle, children }) => {
-    console.log(document.getElementById('modal-root'));
+    // console.log(document.getElementById('modal-root'));
     return ReactDOM.createPortal(
         <Container
             onClick={(e) => {

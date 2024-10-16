@@ -24,7 +24,7 @@ const Directory = ({ socket, type, openModal }) => {
                 await new Promise((resolve, reject) => {
                     socket.emit('bulkJoin', { room: key, userId: me._id }, (err, response) => {
                         if (err) {
-                            console.log(err);
+                            // console.log(err);
                             reject(err);
                         } else {
                             resolve(response);
@@ -36,7 +36,7 @@ const Directory = ({ socket, type, openModal }) => {
             // After all contact rooms are joined, join the blank_room
             socket.emit('bulkJoin', { room: blank_room, userId: me._id }, (err, response) => {
                 if (err) {
-                    console.log(err);
+                    // console.log(err);
                 }
                 // Optionally, handle the response or set state here
                 // setMessages(response);
@@ -59,7 +59,7 @@ const Directory = ({ socket, type, openModal }) => {
                             setContactsArray(Object.values(contacts));
                         } else {
                             const filtered = Object.values(contacts).filter((contact) => {
-                                console.log(contact.user.name.toLowerCase().includes(search.toLowerCase()));
+                                // console.log(contact.user.name.toLowerCase().includes(search.toLowerCase()));
                                 return contact.user.name.toLowerCase().includes(search.toLowerCase());
                             });
 

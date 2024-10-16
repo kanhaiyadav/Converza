@@ -17,7 +17,7 @@ export const signup = createAsyncThunk('user/signup', async (data) => {
         });
         if (response.ok) {
             const data = await response.json();
-            console.log(data);
+            // console.log(data);
             return data;
         } else {
             const data = await response.json();
@@ -77,7 +77,7 @@ const userSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(signin.fulfilled, (state, action) => {
             state.userInfo = action.payload.data.user;
-            console.log(state.userInfo)
+            // console.log(state.userInfo)
             state.jwt = action.payload.data.jwt;
         });
         builder.addCase(update.fulfilled, (state, action) => {

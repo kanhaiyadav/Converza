@@ -10,7 +10,7 @@ const initializeSocket = (server) => {
 
     const io = new Server(server, {
         cors: {
-            origin: "http://localhost:8000",
+            origin: ["http://localhost:8000", "https://converza.vercel.app"],
             methods: ["GET", "POST"],
             credentials: true
         },
@@ -20,7 +20,7 @@ const initializeSocket = (server) => {
 
 
     io.on("connection", (socket) => {
-        console.log(`User connected: ${socket.id}`);
+        // console.log(`User connected: ${socket.id}`);
 
         // socket.on('markOnline', async (data) => {
         //     connectedUsers[socket.id] = data.userId;
@@ -39,7 +39,7 @@ const initializeSocket = (server) => {
 
         socket.on('join', async (data, callback) => {
             socket.join(data.room);
-            console.log(`User joined room: ${data.room}`);
+            // console.log(`User joined room: ${data.room}`);
             const room = await Room.findById(data.room)?.populate('readMessages').populate('unreadMessages');
             const messages = room.readMessages;
             const unreadMessages = room.unreadMessages;
@@ -57,7 +57,7 @@ const initializeSocket = (server) => {
                 await room.save();
                 io.to(data.room).emit('markMessagesRead', { roomId: data.room });
             }
-            console.log(`User joined room: ${data.room}`);
+            // console.log(`User joined room: ${data.room}`);
         });
 
         const handleUnreadMessage = async (data) => {
@@ -87,7 +87,7 @@ const initializeSocket = (server) => {
         });
 
         socket.on('message', async (data, callback) => {
-            console.log(data.content);
+            // console.log(data.content);
             const message = await Message.create({
                 content: data.content,
                 sender: data.sender,
@@ -97,32 +97,33 @@ const initializeSocket = (server) => {
             const roomDetails = io.sockets.adapter.rooms.get(data.room);
             const room = await Room.findById(data.room);
             if (roomDetails.size === 1) {
-                console.log('message not recieved');
+                // console.log('message not recieved');
                 socket.emit('messageNotRecieved', { message });
                 handleUnreadMessage({ roomId: data.room, sender: data.sender, messageId: message._id });
             }
             else {
                 try {
-                    console.log('message recieved');
+                    // console.log('message recieved');
                     const responce = await socket.timeout(5000).broadcast.to(data.room).emitWithAck(`newMessage`, {
                         message,
                         roomId: data.room,
                         contactId: data.contact,
                     });
-                    console.log(responce);
+                    // console.log(responce);
                     if (responce[0].messageSeen) {
                         handleReadMessage({ roomId: data.room, sender: data.sender, messageId: message._id });
                         socket.emit('messageSeen', { message });
-                        console.log('message seen');
+                        // console.log('message seen');
                     }
                     else {
                         handleUnreadMessage({ roomId: data.room, sender: data.sender, messageId: message._id });
                         socket.emit('messageNotSeen', { message });
-                        console.log('message not seen');
+                        // console.log('message not seen');
                     }
                 }
                 catch (err) {
-                    console.log(err);
+                    // console.log(err);
+
                 }
             }
         });
@@ -144,7 +145,7 @@ const initializeSocket = (server) => {
         // });
 
         socket.on('disconnect', async () => {
-            console.log(`User disconnected: ${socket.id}`);
+            // console.log(`User disconnected: ${socket.id}`);
             // const userId = connectedUsers[socket.id];
             // const user = await User.findById(userId);
             // console.log(connectedUsers, userId, user);

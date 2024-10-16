@@ -14,7 +14,7 @@ const Form = ({ type }) => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    console.log(type);
+    // console.log(type);
 
     const [fields, setFields] = useState({
         displayName: '',

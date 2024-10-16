@@ -67,7 +67,7 @@ export const signIn = async (req, res) => {
 
 export const getContacts = async (req, res) => {
     try {
-        console.log(await User.findById(req.params.id));
+        // console.log(await User.findById(req.params.id));
         const user = await User.findById(req.params.id).populate({
             path: 'contacts',
             populate: [
@@ -96,7 +96,7 @@ export const getContacts = async (req, res) => {
         }
     }
     catch (err) {
-        console.log(err);
+        // console.log(err);
         return res.status(500).json({
             message: err.message
         });
@@ -146,7 +146,7 @@ export const newContact = async (req, res) => {
             });
         }
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         return res.status(500).json({
             message: err.message
         });
