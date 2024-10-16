@@ -14,7 +14,7 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { selectUserInfo } from './redux/user/user.selector';
 import { selectJwt } from './redux/user/user.selector';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 
 function App({ theme, setTheme }) {
@@ -22,15 +22,10 @@ function App({ theme, setTheme }) {
     const [socket, setSocket] = useState(null);
     const dispatch = useDispatch();
     const user = useSelector(selectUserInfo);
-    const navigate = useNavigate();
     const jwt = useSelector(selectJwt);
 
     useEffect(() => {
         // Initialize socket connection inside useEffect
-        if (!jwt) {
-            navigate('/signin');
-        }
-        
         console.log(process.env.REACT_APP_SERVER_URI);
         const newSocket = io(process.env.REACT_APP_SERVER_URI);
         setSocket(newSocket);
@@ -54,7 +49,7 @@ function App({ theme, setTheme }) {
             newSocket.off('markOnline');
             newSocket.disconnect(); // Clean up the socket connection
         };
-    }, [dispatch, user._id, jwt, navigate]);
+    }, [dispatch, user._id]);
 
     return (
         <>
