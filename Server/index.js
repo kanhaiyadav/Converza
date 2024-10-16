@@ -9,7 +9,7 @@ const createServer = async () => {
     const app = express();
     const port = 3000;
 
-    const allowedOrigins = ["http://localhost:8000"];
+    const allowedOrigins = ["http://localhost:8000", "https://converza.vercel.app","https://converza-azpcpnquo-kanishys-projects.vercel.app"];
     const corsOptions = {
         origin: function (origin, callback) {
             if (!origin) return callback(null, true);
