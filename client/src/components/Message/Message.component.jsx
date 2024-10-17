@@ -41,7 +41,7 @@ const Message = ({ message, currId, socket, roomId, color }) => {
                 {formattedTime}
                 {
                     isSentByCurrentUser && (
-                        <MdCircle style={{ color: color, fontSize: "0.7rem", marginLeft: "5px" }} />
+                        <MdCircle style={{ color: color, marginLeft: "5px" }} />
                     )
                 }
             </span>}

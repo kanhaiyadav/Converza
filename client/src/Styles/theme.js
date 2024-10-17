@@ -6,6 +6,7 @@ const commonTheme = {
         handwriting2: "Playwrite AU TAS",
     },
     fontSizes: {
+        xxxs: "0.55rem",
         xxs: "0.6rem",
         xs: "0.8rem",
         sm: "0.9rem",

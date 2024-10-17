@@ -50,6 +50,9 @@ export const SecondaryNavContainer = styled.div`
     animation: ${slideIn} 0.5s ease;
     box-shadow: ${({ theme }) => theme.shadows.outer};
     /* border-right: 1px solid ${({ theme }) => theme.colors.primary}; */
+    @media screen and (max-width: 768px){
+        width: 100%;
+    }
 `;
 
 export const ChatsLayoutContainer = styled.div`
@@ -59,4 +62,7 @@ export const ChatsLayoutContainer = styled.div`
     overflow: hidden;
     background-color: ${({ theme }) => theme.colors.secondary};
     z-index: 10;
+    @media screen and (max-width: ${({ theme }) => theme.breakpoints.md}){
+        grid-template-columns: 1fr;
+    }
 `;

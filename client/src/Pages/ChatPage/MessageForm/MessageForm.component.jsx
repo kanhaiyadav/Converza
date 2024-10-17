@@ -30,7 +30,7 @@ const MessageFrom = ({ socket, contact }) => {
             room: room._id,
             contact: contact._id,
         }, (err, responce) => {
-            if (err) {  
+            if (err) {
                 // console.log(err);
             }
             // console.log(responce);
@@ -54,7 +54,7 @@ const MessageFrom = ({ socket, contact }) => {
             >
                 <i className="fa-regular fa-face-smile"></i>
             </div>
-            <span
+            {/* <span
                 style={{
                     borderRadius: '50%',
                     padding: '8px',
@@ -62,22 +62,24 @@ const MessageFrom = ({ socket, contact }) => {
                     marginLeft: '-10px',
 
                 }}
-            ><i className="fa-solid fa-paperclip"></i></span>
+            ><i className="fa-solid fa-paperclip"></i></span> */}
             <input onChange={handleMessageChange} type="text" placeholder='Type a message...' name="message" value={message} autoFocus required />
             {
                 emoji &&
                 <OptionModal closeModal={() => setEmoji(false)}
-                        initial={{ top: position.y-100, opacity: 0 }}
-                        animate={{ top: position.y - 470, opacity: 1 }}
-                        transition={{ type: 'spring', stiffness: 200, damping: 17, duration: 0.1 }}
+                    initial={{ top: position.y - 100, opacity: 0 }}
+                    animate={{ top: position.y - 470, opacity: 1 }}
+                    transition={{ type: 'spring', stiffness: 200, damping: 17, duration: 0.1 }}
                     innerStyle={{
-                        top: position.y-470,
+                        width: '200px',
+                        top: position.y - 470,
                         left: position.x - 10,
                         backgroundColor: 'transparent',
                         padding: '0',
                         boxShadow: 'none',
-                    }}>
-                    <Picker data={data} onEmojiSelect={addEmoji} />
+                    }}
+                >
+                    <Picker data={data} onEmojiSelect={addEmoji} style={{ width: '100%' }} />
                 </OptionModal>
             }
         </Form>

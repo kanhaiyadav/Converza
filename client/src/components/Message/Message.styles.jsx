@@ -29,15 +29,18 @@ export const Container = styled.div`
     p{
         font-size: 1rem;
         color: ${({ theme, $isCurrentUser, $isDeleted }) => {
-            if ($isDeleted) {
-                return "gray";
-            } else {
-                return $isCurrentUser ? "white" : theme.textColors.primary;
-            }
-        }};
+        if ($isDeleted) {
+            return "gray";
+        } else {
+            return $isCurrentUser ? "white" : theme.textColors.primary;
+        }
+    }};
         font-style: ${({ $isDeleted }) => $isDeleted ? "italic" : "normal"};
         display: inline-block;
         font-family: 'Playwrite De Grund';
+        @media screen and (max-width: ${({ theme }) => theme.breakpoints.sm}){
+            font-size: ${({ theme }) => theme.fontSizes.xs};
+        }
     }
     span{
         display: flex;
@@ -46,5 +49,17 @@ export const Container = styled.div`
         font-family: 'Merienda';
         font-size: ${({ theme }) => theme.fontSizes.xxs};
         color: ${({ theme }) => theme.textColors.primary};
+        @media screen and (max-width: ${({ theme }) => theme.breakpoints.sm}){
+            font-size: ${({ theme }) => theme.fontSizes.xxxs};
+        }
+        svg{
+            font-size: 0.7rem;
+            @media screen and (max-width: ${({ theme }) => theme.breakpoints.sm}){
+                font-size: ${({ theme }) => theme.fontSizes.xxs};
+            }
+        }
+    }
+    @media screen and (max-width: ${({ theme }) => theme.breakpoints.sm}){
+          padding: 4px 8px;  
     }
 `;

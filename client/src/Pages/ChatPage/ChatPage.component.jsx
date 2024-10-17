@@ -116,7 +116,6 @@ const ChatPage = ({ socket }) => {
                     <p>{user.name}</p>
                     <span>{user.status}</span>
                 </HeaderBody>
-                <button><RiMenu5Fill /></button>
             </Header>
             <Body
                 onContextMenu={(e) => {
@@ -151,9 +150,7 @@ const ChatPage = ({ socket }) => {
                             <NoMessages />
                         ) : (
                             <>
-                                <MessageSkeleton />
                                 {
-
                                     messages.map((message, index) => {
                                         if (index !== (messagesCount - unreadMessageBannerHeight))
                                             return <Message key={message._id} message={message} currId={me._id} socket={socket} roomId={room._id} color="#00ff00" />

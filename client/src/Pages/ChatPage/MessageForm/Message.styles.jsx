@@ -8,7 +8,6 @@ export const Form = styled.form`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    border: 1px solid transparent;
     border-radius:${({ theme }) => theme.radii.full}; 
     background-color: ${({ theme }) => theme.colors.secondary}; 
     /* box-shadow: ${({ theme }) => theme.shadows.outer}; */
@@ -26,5 +25,11 @@ export const Form = styled.form`
         font-size: 1.1rem;
         font-family: 'Open Sans';
         color: ${({ theme }) => theme.textColors.primary};
+        @media screen and (max-width: ${({ theme }) => theme.breakpoints.sm}){
+            font-size: ${({ theme }) => theme.fontSizes.sm};
+        }
+    }
+    @media screen and (max-width: ${({ theme }) => theme.breakpoints.sm}){
+        padding: 3px 8px;        
     }
 `

@@ -39,6 +39,7 @@ export const OptionsContainer = styled.div`
 
 export const ChatBody = styled.div`
     width: 250px;
+    flex: 1 1 auto;
     div{
         margin: 0px;
         
