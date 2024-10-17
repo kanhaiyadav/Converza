@@ -12,7 +12,6 @@ const MessageSkeleton = () => {
                     background: theme.colors.secondary,
                     flexDirection: 'column',
                     gap: '5px',
-                    alignItems: 'center',
                     justifyContent: 'center',
                     padding: '8px'
                 }}
@@ -24,6 +23,10 @@ const MessageSkeleton = () => {
                         flexDirection: 'column',
                     }} />
                 ))}
+                <div style={{marginLeft: 'auto', display: 'flex', width: 'auto', gap: '5px'}}>
+                    <Skeleton width={40} height={8} />
+                    <Skeleton circle width={8} height={8} />
+                </div>
             </Container>
             <Container
                 $isCurrentUser={true}
@@ -31,7 +34,7 @@ const MessageSkeleton = () => {
                     background: theme.colors.secondary,
                     flexDirection: 'column',
                     gap: '5px',
-                    alignItems: 'center',
+                    // alignItems: 'center',
                     justifyContent: 'center',
                     padding: '8px'
                 }}
@@ -43,6 +46,10 @@ const MessageSkeleton = () => {
                         flexDirection: 'column',
                     }} />
                 ))}
+                <div style={{ marginLeft: 'auto', display: 'flex', width: 'auto', gap: '5px' }}>
+                    <Skeleton width={40} height={8} />
+                    <Skeleton circle width={8} height={8} />
+                </div>
             </Container>
             <Container
                 $isCurrentUser={true}
@@ -50,7 +57,7 @@ const MessageSkeleton = () => {
                     background: theme.colors.secondary,
                     flexDirection: 'column',
                     gap: '5px',
-                    alignItems: 'center',
+                    // alignItems: 'center',
                     justifyContent: 'center',
                     padding: '8px'
                 }}
@@ -62,6 +69,10 @@ const MessageSkeleton = () => {
                         flexDirection: 'column',
                     }} />
                 ))}
+                <div style={{ marginLeft: 'auto', display: 'flex', width: 'auto', gap: '5px' }}>
+                    <Skeleton width={40} height={8} />
+                    <Skeleton circle width={8} height={8} />
+                </div>
             </Container>
             <Container
                 $isCurrentUser={false}
@@ -69,7 +80,7 @@ const MessageSkeleton = () => {
                     background: theme.colors.secondary,
                     flexDirection: 'column',
                     gap: '5px',
-                    alignItems: 'center',
+                    // alignItems: 'center',
                     justifyContent: 'center',
                     padding: '8px'
                 }}
@@ -81,6 +92,7 @@ const MessageSkeleton = () => {
                         flexDirection: 'column',
                     }} />
                 ))}
+                    <Skeleton width={40} height={8} />
             </Container>
             <Container
                 $isCurrentUser={false}
@@ -88,7 +100,7 @@ const MessageSkeleton = () => {
                     background: theme.colors.secondary,
                     flexDirection: 'column',
                     gap: '5px',
-                    alignItems: 'center',
+                    // alignItems: 'center',
                     justifyContent: 'center',
                     padding: '8px'
                 }}
@@ -100,6 +112,7 @@ const MessageSkeleton = () => {
                         flexDirection: 'column',
                     }} />
                 ))}
+                    <Skeleton width={40} height={8} />
             </Container>
             <Container
                 $isCurrentUser={false}
@@ -107,7 +120,7 @@ const MessageSkeleton = () => {
                     background: theme.colors.secondary,
                     flexDirection: 'column',
                     gap: '5px',
-                    alignItems: 'center',
+                    // alignItems: 'center',
                     justifyContent: 'center',
                     padding: '8px'
                 }}
@@ -119,6 +132,7 @@ const MessageSkeleton = () => {
                         flexDirection: 'column',
                     }} />
                 ))}
+                    <Skeleton width={40} height={8} />
             </Container>
             <Container
                 $isCurrentUser={true}
@@ -126,7 +140,7 @@ const MessageSkeleton = () => {
                     background: theme.colors.secondary,
                     flexDirection: 'column',
                     gap: '5px',
-                    alignItems: 'center',
+                    // alignItems: 'center',
                     justifyContent: 'center',
                     padding: '8px'
                 }}
@@ -138,6 +152,10 @@ const MessageSkeleton = () => {
                         flexDirection: 'column',
                     }} />
                 ))}
+                <div style={{ marginLeft: 'auto', display: 'flex', width: 'auto', gap: '5px' }}>
+                    <Skeleton width={40} height={8} />
+                    <Skeleton circle width={8} height={8} />
+                </div>
             </Container>
             <Container
                 $isCurrentUser={true}
@@ -145,7 +163,7 @@ const MessageSkeleton = () => {
                     background: theme.colors.secondary,
                     flexDirection: 'column',
                     gap: '5px',
-                    alignItems: 'center',
+                    // alignItems: 'center',
                     justifyContent: 'center',
                     padding: '8px'
                 }}
@@ -157,6 +175,10 @@ const MessageSkeleton = () => {
                         flexDirection: 'column',
                     }} />
                 ))}
+                <div style={{ marginLeft: 'auto', display: 'flex', width: 'auto', gap: '5px' }}>
+                    <Skeleton width={40} height={8} />
+                    <Skeleton circle width={8} height={8} />
+                </div>
             </Container>
             <Container
                 $isCurrentUser={false}
@@ -164,7 +186,7 @@ const MessageSkeleton = () => {
                     background: theme.colors.secondary,
                     flexDirection: 'column',
                     gap: '5px',
-                    alignItems: 'center',
+                    // alignItems: 'center',
                     justifyContent: 'center',
                     padding: '8px'
                 }}
@@ -176,44 +198,7 @@ const MessageSkeleton = () => {
                         flexDirection: 'column',
                     }} />
                 ))}
-            </Container>
-            <Container
-                $isCurrentUser={true}
-                style={{
-                    background: theme.colors.secondary,
-                    flexDirection: 'column',
-                    gap: '5px',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: '8px'
-                }}
-
-            >
-                {[1].map((i) => (
-                    <Skeleton key={i} width={300} height={25} style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                    }} />
-                ))}
-            </Container>
-            <Container
-                $isCurrentUser={false}
-                style={{
-                    background: theme.colors.secondary,
-                    flexDirection: 'column',
-                    gap: '5px',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: '8px'
-                }}
-
-            >
-                {[1, 2].map((i) => (
-                    <Skeleton key={i} width={300} height={25} style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                    }} />
-                ))}
+                    <Skeleton width={40} height={8} />
             </Container>
         </>
     );

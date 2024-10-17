@@ -31,6 +31,7 @@ export const OptionsContainer = styled.div`
             color: ${({ theme }) => theme.textColors.primary};
             span{
                 font-size: 0.9rem;
+                white-space: nowrap;
             }
         }
     }

@@ -151,7 +151,7 @@ const ChatPage = ({ socket }) => {
                             <NoMessages />
                         ) : (
                             <>
-                                {/* <MessageSkeleton /> */}
+                                <MessageSkeleton />
                                 {
 
                                     messages.map((message, index) => {
