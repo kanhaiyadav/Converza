@@ -11,13 +11,18 @@ import { selectUserInfo } from "../../redux/user/user.selector";
 
 
 const SecondaryNav = ({ socket, type }) => {
-
+    const [isLoading, setIsLoading] = useState(true);
     const user = useSelector(selectUserInfo);
     const dispatch = useDispatch();
     const [displayAddContactModal, setAddContactModal] = useState(false);
-    
+
     useEffect(() => {
-        dispatch(getContacts(user._id));
+        dispatch(getContacts(user._id)).unwrap()
+            .then(
+                () => {
+                    setIsLoading(false);
+                }
+            )
     }, [dispatch, user._id]);
 
 
@@ -32,8 +37,8 @@ const SecondaryNav = ({ socket, type }) => {
                             setAddContactModal(true)
                         }}
                             style={{
-                            boxShadow: 'none',
-                        }}
+                                boxShadow: 'none',
+                            }}
                         ><span style={{ fontSize: '1.5rem' }}>+</span><p style={{ fontSize: "1rem" }}>New</p></CustomButton>
                         {
                             displayAddContactModal &&
@@ -47,7 +52,7 @@ const SecondaryNav = ({ socket, type }) => {
                         }
                     </HeaderButtons>
                 </NavHeader>
-                <Directory socket={socket} type={type} openModal={() => {
+                <Directory contactLoading={isLoading} socket={socket} type={type} openModal={() => {
                     setAddContactModal(true)
                 }}
                 />

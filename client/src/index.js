@@ -13,9 +13,11 @@ import { ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from './Styles/theme';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const AppWrapper = () => {
     const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
+
 
     const themes = {
         light: lightTheme,
@@ -28,8 +30,8 @@ const AppWrapper = () => {
                 <Provider store={store}>
                     <PersistGate loading={null} persistor={persistor}>
                         <ThemeProvider theme={themes[theme]}>
-                            <GlobalStyle />
-                            <App theme={theme} setTheme={setTheme}/>
+                                <GlobalStyle />
+                                <App theme={theme} setTheme={setTheme} />
                         </ThemeProvider>
                         <ToastContainer theme={theme} />
                     </PersistGate>

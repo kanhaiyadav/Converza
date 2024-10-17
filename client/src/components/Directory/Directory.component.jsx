@@ -6,8 +6,9 @@ import { useSelector } from 'react-redux';
 import { NoChat } from './Directory.styles';
 import { selectUserInfo } from '../../redux/user/user.selector';
 import Searchbox from '../Searchbox/Searchbox.component';
+import ChatSkeleton from '../ChatSkeleton/ChatSkeleton';
 
-const Directory = ({ socket, type, openModal }) => {
+const Directory = ({ contactLoading, socket, type, openModal }) => {
     const me = useSelector(selectUserInfo);
     const contacts = useSelector(selectContacts);
     const blank_room = '66f9499a5fd39ff250be10f9';
@@ -16,7 +17,7 @@ const Directory = ({ socket, type, openModal }) => {
     React.useEffect(() => {
         setContactsArray(Object.values(contacts));
     }, [contacts]);
-    
+
     React.useEffect(() => {
         const joinRooms = async () => {
             // Join all the contact rooms sequentially
@@ -51,7 +52,7 @@ const Directory = ({ socket, type, openModal }) => {
     return (
         <>
             <Searchbox>
-                <i className="fa-solid fa-magnifying-glass fa-bounce"></i>
+                <i className="fa-solid fa-magnifying-glass"></i>
                 <input id='search' type="text" placeholder='Search a chat...'
                     onChange={(e) => {
                         const search = e.target.value;
@@ -71,7 +72,7 @@ const Directory = ({ socket, type, openModal }) => {
                                 if (nameA > nameB) return -1;
                                 return 0; // Keeps order the same if names are equal
                             });
-                            
+
                             setContactsArray(filtered);
                         }
                     }}
@@ -85,20 +86,24 @@ const Directory = ({ socket, type, openModal }) => {
             </Searchbox>
             <ListDirectory>
                 {
-                    Object.values(contacts).length !== 0 ?
-                        contactsArray.map((contact, index) => {
-                            return <Chat contact={contact} key={index} />
-                        })
-                        :
-                        <NoChat>
-                            <div>
-                                <img src='/noChats.png' alt='No chats' />
-                            </div>
-                            <p>Looks like you’ve mastered the art of social distancing in your chat list!</p>
-                            <button onClick={openModal}>Create new contact</button>
-                        </NoChat>
+                    contactLoading ? <ChatSkeleton count={9} /> :
+                        Object.values(contacts).length !== 0 ?
+                            contactsArray.map((contact, index) => {
+                                return <Chat contact={contact} key={index} />
+                            })
+                            :
+                            <NoChat>
+                                <div>
+                                    <img src='/noChats.png' alt='No chats' />
+                                </div>
+                                <p>Looks like you’ve mastered the art of social distancing.</p>
+                                <button onClick={openModal}>Create new contact</button>
+                            </NoChat>
+
                 }
+
             </ListDirectory>
+
         </>
     )
 }

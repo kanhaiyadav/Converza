@@ -15,10 +15,13 @@ import { useSelector } from 'react-redux';
 import { selectUserInfo } from './redux/user/user.selector';
 import { selectJwt } from './redux/user/user.selector';
 import { Navigate } from 'react-router-dom';
+import { SkeletonTheme } from 'react-loading-skeleton';
+import { useTheme } from 'styled-components';
 
 
 function App({ theme, setTheme }) {
     const [isLoading, setIsLoading] = useState(true);
+    const currentTheme = useTheme();
     const [socket, setSocket] = useState(null);
     const dispatch = useDispatch();
     const user = useSelector(selectUserInfo);
@@ -52,7 +55,8 @@ function App({ theme, setTheme }) {
     }, [dispatch, user._id]);
 
     return (
-        <>
+        <SkeletonTheme baseColor={currentTheme.colors.quaternary} highlightColor={currentTheme.colors.secondary}>
+
             {
                 isLoading ? <Loader /> :
                     <Routes>
@@ -70,7 +74,7 @@ function App({ theme, setTheme }) {
                         </Route>
                     </Routes>
             }
-        </>
+        </SkeletonTheme>
     );
 }
 
