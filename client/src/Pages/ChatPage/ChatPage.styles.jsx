@@ -20,13 +20,13 @@ const slideUp = keyframes`
 
 
 export const NoMessagesContainer = styled.div`
-    padding: 30px 100px;
+    width: clamp(280px, 50%, 600px);
+    padding: 10px;
     position: absolute;
     top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
     display: flex;
-    width: fit-content;
     flex-direction: column;
     background-color: #2f314252;
     backdrop-filter: blur(2px);
@@ -35,10 +35,12 @@ export const NoMessagesContainer = styled.div`
     border-radius: 50px;
     box-shadow: 0px 0px 10px 5px rgba(0,0,0,0.1);
     img{
-        height: 410px;
+        height: clamp(250px, 60%, 410px);
+        width: clamp(250px, 60%, 410px);
     }
     span{
-        font-size: 1.1rem;
+        font-size: clamp(0.8rem, 2vw, 1.1rem);
+        width: clamp(200px, 50%, 410px);
         font-weight: 500;
         color: ${({ theme }) => theme.textColors.primary};
         text-align: center;

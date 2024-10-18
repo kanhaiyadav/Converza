@@ -79,19 +79,11 @@ const Welcome = ({ socket }) => {
                         ></animate>
                     </path>
                 </svg>
-                <img src='/icon.svg' alt=''
-                    style={{
-                        width: "100px",
-                        height: "100px",
-                    }}
-                />
+                <img src='/icon.svg' alt='icon' />
             </div>
 
             <WelcomeTitle>Converza</WelcomeTitle>
-            <p style={{
-                color: 'grey',
-                fontSize: '1.2rem'
-            }}>Your go-to for seamless conversations</p>
+            <p>Your go-to for seamless conversations</p>
         </Container>
     )
 }
