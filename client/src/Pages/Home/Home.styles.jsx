@@ -58,7 +58,7 @@ export const HomeNavStyles = styled.div`
     display: flex;
     flex-direction: column;
     align-items: baseline;
-    height: 100vh;
+    height: 100%;
     background: linear-gradient(130deg, #8E2DE2 0%, #4A00E0 100%);
     color: ${({ theme })=> theme.textColors.secondary};
     /* position: fixed; */
@@ -72,6 +72,7 @@ export const HomeNavStyles = styled.div`
 `; 
 
 export const HomeLayoutContainer = styled.div`
+    flex: 1 1 auto;
     display: grid;
     grid-template-columns: 50px 1fr;
     width: 100%;

@@ -38,7 +38,7 @@ export const NavHeader = styled.div`
 
 export const SecondaryNavContainer = styled.div`
     box-sizing: border-box;
-    height: 100vh;
+    height: 100%;
     width: 350px;
     display: flex;
     flex-direction: column;
