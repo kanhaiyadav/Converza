@@ -73,7 +73,7 @@ const MessageFrom = ({ socket, contact }) => {
                     innerStyle={{
                         width: '200px',
                         top: position.y - 470,
-                        left: position.x - 82,
+                        left: position.x - 83,
                         backgroundColor: 'transparent',
                         padding: '0',
                         boxShadow: 'none',

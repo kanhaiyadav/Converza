@@ -28,8 +28,9 @@ export const MyForm = styled.form`
             font-size: 2rem;
             white-space: nowrap;
             color: #bd4fff;
-            text-shadow: 5px 5px 0px rgba(0, 0, 0);
+            text-shadow: 5px 0px 0px rgba(0, 0, 0);
             font-family: ${({ theme }) => theme.fonts.primary};
+            letter-spacing: 2px;
             @media screen and (min-width: ${({ theme }) => theme.breakpoints.md}){
                 font-size: 2.5rem;
             }
@@ -44,11 +45,12 @@ export const MyForm = styled.form`
                 font-size: 1rem;
                 padding: 10px 15px;
                 border-radius: 5px;
-                border: 1px solid #ccc;
+                border: none;
                 outline: none;
                 width: 100%;
                 border-bottom: 4px solid transparent;
                 background-color: ${({ theme }) => theme.colors.senary};
+                box-shadow: ${({ theme }) => theme.shadows.md};
                 /* transition: all 0.3s ease-in-out; */
                 @media screen and (min-width: ${({ theme }) => theme.breakpoints.md}){
                     font-size: 1.15rem;
