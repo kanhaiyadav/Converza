@@ -149,7 +149,8 @@ const ChatPage = ({ socket }) => {
                         messages.length === 0 && unreadMessages.length === 0 ? (
                             <NoMessages />
                         ) : (
-                            <>
+                                <>
+                                    <MessageSkeleton />
                                 {
                                     messages.map((message, index) => {
                                         if (index !== (messagesCount - unreadMessageBannerHeight))
