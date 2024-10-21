@@ -1,12 +1,12 @@
 import './App.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
-import HomeLayout from './Pages/Home/Home.Layout';
+// import HomeLayout from './Pages/Home/Home.Layout';
 import Status from './components/status/status.component';
 import SecondaryNav from './components/SecondaryNav/SecondaryNav.component';
-import Welcome from './Pages/ChatPage/Welcome';
+// import Welcome from './Pages/ChatPage/Welcome';
 import ChatPage from './Pages/ChatPage/ChatPage.component';
-import SignIn from './Pages/SignIn/SignIn.component';
+// import SignIn from './Pages/SignIn/SignIn.component';
 import { io } from 'socket.io-client';
 import Loader from './components/Loader/Loader';
 import { deleteMessage } from './redux/contacts/contacts.slice';
@@ -17,6 +17,11 @@ import { selectJwt } from './redux/user/user.selector';
 import { Navigate } from 'react-router-dom';
 import { SkeletonTheme } from 'react-loading-skeleton';
 import { useTheme } from 'styled-components';
+
+const HomeLayout = lazy(() => import('./Pages/Home/Home.Layout'));
+const Welcome = lazy(() => import('./Pages/ChatPage/Welcome'));
+// const ChatPage = lazy(() => import('./Pages/ChatPage/ChatPage.component'));
+const SignIn = lazy(() => import('./Pages/SignIn/SignIn.component'));
 
 function App({ theme, setTheme }) {
     const [isLoading, setIsLoading] = useState(true);
@@ -65,9 +70,7 @@ function App({ theme, setTheme }) {
 
     return (
         <SkeletonTheme baseColor={currentTheme.colors.quaternary} highlightColor={currentTheme.colors.secondary}>
-            {isLoading ? (
-                <Loader />
-            ) : (
+            <Suspense fallback={<Loader />}>
                 <Routes>
                     <Route path='/signin' element={jwt ? <Navigate to='/chats' /> : <SignIn type='signin' />} />
                     <Route path='/signup' element={jwt ? <Navigate to='/chats' /> : <SignIn type='signup' />} />
@@ -79,7 +82,7 @@ function App({ theme, setTheme }) {
                         </Route>
                     </Route>
                 </Routes>
-            )}
+            </Suspense>
         </SkeletonTheme>
     );
 }
