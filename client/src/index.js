@@ -14,6 +14,8 @@ import { lightTheme, darkTheme } from './Styles/theme';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-loading-skeleton/dist/skeleton.css';
+import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
+
 
 const AppWrapper = () => {
     const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
@@ -47,3 +49,6 @@ root.render(
 );
 
 reportWebVitals();
+
+
+serviceWorkerRegistration.register();
