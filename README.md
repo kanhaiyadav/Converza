@@ -65,7 +65,7 @@ Video Preview: [https://youtu.be/Hi-g3dInSLg?si=eQUxfyhcE_TV5dWv](https://youtu.
 3. **Configure environment variables**  
    Create a `.env` file in the root of `server` directory and set up the following variables:
    ```env
-    DB_URI=mongodb+srv://kanhaiya2004yadav:uRVjS9MsGp28yoN4@cluster0.ootts.mongodb.net/Converza?retryWrites=true&w=majority&appName=Cluster0
+    DB_URI=
    ```
    Create a `.env` file in the root of `client` directory and set up the following variables:
    ```env
