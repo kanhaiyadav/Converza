@@ -10,6 +10,9 @@ export const MenuButton = styled.div`
         background-color: #7823ce;
 
     }
+    @media screen and (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+        display: none;
+    }
 `;
 export const NavItem = styled(NavLink)`
     text-decoration: none;
@@ -23,12 +26,10 @@ export const NavItem = styled(NavLink)`
     flex-direction: row;
     align-items: center;
     &:hover{
-        background-color: #7823ce   
-;
+        background-color: #7823ce;
     }
     &.active{
-        background-color: #7823ce   
-;
+        background-color: rgba(255, 255, 255, 0.2);
         span{
             position: absolute;
             left: 0px;
@@ -36,11 +37,25 @@ export const NavItem = styled(NavLink)`
             width: 3px;
             background-color: white;
             border-radius: 3px;
+            @media screen and (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+                display: none;
+            }
+        }
+    }
+    @media screen and (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+        width: 50px;
+        align-items: center;
+        justify-content: center;
+        margin: 0px;
+        span {
+            display: none;
         }
     }
     i,svg{
-    margin-left: 12px;
-
+        margin-left: 12px;
+        @media screen and (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+            margin-left: 0px;
+        }   
     }
 `;
 
@@ -48,6 +63,11 @@ export const BottomNav = styled.div`
     padding: 10px 0px;
     margin-top: auto;
     width: 100%;
+    @media screen and (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+        padding: 0px;
+        width: auto;
+        margin: 0px;
+    }
 `;
 
 
@@ -69,12 +89,22 @@ export const HomeNavStyles = styled.div`
         margin-left: 10px;
         display: ${({ $menuOpen }) => ($menuOpen ? 'inline-block' : 'none')};
     }
-`; 
+    @media screen and (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+        width: 100%;
+        height: 50px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+`;
 
 export const HomeLayoutContainer = styled.div`
     flex: 1 1 auto;
-    display: grid;
-    grid-template-columns: 50px 1fr;
+    display: flex;
+    flex-direction: row;
     width: 100%;
     background-color: ${({ theme }) => theme.colors.secondary};
+    @media screen and (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+        flex-direction: column-reverse;
+    }
 `;

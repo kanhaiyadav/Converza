@@ -1,15 +1,20 @@
 import { NoMessagesContainer } from "./ChatPage.styles";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 const NoMessages = () => {
-
     return (
         <NoMessagesContainer>
-            <img src="/emptyChat.svg" alt="" />
-            <span>Looks like a ghost town...</span>
+            <div>
+                <DotLottieReact
+                    src="/lottie/no-signal.lottie"
+                    loop
+                    autoplay
+                    style={{ width: "100%", height: "100%" }}
+                />
+            </div>
             <span>Don't be shy, the keyboard won't bite!</span>
         </NoMessagesContainer>
-    )
-    
+    );
 };
 
 export default NoMessages;

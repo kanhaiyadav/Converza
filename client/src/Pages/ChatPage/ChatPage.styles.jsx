@@ -33,17 +33,18 @@ export const NoMessagesContainer = styled.div`
     justify-content: center;
     align-items: center;
     border-radius: 50px;
-    box-shadow: 0px 0px 10px 5px rgba(0,0,0,0.1);
-    img{
-        height: clamp(250px, 60%, 410px);
-        width: clamp(250px, 60%, 410px);
+    box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.1);
+    div {
+        width: 400px;
+        height: 220px;
     }
-    span{
+    span {
         font-size: clamp(0.8rem, 2vw, 1.1rem);
         width: clamp(200px, 50%, 410px);
         font-weight: 500;
-        color: ${({ theme }) => theme.textColors.primary};
+        color: gray;
         text-align: center;
+        margin-top: -15px;
     }
 `;
 
@@ -145,7 +146,7 @@ export const Footer = styled.div`
 
 export const Container = styled.div`
     box-shadow: ${({ theme }) => theme.shadows.inner};
-    max-height: 100vh;
+    max-height: 100dvh;
     display: flex;
     flex-direction: column;
     align-items: center;

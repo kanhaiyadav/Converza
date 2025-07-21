@@ -65,4 +65,7 @@ export const ChatsLayoutContainer = styled.div`
     @media screen and (max-width: ${({ theme }) => theme.breakpoints.md}){
         grid-template-columns: 1fr;
     }
+    @media screen and (max-width: ${({ theme }) => theme.breakpoints.md}){
+        flex: 1 1 auto;
+    }
 `;
