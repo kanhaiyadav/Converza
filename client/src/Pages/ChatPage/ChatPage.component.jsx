@@ -15,8 +15,9 @@ import Options from './options';
 import { useNavigate } from 'react-router-dom';
 import NoMessages from './NoMessages';
 import MessageSkeleton from '../../components/ChatSkeleton/MessageSkeleton';
+import { useSocket } from '../../context/SocketContext';
 
-const ChatPage = ({ socket }) => {
+const ChatPage = () => {
     const [options, setOptions] = React.useState(false);
     const [position, setPosition] = React.useState({ x: 0, y: 0 });
     const [showUnreadBanner, setShowUnreadBanner] = useState(false);
@@ -32,6 +33,8 @@ const ChatPage = ({ socket }) => {
     const messagesCount = messages.length;
     const navigate = useNavigate();
     const [loadingMessages, setMessages] = React.useState(true);
+    const socket = useSocket();
+    const [status, setStatus] = useState("offline");
 
 
     useEffect(() => {
@@ -104,6 +107,42 @@ const ChatPage = ({ socket }) => {
         };
     }, [socket, room._id, dispatch, contact._id, me._id, contact.room.unreadMessageSender]);
 
+    useEffect(() => {
+        if (!socket) return;
+
+        socket.emit("chat-is-active", room._id);
+
+        socket.emit("isOnline", room._id, (response) => {
+            console.log("Status update response:", response);
+            if (response) {
+                setStatus(response.status);
+            }
+        });
+
+        socket.emit("isActive", room._id, (response) => {
+            console.log("Is active response:", response);
+            if (response && response.isActive) {
+                setStatus("active");
+            }
+        });
+        
+        socket.on(`status-update:${contact.room._id}`, (data) => {
+            if (data && data.status) {
+                setStatus(data.status);
+            }
+        });
+
+        socket.on("isActive", (chatId, callback) => {
+            callback({ isActive: chatId === contact.room._id });
+        });
+        
+        return () => {
+            socket.emit("chat-is-inactive", contact.room._id);
+            socket.off("isActive");
+            socket.off("new-message");
+        };
+    }, [contact.room._id]);
+
     const closeChat = () => {
         navigate("../");
     };
@@ -114,10 +153,11 @@ const ChatPage = ({ socket }) => {
                 <img src={'/user.png'} alt="" />
                 <HeaderBody>
                     <p>{user.name}</p>
-                    <span>{user.status}</span>
+                    <span>{status}</span>
                 </HeaderBody>
             </Header>
             <Body
+                className='styled-scrollbar'
                 onContextMenu={(e) => {
                     e.preventDefault();
                     const menuWidth = 150; // Approximate width of the options menu

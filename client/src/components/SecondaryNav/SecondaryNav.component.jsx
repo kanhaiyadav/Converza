@@ -8,14 +8,16 @@ import AddContactFrom from '../AddContactForm/AddContactFrom.Component';
 import { useDispatch, useSelector } from "react-redux";
 import { getContacts } from "../../redux/contacts/contacts.slice";
 import { selectUserInfo } from "../../redux/user/user.selector";
+import { useSocket } from '../../context/SocketContext';
 
-const SecondaryNav = ({ socket, type }) => {
+const SecondaryNav = ({ type }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768); // Track if it's mobile
     const user = useSelector(selectUserInfo);
     const dispatch = useDispatch();
     const location = useLocation(); // Get current location to track route changes
     const [displayAddContactModal, setAddContactModal] = useState(false);
+    const socket = useSocket();
 
     useEffect(() => {
         dispatch(getContacts(user._id)).unwrap().then(() => {

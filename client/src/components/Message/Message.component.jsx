@@ -27,6 +27,7 @@ const Message = ({ message, currId, socket, roomId, color }) => {
         <Container 
             $isCurrentUser={isSentByCurrentUser}
             $isDeleted={message.status === "deleted"}
+            className="glass"
 
             onContextMenu={(e) => {
                 e.stopPropagation();

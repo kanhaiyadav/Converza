@@ -3,9 +3,11 @@ import { WelcomeTitle } from './Welcome.styles';
 import { useDispatch } from 'react-redux';
 import { updateBulkJoin } from '../../redux/contacts/contacts.slice';
 import { Container } from './Welcome.styles';
+import { useSocket } from '../../context/SocketContext';
 
-const Welcome = ({ socket }) => {
+const Welcome = () => {
     const dispatch = useDispatch();
+    const socket = useSocket();
 
 
     React.useEffect(() => {
