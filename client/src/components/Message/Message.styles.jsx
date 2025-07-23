@@ -12,7 +12,7 @@ export const Container = styled.div`
             if ($isCurrentUser) {
                 return `linear-gradient(135deg, ${theme.colors.primary}, rgba(255, 255, 255, 0))`;
             } else {
-                return `linear-gradient(135deg, ${theme.colors.secondary}, rgba(255, 255, 255, 0))`;
+                return `linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0))`;
             }
         }
     }};
@@ -31,6 +31,17 @@ export const Container = styled.div`
     flex-direction: column;
     position: relative;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    ${(props) =>
+        props.$isOnlyEmojis &&
+        `
+        text-align: center;
+        p {
+          margin: 0.2rem 0;
+          user-select: none;
+        }
+        padding: ${props.$isOnlyEmojis ? "0.5rem" : "your-normal-padding"};
+        min-width: auto;
+    `}
     p {
         font-size: 0.9rem;
         margin-bottom: 2px;
@@ -38,7 +49,7 @@ export const Container = styled.div`
             if ($isDeleted) {
                 return "gray";
             } else {
-                return $isCurrentUser ? "white" : theme.textColors.primary;
+                return theme.textColors.primary;
             }
         }};
         font-style: ${({ $isDeleted }) => ($isDeleted ? "italic" : "normal")};

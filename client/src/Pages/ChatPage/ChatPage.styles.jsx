@@ -63,7 +63,18 @@ export const HeaderBody = styled.div`
     span{
         display: inline-block;
         font-size: 0.85rem;
-        color: ${({ theme }) => theme.colors.active};
+        color: ${({ status, theme }) => {
+            switch (status) {
+                case "active":
+                    return theme.colors.active;
+                case "offline":
+                    return theme.colors.offline;
+                case "online":
+                    return theme.colors.online;
+                default:
+                    return theme.colors.inactive;
+            }
+        }};
         font-weight: 300;
         margin-top: -3px;
         font-family: 'Merienda';

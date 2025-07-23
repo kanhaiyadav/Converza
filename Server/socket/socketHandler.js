@@ -87,11 +87,7 @@ const initializeSocket = (server) => {
 
         socket.on("bulkJoin", async (data, callback) => {
             socket.join(data.room);
-            const room = await Room.findById(data.room)?.populate(
-                "readMessages"
-            );
             callback(null, {});
-            // console.log(`bulk join: ${data.room}`);
         });
 
         socket.on("message", async (data, callback) => {

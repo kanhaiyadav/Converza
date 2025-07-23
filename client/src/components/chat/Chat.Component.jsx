@@ -72,7 +72,9 @@ const Chat = ({ contact }) => {
                 }}
             >
                 <img src={"/user.png"} alt="" />
-                <StatusIndicator status={status} />
+                <StatusIndicator status={status} style={{
+                    display: status === "offline" ? "none" : "block"
+                }}/>
             </div>
             <ChatBody>
                 <div>

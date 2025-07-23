@@ -18,11 +18,11 @@ const StatusIndicator = styled.div`
     background-color: ${({ status, theme }) => {
         switch (status) {
             case "active":
-                return "rgb(0, 255, 255)";
+                return theme.colors.active;
             case "offline":
-                return "rgba(132, 132, 132, 1)";
+                return theme.colors.offline;
             case "online":
-                return theme.colors.success;
+                return theme.colors.online;
             default:
                 return theme.colors.inactive;
         }
@@ -34,8 +34,8 @@ const StatusIndicator = styled.div`
             &::before {
                 content: "";
                 position: absolute;
-                top: 20%;
-                left: 20%;
+                top: 18%;
+                left: 18%;
                 width: 100%;
                 height: 100%;
                 border-radius: 50%;

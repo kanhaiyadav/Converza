@@ -75,17 +75,19 @@ export const lightTheme = {
     ...commonTheme,
     type: "light",
     colors: {
-        primary: "#932ef9",
+        primary: "#a448ffff",
         secondary: "white",
         tertiary: "#f5eefc",
         quaternary: "#f6efff",
-        // blur: 
-        active: '#00984e',
-        inactive: '#ff0a0a',
+        // blur:
+        inactive: "#ff0a0a",
         error: "#ff0000",
         success: "#00ff00",
         warning: "#ffcc00",
         info: "#00ccff",
+        active: "#00d9d9ff",
+        online: "#00d000ff",
+        offline: "#ff0000",
     },
     textColors: {
         primary: "#2a2a2a",
@@ -113,7 +115,7 @@ export const lightTheme = {
         outline: "0 0 0 3px rgba(66, 153, 225, 0.5)",
         none: "none",
     },
-}
+};
 
 export const darkTheme = {
     ...commonTheme,
@@ -123,8 +125,7 @@ export const darkTheme = {
         secondary: "#252532",
         tertiary: "#a04df3",
         quaternary: "#2f3142",
-        active: '#00984e',
-        inactive: '#ff0a0a',
+        inactive: "#ff0a0a",
         quinary: "#8b8b8b",
         senary: "#e2e2e2",
         white: "#ffffff",
@@ -134,9 +135,12 @@ export const darkTheme = {
         warning: "#ffcc00",
         info: "#00ccff",
         transparent: "transparent",
+        active: "#00ffff",
+        online: "#00ff00",
+        offline: "#ff0000",
     },
     textColors: {
-        primary: "#bcbcbc",
+        primary: "#d8d8d8ff",
         secondary: "#000000",
         tertiary: "#c7c7c7",
         quaternary: "#ededed",
@@ -161,4 +165,4 @@ export const darkTheme = {
         outline: "0 0 0 3px rgba(66, 153, 225, 0.5)",
         none: "none",
     },
-}
+};
