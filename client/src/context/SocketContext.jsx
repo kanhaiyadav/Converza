@@ -2,15 +2,20 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { io } from "socket.io-client";
 import { selectUserInfo } from "../redux/user/user.selector";
-import { deleteMessage } from "../redux/contacts/contacts.slice";
+import { selectActiveChat } from "../redux/chat/chat.selector";
+import {
+    increamentChatUnreadCount,
+    updateChatLastMessage,
+    updateUnreadChats,
+} from "../redux/chat/chat.slice";
 
 const SocketContext = createContext(null);
 
 export const SocketProvider = ({ children }) => {
     const userData = useSelector(selectUserInfo);
-    console.log("SocketProvider userData:", userData);
     const [socket, setSocket] = useState(null);
     const dispatch = useDispatch();
+    const activeChatId = useSelector(selectActiveChat);
 
     useEffect(() => {
         const init = () => {
@@ -19,10 +24,8 @@ export const SocketProvider = ({ children }) => {
 
             newSocket.emit("join-online-room", userData._id);
 
-            newSocket.emit("markOnline", { userId: userData._id });
-
             newSocket.on("messageDeleted", (data) => {
-                dispatch(deleteMessage(data));
+                // dispatch(deleteMessage(data));
             });
         };
         if (userData?._id) {
@@ -33,8 +36,41 @@ export const SocketProvider = ({ children }) => {
                 }
             };
         }
-        
     }, [userData._id]);
+
+    useEffect(() => {
+        if (!socket) return;
+
+        const handleNewMessage = (data) => {
+            console.log(
+                "SocketContext: Received new-message, activeChatId:",
+                activeChatId
+            );
+
+            // Use setTimeout to ensure this runs after other handlers
+            setTimeout(() => {
+                // Handle global chat list updates
+                if (
+                    userData._id !== data.sender &&
+                    data.chat !== activeChatId
+                ) {
+                    dispatch(increamentChatUnreadCount(data.chat));
+                    dispatch(updateUnreadChats(data.chat));
+                }
+                dispatch(
+                    updateChatLastMessage({
+                        ...data,
+                        timestamp: data.createdAt,
+                    })
+                );
+            }, 0);
+        };
+
+        socket.on("new-message", handleNewMessage);
+        return () => {
+            socket.off("new-message", handleNewMessage);
+        };
+    }, [activeChatId, userData._id, socket, dispatch]);
 
     return (
         <SocketContext.Provider value={{ socket }}>

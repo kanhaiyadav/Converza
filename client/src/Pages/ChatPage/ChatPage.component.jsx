@@ -1,182 +1,183 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUserInfo } from "../../redux/user/user.selector";
 import {
-    selectContact,
-    selectMessages,
-    selectUnreadMessages,
-} from "../../redux/contacts/contact.selector";
-import { Container, Header, HeaderBody, Body, Footer } from "./ChatPage.styles";
+    Container,
+    Header,
+    HeaderBody,
+    Body,
+    Footer,
+    NewMessageBanner,
+} from "./ChatPage.styles";
 import RoundedButton from "../../components/RoundedButton/RoundedButton";
 import Message from "../../components/Message/Message.component";
-import MessageFrom from "./MessageForm/MessageForm.component";
-import {
-    roomJoinUpdate,
-    addOneReadMessage,
-    addOneUnreadMessage,
-    markMessagesRead,
-    bannerShown,
-} from "../../redux/contacts/contacts.slice";
 import { useDispatch } from "react-redux";
-import { NewMessageBanner } from "./NewMessageBanner.styles";
 import Options from "./options";
 import { useNavigate } from "react-router-dom";
 import NoMessages from "./NoMessages";
 import MessageSkeleton from "../../components/ChatSkeleton/MessageSkeleton";
 import { useSocket } from "../../context/SocketContext";
+import { selectChatById } from "../../redux/chat/chat.selector";
+import MessageForm from "./MessageForm/MessageForm.component";
+import {
+    resetChatUnreadCount,
+    setActiveChat,
+} from "../../redux/chat/chat.slice";
 
 const ChatPage = () => {
     const [options, setOptions] = React.useState(false);
     const [position, setPosition] = React.useState({ x: 0, y: 0 });
-    const [showUnreadBanner, setShowUnreadBanner] = useState(false);
-    const id = useParams().id;
-    const contact = useSelector(selectContact(id));
-    const { user, room } = contact;
+    const [messages, setMessages] = React.useState(null);
     const me = useSelector(selectUserInfo);
-    const endOfMessagesRef = useRef(null);
     const dispatch = useDispatch();
-    const messages = useSelector(selectMessages(room._id));
-    const unreadMessages = useSelector(selectUnreadMessages(room._id));
-    const unreadMessageBannerHeight = contact.room.unreadMessageBannerHeight
-        ? contact.room.unreadMessageBannerHeight
-        : 0;
-    const messagesCount = messages.length;
     const navigate = useNavigate();
-    const [loadingMessages, setMessages] = React.useState(true);
     const socket = useSocket();
     const [status, setStatus] = useState("offline");
+    const statusRef = useRef("offline"); // Add ref to track current status
+    const id = useParams().id;
+    const selectedChat = useSelector(selectChatById(id));
+    console.log("😂😂😂", selectedChat);
+    const unreadMessagesCountRef = useRef(0);
+    const endOfMessagesRef = useRef(null);
+
+    const otherUser = selectedChat?.participants[0];
+
+    // Update the ref whenever status changes
+    useEffect(() => {
+        statusRef.current = status;
+    }, [status]);
+
+    const appendMessage = useCallback((message) => {
+        setMessages((prevMessages) => {
+            const currentStatus = statusRef.current; // Use ref to get current status
+            return [
+                ...(prevMessages || []),
+                {
+                    ...message,
+                    status:
+                        currentStatus === "active"
+                            ? "read"
+                            : currentStatus === "online"
+                            ? "delivered"
+                            : "sent",
+                },
+            ];
+        });
+    }, []); // Remove status from dependencies since we're using ref
 
     useEffect(() => {
-        if (unreadMessageBannerHeight > 0) {
-            setShowUnreadBanner(true);
-
-            const timer = setTimeout(() => {
-                dispatch(bannerShown({ roomId: room._id }));
-                setShowUnreadBanner(false);
-            }, 5000);
-
-            return () => clearTimeout(timer);
+        if(selectedChat.lastMessage?.sender !== me._id) {
+            unreadMessagesCountRef.current = selectedChat?.unreadCount || 0;
         }
-    }, [unreadMessageBannerHeight, dispatch, room._id]); // Use length instead of the full array to avoid deep comparisons
+        return () => {
+            unreadMessagesCountRef.current = 0;
+        };
+    }, [messages, selectedChat?._id, selectedChat?.lastMessage, me._id]);
 
     // Scroll to bottom when messages change
     useEffect(() => {
-        endOfMessagesRef.current?.scrollIntoView();
+        if (endOfMessagesRef.current) {
+            endOfMessagesRef.current.scrollIntoView();
+        }
     }, [messages]);
 
-    // Join the room when the component mounts
     useEffect(() => {
-        socket.emit(
-            "join",
-            { room: room._id, userId: me._id },
-            (err, response) => {
-                if (err) {
-                    console.log(err);
+        const fetchMessages = async () => {
+            if (!selectedChat?._id) return;
+            const res = await fetch(
+                `${process.env.REACT_APP_SERVER_URI}/api/v1/messages/${selectedChat._id}`,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
                 }
-                if (response) {
-                    dispatch(
-                        roomJoinUpdate({
-                            roomId: room._id,
-                            messages: response,
-                            userId: me._id,
-                        })
-                    );
-                    setMessages(false);
-                }
-            }
-        );
-    }, [socket, room._id, dispatch, me._id]);
-
-    // Listen for new messages (use a stable callback)
-    useEffect(() => {
-        socket.on("messageNotRecieved", (data) => {
-            dispatch(
-                addOneUnreadMessage({ message: data.message, userId: me._id })
             );
-        });
-
-        socket.on("newMessage", (data, callback) => {
-            // console.log(contact.room.unreadMessageSender, me._id);
-            if (data.roomId === room._id) {
-                callback({ messageSeen: true });
-                dispatch(addOneReadMessage({ message: data.message }));
-            } else {
-                callback({ messageSeen: false });
-                dispatch(
-                    addOneUnreadMessage({
-                        message: data.message,
-                        userId: me._id,
-                    })
-                );
+            if (!res.ok) {
+                console.error("Failed to fetch messages");
+                setMessages([]);
+                return;
             }
-        });
-
-        socket.on("messageSeen", (data) => {
-            dispatch(addOneReadMessage({ message: data.message }));
-        });
-
-        socket.on("messageNotSeen", (data) => {
-            dispatch(
-                addOneUnreadMessage({ message: data.message, userId: me._id })
-            );
-        });
-
-        socket.on("markMessagesRead", (data) => {
-            dispatch(markMessagesRead({ roomId: data.roomId }));
-        });
-
-        return () => {
-            socket.off("messageNotRecieved");
-            socket.off("messageSeen");
-            socket.off("messageNotSeen");
-            socket.off("markMessagesRead");
-            socket.off("newMessage");
+            const resJson = await res.json();
+            setMessages(resJson.data);
         };
-    }, [
-        socket,
-        room._id,
-        dispatch,
-        contact._id,
-        me._id,
-        contact.room.unreadMessageSender,
-    ]);
+        fetchMessages();
+    }, [selectedChat?._id]);
 
     useEffect(() => {
-        if (!socket) return;
+        if (!socket || !selectedChat?._id) return;
 
-        socket.emit("chat-is-active", room._id);
+        console.log(
+            "ChatPage: Setting up socket listeners for chat:",
+            selectedChat._id
+        );
+        console.log("ChatPage: Socket ID:", socket.id);
 
-        socket.emit("isOnline", room._id, (response) => {
+        socket.emit("chat-is-active", selectedChat._id);
+
+        socket.emit("isOnline", selectedChat._id, (response) => {
             console.log("Status update response:", response);
             if (response) {
                 setStatus(response.status);
             }
         });
 
-        socket.emit("isActive", room._id, (response) => {
+        socket.emit("isActive", selectedChat._id, (response) => {
             console.log("Is active response:", response);
             if (response && response.isActive) {
                 setStatus("active");
             }
         });
 
-        socket.on(`status-update:${contact.room._id}`, (data) => {
+        const handleStatusUpdate = (data) => {
             if (data && data.status) {
                 setStatus(data.status);
+                statusRef.current = data.status;
             }
-        });
+        };
 
-        socket.on("isActive", (chatId, callback) => {
-            callback({ isActive: chatId === contact.room._id });
-        });
+        const handleIsActive = (chatId, callback) => {
+            callback({ isActive: chatId === selectedChat._id });
+        };
+
+        const handleNewMessage = (message) => {
+            // Only handle messages for the current chat
+            if (String(message.chat) === String(selectedChat._id)) {
+                appendMessage(message);
+            }
+        };
+
+        // Set up event listeners
+        socket.on(`status-update:${selectedChat._id}`, handleStatusUpdate);
+        socket.on("isActive", handleIsActive);
+
+        // Listen to the original new-message event
+        socket.on("new-message", handleNewMessage);
 
         return () => {
-            socket.emit("chat-is-inactive", contact.room._id);
-            socket.off("isActive");
-            socket.off("new-message");
+            socket.emit("chat-is-inactive", selectedChat._id);
+            socket.off(`status-update:${selectedChat._id}`, handleStatusUpdate);
+            socket.off("isActive", handleIsActive);
+            socket.off("new-message", handleNewMessage);
         };
-    }, [contact.room._id]);
+    }, [selectedChat?._id, socket, appendMessage]);
+
+    useEffect(() => {
+        dispatch(setActiveChat(selectedChat?._id));
+        if (selectedChat?.lastMessage?.sender !== me._id) {
+            socket?.emit("reset-chat-unread", selectedChat._id);
+            dispatch(resetChatUnreadCount(selectedChat?._id));
+        }
+        return () => {
+            dispatch(setActiveChat(null));
+        };
+    }, [
+        selectedChat?._id,
+        selectedChat?.lastMessage?.sender,
+        me._id,
+        socket,
+        dispatch,
+    ]);
 
     const closeChat = () => {
         navigate("../");
@@ -186,8 +187,8 @@ const ChatPage = () => {
         <Container>
             <Header>
                 <img src={"/user.png"} alt="" />
-                <HeaderBody $status={status}>
-                    <p>{user.name}</p>
+                <HeaderBody status={status}>
+                    <p>{otherUser?.name}</p>
                     <span>{status}</span>
                 </HeaderBody>
             </Header>
@@ -219,78 +220,58 @@ const ChatPage = () => {
                     setOptions(true);
                 }}
             >
-                {loadingMessages ? (
+                {messages === null ? (
                     <MessageSkeleton />
-                ) : messages.length === 0 && unreadMessages.length === 0 ? (
+                ) : messages.length === 0 ? (
                     <NoMessages />
                 ) : (
                     <>
-                        {/* <MessageSkeleton /> */}
-                        {messages.map((message, index) => {
-                            if (
-                                index !==
-                                messagesCount - unreadMessageBannerHeight
+                        {messages
+                            .slice(
+                                0,
+                                -1 * unreadMessagesCountRef.current ||
+                                    messages.length
                             )
-                                return (
+                            .map((message, index) => (
+                                <Message
+                                    key={message._id}
+                                    message={message}
+                                    currId={me._id}
+                                    socket={socket}
+                                    roomId={selectChatById._id}
+                                />
+                            ))}
+                        <div ref={endOfMessagesRef} />
+                        {unreadMessagesCountRef.current > 0 && (
+                            <NewMessageBanner>
+                                <hr />
+                                <div>
+                                    {unreadMessagesCountRef.current} unread
+                                    messages
+                                </div>
+                                <hr />
+                            </NewMessageBanner>
+                        )}
+                        {unreadMessagesCountRef.current > 0 &&
+                            messages
+                                .slice(-1 * unreadMessagesCountRef.current)
+                                .map((message, index) => (
                                     <Message
                                         key={message._id}
                                         message={message}
                                         currId={me._id}
                                         socket={socket}
-                                        roomId={room._id}
-                                        color="#00ff00"
+                                        roomId={selectChatById._id}
                                     />
-                                );
-                            else {
-                                if (
-                                    contact.room.unreadMessageSender !==
-                                        me._id &&
-                                    showUnreadBanner
-                                ) {
-                                    return (
-                                        <>
-                                            <NewMessageBanner>
-                                                <p>You have unread messages</p>
-                                            </NewMessageBanner>
-                                            <Message
-                                                key={message._id}
-                                                message={message}
-                                                currId={me._id}
-                                                socket={socket}
-                                                roomId={room._id}
-                                                color="#00ff00"
-                                            />
-                                        </>
-                                    );
-                                } else
-                                    return (
-                                        <Message
-                                            key={message._id}
-                                            message={message}
-                                            currId={me._id}
-                                            socket={socket}
-                                            roomId={room._id}
-                                            color="#00ff00"
-                                        />
-                                    );
-                            }
-                        })}
-                        <div ref={endOfMessagesRef} />
-                        {unreadMessages.map((message) => (
-                            <Message
-                                key={message._id}
-                                message={message}
-                                currId={me._id}
-                                socket={socket}
-                                roomId={room._id}
-                                color="yellow"
-                            />
-                        ))}
+                                ))}
                     </>
                 )}
             </Body>
             <Footer>
-                <MessageFrom socket={socket} contact={contact} />
+                <MessageForm
+                    chat={selectedChat}
+                    chatStatus={statusRef.current}
+                />
                 <RoundedButton type="submit" form="message-form">
                     <i className="fa-solid fa-paper-plane" />
                 </RoundedButton>
@@ -300,7 +281,7 @@ const ChatPage = () => {
                     closeChat={closeChat}
                     closeOptions={() => setOptions(false)}
                     style={{ top: position.y, left: position.x }}
-                    contact={contact}
+                    contact={selectedChat}
                 />
             )}
         </Container>

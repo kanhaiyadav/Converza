@@ -1,10 +1,10 @@
 import { Form } from "./AddContactFrom.styles";
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { newContact } from '../../redux/contacts/contacts.slice';
 import { selectUserInfo } from "../../redux/user/user.selector";
 import { toast } from 'react-toastify';
 import { motion } from "framer-motion";
+import { setOneChat } from "../../redux/chat/chat.slice";
 
 const AddContactFrom = ({ closeModal }) => {
     const [username, setUsername] = useState('');
@@ -15,27 +15,26 @@ const AddContactFrom = ({ closeModal }) => {
         setUsername(e.target.value);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const promise = dispatch(newContact({
-            myUsername: user.username,
-            theirUsername: username
-        })).unwrap();
-        toast.promise(promise, {
-            pending: 'Adding Contact...',
-            success: {
-                render({ data }) {
-                    closeModal();
-                    setUsername('');
-                    return data.message;
-                }
+        const res = await fetch(`${process.env.REACT_APP_SERVER_URI}/api/v1/chats`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
             },
-            error: {
-                render({ data }) {
-                    return data.message;
-                }
-            }
+            body: JSON.stringify({
+                participants: [username, user.username],
+            }),
         });
+        if (!res.ok) {
+            console.error("Failed to create or fetch chat");
+            return;
+        }
+        closeModal();
+        toast.success("Contact added successfully!");
+        const resJson = await res.json();
+        dispatch(setOneChat(resJson.data));
+        // dispatch(setSelectedChat(resJson.data));
     };
 
     // Define variants for parent and children
@@ -64,9 +63,9 @@ const AddContactFrom = ({ closeModal }) => {
     return (
         <Form
             onSubmit={handleSubmit}
-            variants={parentVariants}  // Apply variants to the parent
-            initial="hidden"           // Start with the hidden state
-            animate="visible"           // Animate to the visible state
+            variants={parentVariants}  
+            initial="hidden"    
+            animate="visible"        
             exit={{ scale: 0 }}
         >
             <h1>New Contact</h1>
