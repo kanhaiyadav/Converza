@@ -6,16 +6,16 @@ import Options from "./Options";
 import { useSocket } from "../../context/SocketContext";
 import StatusIndicator from "./StatusIndicator";
 
-const Chat = ({ contact }) => {
+const Chat = ({ chat }) => {
     const [options, setOptions] = React.useState(false);
     const [position, setPosition] = React.useState({ x: 0, y: 0 });
     const me = useSelector(selectUserInfo);
-    const { room, user } = contact;
-    const date = new Date(room.lastMessage?.createdAt);
+    const date = new Date(chat?.lastMessage?.createdAt);
     const [status, setStatus] = useState("offline");
     const socket = useSocket();
 
-    // Get local time hours and minutes
+    const otherUser = chat.participants.find((user) => user._id !== me._id);
+
     const hours = date.getHours(); // Get the hours in the local time zone
     const minutes = date.getMinutes(); // Get the minutes in the local time zone
     let formattedTime = "";
@@ -23,21 +23,21 @@ const Chat = ({ contact }) => {
     useEffect(() => {
         if (!socket) return;
 
-        socket.on(`status-update:${room._id.toString()}`, (data) => {
+        socket.on(`status-update:${chat._id.toString()}`, (data) => {
             console.log("Status update received:", data);
             if (data && data.status) {
                 setStatus(data.status);
             }
         });
 
-        socket.emit("isOnline", room._id, (response) => {
+        socket.emit("isOnline", chat._id, (response) => {
             console.log("Status update response:", response);
             if (response) {
                 setStatus(response.status);
             }
         });
 
-        socket.emit("isActive", room._id, (response) => {
+        socket.emit("isActive", chat._id, (response) => {
             console.log("Is active response:", response);
             if (response && response.isActive) {
                 setStatus("active");
@@ -48,7 +48,7 @@ const Chat = ({ contact }) => {
             socket.off("status-update");
             socket.off("isOnline");
             socket.off("isActive");
-            socket.emit("chat-is-inactive", room._id);
+            socket.emit("chat-is-inactive", chat._id);
         };
     }, []);
 
@@ -59,7 +59,7 @@ const Chat = ({ contact }) => {
 
     return (
         <ChatContainer
-            to={contact.room._id}
+            to={chat._id}
             onContextMenu={(e) => {
                 e.preventDefault();
                 setPosition({ x: e.pageX, y: e.pageY });
@@ -72,29 +72,29 @@ const Chat = ({ contact }) => {
                 }}
             >
                 <img src={"/user.png"} alt="" />
-                <StatusIndicator status={status} style={{
-                    display: status === "offline" ? "none" : "block"
-                }}/>
+                <StatusIndicator
+                    status={status}
+                    style={{
+                        display: status === "offline" ? "none" : "block",
+                    }}
+                />
             </div>
             <ChatBody>
                 <div>
-                    <span>{user.name}</span>
-                    {contact.room.unreadMessageSender &&
-                    me._id !== contact.room.unreadMessageSender &&
-                    contact.room.unreadMessagesCount ? (
-                        <p>{room.unreadMessagesCount}</p>
-                    ) : (
-                        ""
-                    )}
+                    <span>{otherUser.name}</span>
+                    {chat?.unreadCount > 0 &&
+                        me._id !== chat?.lastMessage?.sender && (
+                            <p>{chat.unreadCount}</p>
+                        )}
                 </div>
                 <span>
-                    {room.lastMessage
-                        ? room.lastMessage.sender === me._id
+                    {chat.lastMessage
+                        ? chat.lastMessage.sender === me._id
                             ? "You: "
                             : ""
                         : ""}
-                    {room.lastMessage
-                        ? room.lastMessage.content
+                    {chat.lastMessage && chat.lastMessage.content
+                        ? chat.lastMessage.content
                         : "No messages yet..."}
                     <span>{formattedTime}</span>
                 </span>
@@ -103,7 +103,7 @@ const Chat = ({ contact }) => {
                 <Options
                     closeOptions={() => setOptions(false)}
                     style={{ top: position.y, left: position.x }}
-                    contact={contact}
+                    otherUser={otherUser}
                 />
             )}
         </ChatContainer>

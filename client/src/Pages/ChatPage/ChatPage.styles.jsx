@@ -48,6 +48,31 @@ export const NoMessagesContainer = styled.div`
     }
 `;
 
+export const NewMessageBanner = styled.div`
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin: 10px 0;
+    padding: 0px 10px;
+    & > div {
+        text-align: center;
+        font-size: 0.9rem;
+        color: ${({ theme }) => theme.textColors.primary};
+    }
+    hr {
+        flex: 1;
+        border: none;
+        height: 1px;
+        background: ${({ theme }) => theme.colors.offline};
+    }
+    hr:first-child {
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+    }
+`;
+
 
 export const HeaderBody = styled.div`
     display: flex;

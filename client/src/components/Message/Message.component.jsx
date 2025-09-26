@@ -2,12 +2,30 @@ import React from "react";
 import { Container } from "./Message.styles";
 import { MdCircle } from "react-icons/md";
 import Options from "./Options";
+import { useEffect } from "react";
+import { useSocket } from "../../context/SocketContext";
 
-const Message = ({ message, currId, socket, roomId, color }) => {
+const Message = ({ message, currId, roomId }) => {
     const [options, setOptions] = React.useState(false);
     const [position, setPosition] = React.useState({ x: 0, y: 0 });
     const { content, sender } = message;
     const isSentByCurrentUser = sender === currId;
+    const [status, setStatus] = React.useState("sent");
+    const socket = useSocket();
+
+    useEffect(() => {
+        setStatus(message.status);
+    }, [message.status]);
+
+    useEffect(() => {
+        socket.on(`messageStatusUpdate:${message._id}`, (data) => {
+            console.log("Message status update received:", data);
+            setStatus(data.status);
+        });
+        return () => {
+            socket.off(`messageStatusUpdate:${message._id}`);
+        };
+    }, []);
 
     // Function to detect if content contains only emojis
     const isOnlyEmojis = (text) => {
@@ -78,7 +96,7 @@ const Message = ({ message, currId, socket, roomId, color }) => {
             >
                 {content}
             </p>
-            {message.status !== "deleted" && (
+            {status !== "deleted" && (
                 <span
                     style={{
                         alignSelf: isSentByCurrentUser
@@ -88,7 +106,7 @@ const Message = ({ message, currId, socket, roomId, color }) => {
                 >
                     {formattedTime}
                     {isSentByCurrentUser && (
-                        <MdCircle style={{ color: color, marginLeft: "5px" }} />
+                        <MdCircle size={8} style={{ color: status === "read" ? "#00ff00" : status === "delivered" ? "orange" : "yellow", marginLeft: "5px" }} />
                     )}
                 </span>
             )}

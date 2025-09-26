@@ -1,6 +1,4 @@
 import User from '../../../Models/user.js';
-import Contact from '../../../Models/contact.js';
-import Room from '../../../Models/Room.js';
 import jwt from 'jsonwebtoken';
 
 export const signUp = async (req, res) => {
@@ -64,94 +62,6 @@ export const signIn = async (req, res) => {
         });
     }
 }
-
-export const getContacts = async (req, res) => {
-    try {
-        // console.log(await User.findById(req.params.id));
-        const user = await User.findById(req.params.id).populate({
-            path: 'contacts',
-            populate: [
-                { path: 'user' },
-                {
-                    path: 'room',
-                    select: 'readMessagesCount lastMessage unreadMessagesCount unreadMessageSender',
-                    populate: {
-                        path: 'lastMessage',
-                    }
-                }
-            ]
-        });
-        if (user) {
-            return res.status(200).json({
-                data: {
-                    contacts: user.contacts,
-                },
-                message: "Contacts fetched successfully"
-            });
-        }
-        else {
-            return res.status(404).json({
-                message: "User not found"
-            });
-        }
-    }
-    catch (err) {
-        // console.log(err);
-        return res.status(500).json({
-            message: err.message
-        });
-    }
-}
-
-export const newContact = async (req, res) => {
-    try {
-        const me = await User.findOne({ username: req.body.myUsername });
-        const they = await User.findOne({ username: req.body.theirUsername });
-        if (they) {
-            await me.populate('contacts');
-            if (me.contacts.find(contact => contact.user.toString() === they._id.toString())) {
-                return res.status(400).json({
-                    message: "Contact already exists"
-                });
-            }
-            else {
-                const room = await Room.create({});
-                const theirContact = await Contact.create({
-                    user: they._id,
-                    room: room._id
-                });
-
-                const myContact = await Contact.create({
-                    user: me._id,
-                    room: room._id
-                });
-
-                me.contacts.push(theirContact._id);
-                await me.save();
-                they.contacts.push(myContact._id);
-                await they.save();
-
-                const populatedTheirContact = await theirContact.populate('user room');
-                return res.status(200).json({
-                    data: {
-                        contact: populatedTheirContact,
-                    },
-                    message: "Contact added successfully"
-                });
-            }
-        }
-        else {
-            return res.status(404).json({
-                message: "User not found"
-            });
-        }
-    } catch (err) {
-        // console.log(err);
-        return res.status(500).json({
-            message: err.message
-        });
-    }
-};
 
 export const update = async (req, res) => {
     try {

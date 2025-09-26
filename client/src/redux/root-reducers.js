@@ -1,13 +1,13 @@
 import { combineReducers } from "@reduxjs/toolkit";
 import userSlice from "./user/user.slice";
-import contactsSlice from "./contacts/contacts.slice";
+import chatSlice from "./chat/chat.slice";
 
 import persistReducer from "redux-persist/es/persistReducer";
 import storage from "redux-persist/lib/storage";
 
 const appReducer = combineReducers({
     user: userSlice,
-    contacts: contactsSlice
+    chat: chatSlice
 });
 
 const rootReducer = (state, action) => {
@@ -20,7 +20,7 @@ const rootReducer = (state, action) => {
 const persistConfig = {
     key: 'root',
     storage,
-    whitelist: ['user', 'contacts']
+    whitelist: ['user']
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

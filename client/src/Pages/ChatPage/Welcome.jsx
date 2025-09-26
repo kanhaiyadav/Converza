@@ -1,28 +1,8 @@
 import React from 'react'
 import { WelcomeTitle } from './Welcome.styles';
-import { useDispatch } from 'react-redux';
-import { updateBulkJoin } from '../../redux/contacts/contacts.slice';
 import { Container } from './Welcome.styles';
-import { useSocket } from '../../context/SocketContext';
 
 const Welcome = () => {
-    const dispatch = useDispatch();
-    const socket = useSocket();
-
-
-    React.useEffect(() => {
-        socket.on('newMessage', (data, callback) => {
-            callback({ messageSeen: false });
-            console.log("new message received");
-            socket.emit('messageNotSeen', { roomId: data.roomId, sender: data.message.sender });
-            dispatch(updateBulkJoin({ roomId: data.roomId, message: data.message }));
-        });
-
-        return () => {
-            socket.off('newMessage');
-        };
-    }, [socket, dispatch]);
-
 
     return (
         <Container

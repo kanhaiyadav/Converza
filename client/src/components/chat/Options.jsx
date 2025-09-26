@@ -6,12 +6,10 @@ import { TbMessageShare } from "react-icons/tb";
 import Modal from "../Modal/Modal.component";
 import ModalContent from "../ModalContent/ModalContent";
 import { useDispatch } from "react-redux";
-import { clearChat } from "../../redux/contacts/contacts.slice";
 import { toast } from "react-toastify";
 
-const Options = ({ closeOptions, style, contact }) => {
+const Options = ({ closeOptions, style, otherUser }) => {
     const [modalOpen, setModalOpen] = useState(false);
-    const { user } = contact;
     const dispatch = useDispatch();
     return (
         <OptionModal
@@ -26,7 +24,7 @@ const Options = ({ closeOptions, style, contact }) => {
         >
             <OptionsContainer>
                 <header>
-                    <p>{user.name}</p>
+                    <p>{otherUser.name}</p>
                 </header>
                 <section>
                     <div>
@@ -61,21 +59,21 @@ const Options = ({ closeOptions, style, contact }) => {
                                 text: 'Proceed',
                                 onClick: () => {
                                     console.log('Clearing chat...');
-                                    const promise = dispatch(clearChat(contact.room._id)).unwrap();
-                                    toast.promise(promise, {
-                                        pending: 'Clearing Chat...',
-                                        success: {
-                                            render({ data }) {
-                                                setModalOpen(false);
-                                                return data.message;
-                                            }
-                                        },
-                                        error: {
-                                            render({ data }) {
-                                                return data.message;
-                                            }
-                                        }
-                                    });
+                                    // const promise = dispatch(clearChat(contact.room._id)).unwrap();
+                                    // toast.promise(promise, {
+                                    //     pending: 'Clearing Chat...',
+                                    //     success: {
+                                    //         render({ data }) {
+                                    //             setModalOpen(false);
+                                    //             return data.message;
+                                    //         }
+                                    //     },
+                                    //     error: {
+                                    //         render({ data }) {
+                                    //             return data.message;
+                                    //         }
+                                    //     }
+                                    // });
                                 }
                             }
                         ]}
