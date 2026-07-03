@@ -90,7 +90,7 @@ const ChatPage = () => {
         return () => {
             unreadMessagesCountRef.current = 0;
         };
-    }, [messages, selectedChat?._id, selectedChat?.lastMessage, me._id]);
+    }, [messages, selectedChat?._id, selectedChat?.lastMessage, selectedChat?.unreadCount, me._id]);
 
     // Scroll to bottom when messages change
     useEffect(() => {

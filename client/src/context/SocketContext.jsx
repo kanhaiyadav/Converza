@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { io } from "socket.io-client";
 import { selectUserInfo, selectJwt } from "../redux/user/user.selector";
@@ -18,12 +18,19 @@ export const SocketProvider = ({ children }) => {
     const [socket, setSocket] = useState(null);
     const dispatch = useDispatch();
     const activeChatId = useSelector(selectActiveChat);
+    // A ref (not the `socket` state) so cleanup always disconnects the
+    // socket that was actually created by *this* effect run, instead of a
+    // stale closure value - and so `socket` doesn't need to be a dependency,
+    // which would otherwise re-fire this effect every time it's set and
+    // open a new connection in a loop.
+    const socketRef = useRef(null);
 
     useEffect(() => {
         const init = () => {
             const newSocket = io(process.env.REACT_APP_SERVER_URI, {
                 auth: { token: jwt?.replace(/^Bearer\s+/i, "") },
             });
+            socketRef.current = newSocket;
             setSocket(newSocket);
 
             // Fires on the initial connection AND every automatic reconnect
@@ -41,9 +48,8 @@ export const SocketProvider = ({ children }) => {
         if (userData?._id && jwt) {
             init();
             return () => {
-                if (socket) {
-                    socket.disconnect();
-                }
+                socketRef.current?.disconnect();
+                socketRef.current = null;
             };
         }
     }, [userData._id, jwt]);

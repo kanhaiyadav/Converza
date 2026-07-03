@@ -18,14 +18,18 @@ const Message = ({ message, currId, roomId }) => {
     }, [message.status]);
 
     useEffect(() => {
-        socket.on(`messageStatusUpdate:${message._id}`, (data) => {
-            console.log("Message status update received:", data);
+        if (!socket) return;
+
+        const statusUpdateEvent = `messageStatusUpdate:${message._id}`;
+        const handleStatusUpdate = (data) => {
             setStatus(data.status);
-        });
-        return () => {
-            socket.off(`messageStatusUpdate:${message._id}`);
         };
-    }, []);
+
+        socket.on(statusUpdateEvent, handleStatusUpdate);
+        return () => {
+            socket.off(statusUpdateEvent, handleStatusUpdate);
+        };
+    }, [socket, message._id]);
 
     // Function to detect if content contains only emojis
     const isOnlyEmojis = (text) => {
