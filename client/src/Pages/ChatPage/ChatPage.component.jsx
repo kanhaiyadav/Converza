@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { selectUserInfo } from "../../redux/user/user.selector";
+import { selectUserInfo, selectJwt } from "../../redux/user/user.selector";
 import {
     Container,
     Header,
@@ -30,6 +30,7 @@ const ChatPage = () => {
     const [position, setPosition] = React.useState({ x: 0, y: 0 });
     const [messages, setMessages] = React.useState(null);
     const me = useSelector(selectUserInfo);
+    const jwt = useSelector(selectJwt);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const socket = useSocket();
@@ -41,7 +42,23 @@ const ChatPage = () => {
     const unreadMessagesCountRef = useRef(0);
     const endOfMessagesRef = useRef(null);
 
-    const otherUser = selectedChat?.participants[0];
+    const otherUser = selectedChat?.participants?.find((p) => p._id !== me._id);
+
+    // Chats haven't loaded yet right after a refresh, so selectedChat is
+    // briefly undefined for a legitimate chat too. Only treat it as "gone"
+    // (e.g. deleted from another tile/tab) once we've actually seen it
+    // exist for this id - otherwise we'd bounce the user away on every load.
+    const hadChatRef = useRef(false);
+    useEffect(() => {
+        hadChatRef.current = false;
+    }, [id]);
+    useEffect(() => {
+        if (selectedChat) {
+            hadChatRef.current = true;
+        } else if (hadChatRef.current) {
+            navigate("/chats");
+        }
+    }, [selectedChat, navigate]);
 
     // Update the ref whenever status changes
     useEffect(() => {
@@ -67,7 +84,7 @@ const ChatPage = () => {
     }, []); // Remove status from dependencies since we're using ref
 
     useEffect(() => {
-        if(selectedChat.lastMessage?.sender !== me._id) {
+        if(selectedChat?.lastMessage?.sender !== me._id) {
             unreadMessagesCountRef.current = selectedChat?.unreadCount || 0;
         }
         return () => {
@@ -90,6 +107,7 @@ const ChatPage = () => {
                 {
                     headers: {
                         "Content-Type": "application/json",
+                        Authorization: jwt,
                     },
                 }
             );
@@ -102,7 +120,7 @@ const ChatPage = () => {
             setMessages(resJson.data);
         };
         fetchMessages();
-    }, [selectedChat?._id]);
+    }, [selectedChat?._id, jwt]);
 
     useEffect(() => {
         if (!socket || !selectedChat?._id) return;
@@ -113,21 +131,28 @@ const ChatPage = () => {
         );
         console.log("ChatPage: Socket ID:", socket.id);
 
-        socket.emit("chat-is-active", selectedChat._id);
+        // Re-announces presence for this chat. Must run again after every
+        // reconnect (not just once on mount) since the server-side socket
+        // room membership and "active" broadcast don't survive a dropped
+        // connection (e.g. an idle background tab getting ping-timed-out).
+        const announcePresence = () => {
+            socket.emit("chat-is-active", selectedChat._id);
 
-        socket.emit("isOnline", selectedChat._id, (response) => {
-            console.log("Status update response:", response);
-            if (response) {
-                setStatus(response.status);
-            }
-        });
+            socket.emit("isOnline", selectedChat._id, (response) => {
+                if (response) {
+                    setStatus(response.status);
+                }
+            });
 
-        socket.emit("isActive", selectedChat._id, (response) => {
-            console.log("Is active response:", response);
-            if (response && response.isActive) {
-                setStatus("active");
-            }
-        });
+            socket.emit("isActive", selectedChat._id, (response) => {
+                if (response && response.isActive) {
+                    setStatus("active");
+                }
+            });
+        };
+
+        announcePresence();
+        socket.on("connect", announcePresence);
 
         const handleStatusUpdate = (data) => {
             if (data && data.status) {
@@ -156,6 +181,7 @@ const ChatPage = () => {
 
         return () => {
             socket.emit("chat-is-inactive", selectedChat._id);
+            socket.off("connect", announcePresence);
             socket.off(`status-update:${selectedChat._id}`, handleStatusUpdate);
             socket.off("isActive", handleIsActive);
             socket.off("new-message", handleNewMessage);
@@ -164,9 +190,9 @@ const ChatPage = () => {
 
     useEffect(() => {
         dispatch(setActiveChat(selectedChat?._id));
-        if (selectedChat?.lastMessage?.sender !== me._id) {
+        if (selectedChat?._id && selectedChat?.lastMessage?.sender !== me._id) {
             socket?.emit("reset-chat-unread", selectedChat._id);
-            dispatch(resetChatUnreadCount(selectedChat?._id));
+            dispatch(resetChatUnreadCount(selectedChat._id));
         }
         return () => {
             dispatch(setActiveChat(null));
@@ -189,7 +215,7 @@ const ChatPage = () => {
                 <img src={"/user.png"} alt="" />
                 <HeaderBody status={status}>
                     <p>{otherUser?.name}</p>
-                    <span>{status}</span>
+                    <span>{selectedChat?.blockedBy?.length > 0 ? "blocked" : status}</span>
                 </HeaderBody>
             </Header>
             <Body
@@ -238,7 +264,7 @@ const ChatPage = () => {
                                     message={message}
                                     currId={me._id}
                                     socket={socket}
-                                    roomId={selectChatById._id}
+                                    roomId={selectedChat?._id}
                                 />
                             ))}
                         <div ref={endOfMessagesRef} />
@@ -261,7 +287,7 @@ const ChatPage = () => {
                                         message={message}
                                         currId={me._id}
                                         socket={socket}
-                                        roomId={selectChatById._id}
+                                        roomId={selectedChat?._id}
                                     />
                                 ))}
                     </>
@@ -272,7 +298,11 @@ const ChatPage = () => {
                     chat={selectedChat}
                     chatStatus={statusRef.current}
                 />
-                <RoundedButton type="submit" form="message-form">
+                <RoundedButton
+                    type="submit"
+                    form="message-form"
+                    disabled={selectedChat?.blockedBy?.length > 0}
+                >
                     <i className="fa-solid fa-paper-plane" />
                 </RoundedButton>
             </Footer>

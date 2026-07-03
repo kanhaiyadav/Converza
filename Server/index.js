@@ -4,12 +4,12 @@ import http from 'http';
 import './config/mongoose.js'; // MongoDB connection
 import router from './router/index.js';
 import initializeSocket from './socket/socketHandler.js'; // Import the socket handler
+import allowedOrigins from './config/corsOrigins.js';
 
 const createServer = async () => {
     const app = express();
     const port = 3000;
 
-    const allowedOrigins = ["http://localhost:8000", "https://converza.vercel.app","https://converza-azpcpnquo-kanishys-projects.vercel.app", "https://chat.kanhaiya.me"];
     const corsOptions = {
         origin: function (origin, callback) {
             if (!origin) return callback(null, true);
@@ -19,7 +19,8 @@ const createServer = async () => {
             }
             return callback(null, true);
         },
-        methods: ["GET", "POST", "PUT", "DELETE"],
+        methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+        allowedHeaders: ["Content-Type", "Authorization"],
         credentials: true
     };
 
@@ -34,8 +35,11 @@ const createServer = async () => {
     // Create an HTTP server using the Express app
     const server = http.createServer(app);
 
-    // Initialize Socket.io server, passing the HTTP server
-    initializeSocket(server);
+    // Initialize Socket.io server, passing the HTTP server.
+    // Stashed on the app so HTTP controllers (e.g. createChat) can push
+    // realtime events to connected clients.
+    const io = initializeSocket(server);
+    app.set('io', io);
 
     // Start listening for both HTTP and WebSocket requests
     server.listen(port, () => {

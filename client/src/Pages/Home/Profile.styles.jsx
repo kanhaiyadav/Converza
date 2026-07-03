@@ -62,3 +62,38 @@ export const Body = styled.div`
         }
     }
 `;
+
+export const WallpaperGrid = styled.div`
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    padding: 10px 0;
+`;
+
+export const WallpaperSwatch = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+
+    .swatch-preview {
+        width: 100%;
+        aspect-ratio: 1;
+        border-radius: 10px;
+        border: 2px solid ${({ $selected, theme }) => $selected ? theme.colors.primary : 'transparent'};
+        box-shadow: 0 0 0 1px rgba(255,255,255,0.1);
+        background-color: ${({ theme }) => theme.type === 'light' ? '#f0f0f0' : '#2f3142'};
+        background-repeat: repeat;
+    }
+
+    span {
+        font-size: 0.75rem;
+        text-align: center;
+        color: ${({ theme }) => theme.textColors.primary};
+    }
+
+    &:hover .swatch-preview {
+        border-color: ${({ theme }) => theme.colors.primary};
+    }
+`;

@@ -85,6 +85,25 @@ export const ChatBody = styled.div`
     }
 `
 
+export const MenuButton = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    margin-left: 4px;
+    border-radius: 50%;
+    background-color: transparent;
+    color: ${({ theme }) => theme.textColors.primary};
+    cursor: pointer;
+    font-size: 1.1rem;
+
+    &:hover {
+        background-color: ${({ theme }) => theme.colors.tertiary};
+    }
+`;
+
 export const ChatContainer = styled(NavLink)`
     text-decoration: none;
     color: ${({ theme }) => theme.textColors.primary};

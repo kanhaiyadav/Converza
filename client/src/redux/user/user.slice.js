@@ -50,21 +50,6 @@ export const signin = createAsyncThunk('user/signin', async (data) => {
 });
 
 
-export const update = createAsyncThunk('contacts/update', async ({ chatid, id }) => {
-    try {
-        const response = await fetch(`${process.env.REACT_APP_SERVER_URI}/api/v1/user/update/${chatid}/${id}`);
-        if (response.ok) {
-            const data = await response.json();
-            return data;
-        } else {
-            const data = await response.json();
-            throw new Error(data.message);
-        }
-    } catch (err) {
-        throw err;
-    }
-});
-
 const userSlice = createSlice({
     name: 'user',
     initialState,
@@ -77,11 +62,7 @@ const userSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(signin.fulfilled, (state, action) => {
             state.userInfo = action.payload.data.user;
-            // console.log(state.userInfo)
             state.jwt = action.payload.data.jwt;
-        });
-        builder.addCase(update.fulfilled, (state, action) => {
-            state.userInfo = action.payload.data.userInfo;
         });
     }
 });

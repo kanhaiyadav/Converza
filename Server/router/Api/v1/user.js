@@ -1,9 +1,18 @@
 import { Router } from "express";
+import rateLimit from "express-rate-limit";
 const router = Router();
-import { signUp, update, signIn } from "../../../controllers/Api/v1/user.js";
+import { signUp, signIn } from "../../../controllers/Api/v1/user.js";
 
-router.post('/signup', signUp);
-router.get('/update/:chatid/:id', update);
-router.post('/signin', signIn);
+// Throttles brute-force / credential-stuffing attempts against auth endpoints.
+const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    limit: 20,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { message: "Too many attempts, please try again later" },
+});
+
+router.post('/signup', authLimiter, signUp);
+router.post('/signin', authLimiter, signIn);
 
 export default router;

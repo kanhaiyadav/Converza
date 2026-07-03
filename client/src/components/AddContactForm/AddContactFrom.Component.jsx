@@ -5,11 +5,13 @@ import { selectUserInfo } from "../../redux/user/user.selector";
 import { toast } from 'react-toastify';
 import { motion } from "framer-motion";
 import { setOneChat } from "../../redux/chat/chat.slice";
+import { selectJwt } from "../../redux/user/user.selector";
 
 const AddContactFrom = ({ closeModal }) => {
     const [username, setUsername] = useState('');
     const dispatch = useDispatch();
     const user = useSelector(selectUserInfo);
+    const jwt = useSelector(selectJwt);
 
     const handleChange = (e) => {
         setUsername(e.target.value);
@@ -21,6 +23,7 @@ const AddContactFrom = ({ closeModal }) => {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                Authorization: jwt,
             },
             body: JSON.stringify({
                 participants: [username, user.username],

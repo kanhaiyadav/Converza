@@ -12,6 +12,13 @@ const chatSchema = new mongoose.Schema(
             },
         },
         unreadCount: { type: Number, default: 0 },
+        // Soft delete: hides the chat from a user's own list without
+        // affecting the other participant. Cleared automatically when new
+        // activity happens in the chat so it reappears, like WhatsApp.
+        deletedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+        // Non-empty when either participant has blocked the chat; blocks
+        // messaging for both sides until toggled off again.
+        blockedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     },
     { timestamps: true }
 );

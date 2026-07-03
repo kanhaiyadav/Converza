@@ -6,7 +6,7 @@ import { PiUserCircleDashedFill } from "react-icons/pi";
 import { HiChatBubbleLeftRight } from "react-icons/hi2";
 import { MdEditDocument } from "react-icons/md";
 
-const HomeNav = ({theme, setTheme}) => {
+const HomeNav = ({theme, setTheme, wallpaper, setWallpaper}) => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [profile, setProfile] = useState(false);
 
@@ -68,6 +68,8 @@ const HomeNav = ({theme, setTheme}) => {
                     closeProfile={() => setProfile(false)}
                     theme={theme}
                     setTheme={setTheme}
+                    wallpaper={wallpaper}
+                    setWallpaper={setWallpaper}
                 />
             )}
         </HomeNavStyles>

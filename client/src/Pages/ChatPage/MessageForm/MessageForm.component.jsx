@@ -6,6 +6,7 @@ import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import OptionModal from "../../../components/OptionModal/OptionModal";
 import { useSocket } from "../../../context/SocketContext";
+import { toast } from "react-toastify";
 
 const MessageForm = ({ chat, chatStatus }) => {
     const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -13,8 +14,21 @@ const MessageForm = ({ chat, chatStatus }) => {
     const me = useSelector(selectUserInfo);
     const socket = useSocket();
     const inputRef = useRef(null);
+    const isBlocked = chat?.blockedBy?.length > 0;
 
     const [message, setMessage] = useState("");
+
+    // The block flag can go stale client-side (e.g. the other participant
+    // blocked the chat in another tab); the server is the source of truth
+    // and will refuse to persist the message, notifying us here.
+    useEffect(() => {
+        if (!socket) return;
+        const handleBlocked = () => {
+            toast.error("This chat is blocked. Unblock it to send messages.");
+        };
+        socket.on("messageBlocked", handleBlocked);
+        return () => socket.off("messageBlocked", handleBlocked);
+    }, [socket]);
 
     // Focus input when component mounts or chat changes
     useEffect(() => {
@@ -37,6 +51,7 @@ const MessageForm = ({ chat, chatStatus }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (isBlocked || !message.trim()) return;
         setMessage("");
         const newMessage = {
             content: message,
@@ -60,6 +75,8 @@ const MessageForm = ({ chat, chatStatus }) => {
                     borderRadius: "50%",
                     padding: "8px",
                     color: "grey",
+                    pointerEvents: isBlocked ? "none" : "auto",
+                    opacity: isBlocked ? 0.5 : 1,
                 }}
                 onClick={(e) => {
                     setPosition({ x: e.pageX, y: e.pageY });
@@ -81,9 +98,10 @@ const MessageForm = ({ chat, chatStatus }) => {
                 ref={inputRef}
                 onChange={handleMessageChange}
                 type="text"
-                placeholder="Type a message..."
+                placeholder={isBlocked ? "Messaging is blocked for this chat" : "Type a message..."}
                 name="message"
                 value={message}
+                disabled={isBlocked}
                 required
             />
             {emoji && (

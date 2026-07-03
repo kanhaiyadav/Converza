@@ -18,7 +18,7 @@ const Welcome = lazy(() => import('./Pages/ChatPage/Welcome'));
 // const ChatPage = lazy(() => import('./Pages/ChatPage/ChatPage.component'));
 const SignIn = lazy(() => import('./Pages/SignIn/SignIn.component'));
 
-function App({ theme, setTheme }) {
+function App({ theme, setTheme, wallpaper, setWallpaper }) {
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768); // Track if it's mobile
     const currentTheme = useTheme();
     const jwt = useSelector(selectJwt);
@@ -42,7 +42,7 @@ function App({ theme, setTheme }) {
                 <Routes>
                     <Route path='/signin' element={jwt ? <Navigate to='/chats' /> : <SignIn type='signin' />} />
                     <Route path='/signup' element={jwt ? <Navigate to='/chats' /> : <SignIn type='signup' />} />
-                    <Route path='/' element={jwt ? <HomeLayout theme={theme} setTheme={setTheme} /> : <Navigate to='/signin' />}>
+                    <Route path='/' element={jwt ? <HomeLayout theme={theme} setTheme={setTheme} wallpaper={wallpaper} setWallpaper={setWallpaper} /> : <Navigate to='/signin' />}>
                         <Route index element={<Welcome />} />
                         <Route path='chats' element={isMobile && isChatPageRoute ? null : <SecondaryNav type="Chats" />}>
                             <Route index element={<Welcome />} />

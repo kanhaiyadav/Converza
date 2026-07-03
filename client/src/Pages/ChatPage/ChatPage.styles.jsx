@@ -141,7 +141,9 @@ export const Body = styled.div`
     flex-direction: column;
     flex: 1 1;
     overflow-y: auto;
-    background-image: url(/darkBg.svg);;
+    background-image: ${({ theme }) => theme.wallpaperImage ?? `url(${theme.type === 'light' ? '/lightBg.svg' : '/darkBg.svg'})`};
+    background-size: ${({ theme }) => theme.wallpaperSize || 'auto'};
+    background-position: ${({ theme }) => theme.wallpaperPosition || '0 0'};
     /* padding: 20px; */
     gap:5px;
     padding-bottom: 100px;

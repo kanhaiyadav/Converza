@@ -11,14 +11,56 @@ const initialState = {
 
 export const fetchChats = createAsyncThunk(
     'chat/fetchChats',
-    async (userId, { dispatch }) => {
-        const response = await fetch(`${process.env.REACT_APP_SERVER_URI}/api/v1/chats/${userId}`);
+    async (userId, { dispatch, getState }) => {
+        const jwt = getState().user.jwt;
+        const response = await fetch(`${process.env.REACT_APP_SERVER_URI}/api/v1/chats/${userId}`, {
+            headers: {
+                Authorization: jwt,
+            },
+        });
         if (!response.ok) {
             throw new Error('Failed to fetch chats');
         }
         const resJson = await response.json();
         dispatch(setChats({ chats: resJson.data, currentUserId: userId }));
-        
+
+    }
+);
+
+export const deleteChat = createAsyncThunk(
+    'chat/deleteChat',
+    async (chatId, { dispatch, getState }) => {
+        const jwt = getState().user.jwt;
+        const response = await fetch(`${process.env.REACT_APP_SERVER_URI}/api/v1/chats/${chatId}`, {
+            method: 'DELETE',
+            headers: {
+                Authorization: jwt,
+            },
+        });
+        if (!response.ok) {
+            throw new Error('Failed to delete chat');
+        }
+        dispatch(removeChat(chatId));
+        return chatId;
+    }
+);
+
+export const toggleBlockChat = createAsyncThunk(
+    'chat/toggleBlockChat',
+    async (chatId, { dispatch, getState }) => {
+        const jwt = getState().user.jwt;
+        const response = await fetch(`${process.env.REACT_APP_SERVER_URI}/api/v1/chats/${chatId}/block`, {
+            method: 'PATCH',
+            headers: {
+                Authorization: jwt,
+            },
+        });
+        if (!response.ok) {
+            throw new Error('Failed to update block status');
+        }
+        const resJson = await response.json();
+        dispatch(setOneChat(resJson.data));
+        return resJson.data;
     }
 );
 
@@ -29,7 +71,7 @@ const chatSlice = createSlice({
         setChats: (state, action) => {
             state.chats = action.payload.chats;
             action.payload.chats.forEach((chat) => {
-                if (chat.unreadCount > 0 && chat.lastMessage.sender !== action.payload.currentUserId) {
+                if (chat.unreadCount > 0 && chat.lastMessage?.sender !== action.payload.currentUserId) {
                     if (!state.unreadChats.includes(chat._id)) {
                         state.unreadChats.push(chat._id);
                     }
@@ -83,12 +125,17 @@ const chatSlice = createSlice({
             const chatId = action.payload;
             state.unreadChats = state.unreadChats.filter(id => id !== chatId);
         },
+        removeChat: (state, action) => {
+            const chatId = action.payload;
+            state.chats = state.chats.filter(chat => chat._id !== chatId);
+            state.unreadChats = state.unreadChats.filter(id => id !== chatId);
+        },
         setActiveChat: (state, action) => {
             state.activeChat = action.payload;
         }
     },
 });
 
-export const { setChats, setOneChat, setLoading, setError, resetChatUnreadCount, increamentChatUnreadCount, updateChatLastMessage, updateUnreadChats, removeUnreadChat, setActiveChat } = chatSlice.actions;
+export const { setChats, setOneChat, setLoading, setError, resetChatUnreadCount, increamentChatUnreadCount, updateChatLastMessage, updateUnreadChats, removeUnreadChat, removeChat, setActiveChat } = chatSlice.actions;
 
 export default chatSlice.reducer;

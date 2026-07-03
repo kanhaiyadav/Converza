@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { ChatBody, ChatContainer } from "./chat.styles";
+import { ChatBody, ChatContainer, MenuButton } from "./chat.styles";
 import { selectUserInfo } from "../../redux/user/user.selector";
 import { useSelector } from "react-redux";
 import Options from "./Options";
 import { useSocket } from "../../context/SocketContext";
 import StatusIndicator from "./StatusIndicator";
+import { BsThreeDotsVertical } from "react-icons/bs";
 
 const Chat = ({ chat }) => {
     const [options, setOptions] = React.useState(false);
@@ -23,34 +24,41 @@ const Chat = ({ chat }) => {
     useEffect(() => {
         if (!socket) return;
 
-        socket.on(`status-update:${chat._id.toString()}`, (data) => {
-            console.log("Status update received:", data);
+        const statusUpdateEvent = `status-update:${chat._id.toString()}`;
+
+        const handleStatusUpdate = (data) => {
             if (data && data.status) {
                 setStatus(data.status);
             }
-        });
+        };
 
-        socket.emit("isOnline", chat._id, (response) => {
-            console.log("Status update response:", response);
-            if (response) {
-                setStatus(response.status);
-            }
-        });
+        // Must re-run after every reconnect, not just once on mount, since
+        // room membership and any "active" broadcast don't survive a
+        // dropped connection (e.g. an idle background tab timing out).
+        const announcePresence = () => {
+            socket.emit("isOnline", chat._id, (response) => {
+                if (response) {
+                    setStatus(response.status);
+                }
+            });
 
-        socket.emit("isActive", chat._id, (response) => {
-            console.log("Is active response:", response);
-            if (response && response.isActive) {
-                setStatus("active");
-            }
-        });
+            socket.emit("isActive", chat._id, (response) => {
+                if (response && response.isActive) {
+                    setStatus("active");
+                }
+            });
+        };
+
+        socket.on(statusUpdateEvent, handleStatusUpdate);
+        announcePresence();
+        socket.on("connect", announcePresence);
 
         return () => {
-            socket.off("status-update");
-            socket.off("isOnline");
-            socket.off("isActive");
+            socket.off(statusUpdateEvent, handleStatusUpdate);
+            socket.off("connect", announcePresence);
             socket.emit("chat-is-inactive", chat._id);
         };
-    }, []);
+    }, [socket, chat._id]);
 
     if (hours && minutes)
         formattedTime = `${hours.toString().padStart(2, "0")}:${minutes
@@ -99,11 +107,24 @@ const Chat = ({ chat }) => {
                     <span>{formattedTime}</span>
                 </span>
             </ChatBody>
+            <MenuButton
+                role="button"
+                aria-label="Chat options"
+                onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setPosition({ x: e.pageX, y: e.pageY });
+                    setOptions(true);
+                }}
+            >
+                <BsThreeDotsVertical />
+            </MenuButton>
             {options && (
                 <Options
                     closeOptions={() => setOptions(false)}
                     style={{ top: position.y, left: position.x }}
                     otherUser={otherUser}
+                    chat={chat}
                 />
             )}
         </ChatContainer>
